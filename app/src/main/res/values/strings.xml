@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">AD_Test_SplashScreen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_home_fragment">Hello home fragment</string>
+    <string name="hello_hawker_fragment">Hello hawker fragment</string>
+    <string name="hello_search_fragment">Hello search fragment</string>
+    <string name="hello_favourites_fragment">Hello favourites fragment</string>
+    <string name="hello_account_fragment">Hello account fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
