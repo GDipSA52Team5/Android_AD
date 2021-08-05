@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_hawker_fragment"
+        android:text="Hello_I'm_here!"
         android:layout_gravity="center"
         android:gravity="center"/>
 
