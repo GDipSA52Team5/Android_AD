@@ -61,6 +61,8 @@ public class hawkerFragment extends Fragment {
 
 //        View fragmentContainer = view.findViewById(R.id.hawkerFragment);
 
+
+
         findStallsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +83,7 @@ public class hawkerFragment extends Fragment {
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.hawkerFragment, fragment);
+        trans.replace(((ViewGroup)getView().getParent()).getId(), fragment);
         trans.addToBackStack(null);
         trans.commit();
     }
