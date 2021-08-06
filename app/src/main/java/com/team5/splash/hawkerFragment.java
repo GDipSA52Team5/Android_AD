@@ -2,11 +2,17 @@ package com.team5.splash;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +53,40 @@ public class hawkerFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        View view = getView();
+        AppCompatButton findStallsBtn = view.findViewById(R.id.findStallsBtn);
+
+//        View fragmentContainer = view.findViewById(R.id.hawkerFragment);
+
+        findStallsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Hello I've been clicked!", Toast.LENGTH_SHORT).show();
+
+//                if (fragmentContainer != null) {
+                    // Add the fragment to the FrameLayout
+                    replaceFragment();
+//                }
+
+            }
+        });
+    }
+
+    public void replaceFragment()
+    {
+        favouriteFragment fragment = new favouriteFragment();
+
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.hawkerFragment, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -58,6 +98,7 @@ public class hawkerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_hawker, container, false);
     }
