@@ -10,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,7 +74,11 @@ public class hawkerFragment extends Fragment {
 
     public void replaceFragment()
     {
+        Bundle arguments = new Bundle();
+        arguments.putInt("stallId", 3);
+
         Fragment fragment = new listStallsFragment();
+        fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()
                 .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();

@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +56,15 @@ public class listStallsFragment extends Fragment {
 
         View view = getView();
         AppCompatButton stallDetailsBtn = view.findViewById(R.id.stallDetailsBtn);
+
+        TextView stallsTxt = view.findViewById(R.id.stallsTxt);
+
+        Bundle bundle = getArguments();
+        if(bundle != null)
+        {
+            Integer stallId = bundle.getInt("stallId");
+            stallsTxt.setText(String.valueOf(stallId));
+        }
 
         stallDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
