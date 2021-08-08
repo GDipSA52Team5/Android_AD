@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,16 +25,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link hawkerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class hawkerFragment extends Fragment {
+public class hawkerFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     RequestQueue mQueue;
-    TextView listHawkerCentres;
+    List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
+
+    AppCompatButton findStallsBtn;
+    ListView listHawkerCentres;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,7 +80,7 @@ public class hawkerFragment extends Fragment {
         super.onStart();
 
         View view = getView();
-        AppCompatButton findStallsBtn = view.findViewById(R.id.findStallsBtn);
+        findStallsBtn = view.findViewById(R.id.findStallsBtn);
         listHawkerCentres = view.findViewById(R.id.listHawkerCentres);
 
         // Instantiate the RequestQueue.
@@ -101,9 +109,23 @@ public class hawkerFragment extends Fragment {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
-                                JSONObject hawkerCentre = response.getJSONObject(i);
+                                JSONObject hawkerCentreJSONObj = response.getJSONObject(i);
 
-                                listHawkerCentres.append(hawkerCentre.getString("name") + " " + hawkerCentre.getString("address") + "\n\n");
+                                HawkerCentre hawkerCentre = new HawkerCentre();
+                                hawkerCentre.setId(hawkerCentreJSONObj.getString("id"));
+                                hawkerCentre.setName(hawkerCentreJSONObj.getString("name"));
+                                hawkerCentre.setAddress(hawkerCentreJSONObj.getString("address"));
+                                hawkerCentre.setNumOfStalls(hawkerCentreJSONObj.getInt("numOfStalls"));
+                                hawkerCentre.setLatitude(hawkerCentreJSONObj.getDouble("latitude"));
+                                hawkerCentre.setLongitude(hawkerCentreJSONObj.getDouble("longitude"));
+                                hawkerCentre.setImgUrl(hawkerCentreJSONObj.getString("imgUrl"));
+
+                                hawkerCentres.add(hawkerCentre);
+
+                                if(i == (response.length() - 1))
+                                {
+                                    createListHawkersView();
+                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -113,11 +135,23 @@ public class hawkerFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listHawkerCentres.setText("That didn't work!");
+//                listHawkerCentres.setText("That didn't work!");
+                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
             }
         });
 
         mQueue.add(request);
+    }
+
+    public void createListHawkersView()
+    {
+        ListHawkerCentresAdaptor adaptor = new ListHawkerCentresAdaptor(getActivity().getApplicationContext(), hawkerCentres);
+
+        if(listHawkerCentres !=null)
+        {
+            listHawkerCentres.setAdapter(adaptor);
+//            listHawkerCentres.setOnItemClickListener((AdapterView.OnItemClickListener) getActivity().getApplicationContext());
+        }
     }
 
     public void replaceFragment()
@@ -154,5 +188,10 @@ public class hawkerFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_hawker, container, false);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
     }
 }
