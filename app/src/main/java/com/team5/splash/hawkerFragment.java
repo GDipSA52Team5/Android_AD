@@ -8,7 +8,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 
 /**
@@ -17,6 +25,9 @@ import android.widget.Toast;
  * create an instance of this fragment.
  */
 public class hawkerFragment extends Fragment {
+
+    RequestQueue mQueue;
+    TextView listHawkerCentres;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,19 +68,41 @@ public class hawkerFragment extends Fragment {
 
         View view = getView();
         AppCompatButton findStallsBtn = view.findViewById(R.id.findStallsBtn);
+        listHawkerCentres = view.findViewById(R.id.listHawkerCentres);
+
+        // Instantiate the RequestQueue.
+        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        // Display list of hawkers
+        parseData();
 
         findStallsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(getContext(), "Hello I've been clicked!", Toast.LENGTH_SHORT).show();
-
-//                if (fragmentContainer != null) {
-                    // Add the fragment to the FrameLayout
                     replaceFragment();
-//                }
 
             }
         });
+    }
+
+    public void parseData()
+    {
+        String url = "http://192.168.1.177:5000/api/listCentre";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        listHawkerCentres.setText(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listHawkerCentres.setText("That didn't work!");
+            }
+        });
+
+        mQueue.add(request);
     }
 
     public void replaceFragment()
