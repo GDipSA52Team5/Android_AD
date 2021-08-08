@@ -17,8 +17,7 @@
         android:id="@+id/listHawkerCentres"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello I am the List Hawker Centres Fragment"
         android:layout_gravity="center"
-        android:gravity="center"/>
+        android:gravity="center" />
 
 </LinearLayout>
