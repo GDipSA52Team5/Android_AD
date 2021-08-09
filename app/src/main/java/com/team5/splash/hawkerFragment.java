@@ -100,7 +100,7 @@ public class hawkerFragment extends Fragment implements AdapterView.OnItemClickL
 
     public void parseData()
     {
-        String url = "http://192.168.1.177:5000/api/listCentre";
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
