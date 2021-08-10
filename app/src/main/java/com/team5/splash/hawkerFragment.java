@@ -34,7 +34,7 @@ import java.util.List;
  * Use the {@link hawkerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class hawkerFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class hawkerFragment extends Fragment {
 
     RequestQueue mQueue;
     List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
@@ -92,10 +92,11 @@ public class hawkerFragment extends Fragment implements AdapterView.OnItemClickL
         findStallsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    replaceFragment();
+                    replaceFragment("999");
 
             }
         });
+
     }
 
     public void parseData()
@@ -145,19 +146,30 @@ public class hawkerFragment extends Fragment implements AdapterView.OnItemClickL
 
     public void createListHawkersView()
     {
+
         ListHawkerCentresAdaptor adaptor = new ListHawkerCentresAdaptor(getActivity().getApplicationContext(), hawkerCentres);
 
         if(listHawkerCentres !=null)
         {
             listHawkerCentres.setAdapter(adaptor);
-//            listHawkerCentres.setOnItemClickListener((AdapterView.OnItemClickListener) getActivity().getApplicationContext());
+
+            // implement onItemClick(...) for listView
+            listHawkerCentres.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    HawkerCentre hc = hawkerCentres.get(i);
+                    String hcId = hc.getId();
+                    Toast.makeText(getActivity().getApplicationContext(), "Hello I've been clicked! ", Toast.LENGTH_LONG).show();
+                    replaceFragment(hcId);
+                }
+            });
         }
     }
 
-    public void replaceFragment()
+    public void replaceFragment(String hcId)
     {
         Bundle arguments = new Bundle();
-        arguments.putInt("stallId", 3);
+        arguments.putString("stallId", hcId);
 
         Fragment fragment = new listStallsFragment();
         fragment.setArguments(arguments);
@@ -165,12 +177,6 @@ public class hawkerFragment extends Fragment implements AdapterView.OnItemClickL
         this.getParentFragmentManager().beginTransaction()
                 .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();
 
-//        FragmentManager fm = getActivity().getSupportFragmentManager();
-//        FragmentTransaction trans = fm.beginTransaction();
-//        trans.hide(this).show(fragment);
-//        trans.replace(getId, fragment);
-//        trans.addToBackStack(null);
-//        trans.commit();
     }
 
     @Override
@@ -190,8 +196,4 @@ public class hawkerFragment extends Fragment implements AdapterView.OnItemClickL
         return inflater.inflate(R.layout.fragment_hawker, container, false);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
 }

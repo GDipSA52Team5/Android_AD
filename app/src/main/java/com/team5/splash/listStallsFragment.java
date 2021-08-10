@@ -62,8 +62,8 @@ public class listStallsFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null)
         {
-            Integer stallId = bundle.getInt("stallId");
-            stallsTxt.setText(String.valueOf(stallId));
+            String stallId = bundle.getString("stallId");
+            stallsTxt.setText("Here are the list of stalls in Hawker Centre ID" + stallId);
         }
 
         stallDetailsBtn.setOnClickListener(new View.OnClickListener() {
