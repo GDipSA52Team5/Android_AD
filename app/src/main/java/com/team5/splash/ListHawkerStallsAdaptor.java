@@ -2,6 +2,7 @@ package com.team5.splash;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,17 @@ public class ListHawkerStallsAdaptor extends ArrayAdapter {
         hawkerStall_unitNumber.setText(hawkerStalls.get(pos).getUnitNumber());
 
         TextView hawkerStall_status = view.findViewById(R.id.hawkerStall_status);
-        hawkerStall_status.setText(hawkerStalls.get(pos).getStatus());
+        if(hawkerStalls.get(pos).getStatus() == "Open")
+        {
+            hawkerStall_status.setText(hawkerStalls.get(pos).getStatus());
+            hawkerStall_status.setTextColor(getContext().getResources().getColor(R.color.green));
+            hawkerStall_status.setTypeface(null, Typeface.BOLD);
+        }
+        else if(hawkerStalls.get(pos).getStatus() == "Closed")
+        {
+            hawkerStall_status.setText(hawkerStalls.get(pos).getStatus());
+            hawkerStall_status.setTextColor(getContext().getResources().getColor(R.color.error_red));
+        }
 
         ImageView hawkerStall_image = view.findViewById(R.id.hawkerStall_image);
         Picasso.get()

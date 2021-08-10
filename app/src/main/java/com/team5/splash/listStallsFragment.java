@@ -181,7 +181,11 @@ public class listStallsFragment extends Fragment {
 
     public void replaceFragment(Integer hcId)
     {
+        Bundle arguments = new Bundle();
+        arguments.putInt("stallId", hcId);
+
         Fragment fragment = new stallFragment();
+        fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()
                 .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();

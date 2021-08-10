@@ -10,4 +10,6 @@
     <color name="red">#EF3340</color>
     <color name="red_secondary">#C4EF3340</color>
     <color name="pink">#F8DADA</color>
+    <color name="green">#00FF00</color>
+    <color name="error_red">#ff0033</color>
 </resources>
