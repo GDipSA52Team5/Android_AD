@@ -23,18 +23,13 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/hawkerCentre_name"
+            android:id="@+id/hawkerStall_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/hawkerCentre_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/hawkerCentre_numOfStalls"
+            android:id="@+id/hawkerCentre_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
