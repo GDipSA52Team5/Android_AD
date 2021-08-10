@@ -3,7 +3,7 @@
     package="com.team5.splash">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-
+<!--test-->
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
