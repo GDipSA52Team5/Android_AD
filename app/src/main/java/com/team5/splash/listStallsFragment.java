@@ -131,6 +131,7 @@ public class listStallsFragment extends Fragment {
                                 hawkerStall.setCloseHours(hawkerStallJSONObj.getString("closeHours"));
                                 hawkerStall.setCentre(hawkerStallJSONObj.getString("centre"));
 //                                hawkerStall.setMenuItems();
+                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("stallImgUrl"));
 
                                 hawkerStalls.add(hawkerStall);
 
