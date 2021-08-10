@@ -13,13 +13,16 @@
         android:layout_gravity="center"
         android:text="Tell me more about this stall"/>
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/stallsTxt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello I am the List Stalls Fragment"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:text="There are X Stalls in Y Market."
+        android:gravity="center_horizontal"
+        android:padding="20dp"/>
+
+    <ListView
+        android:id="@+id/listHawkerStalls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
