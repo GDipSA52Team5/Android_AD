@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "775132689514",
+    "project_id": "testing-firebase-64caa",
+    "storage_bucket": "testing-firebase-64caa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775132689514:android:50374e76a50cf872280613",
+        "android_client_info": {
+          "package_name": "com.team5.splash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775132689514-cofk4r08gsu8lcutc2d1shrd256jt9q9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq0biksgGVEuaSjHGUKIhUCA3d89N-HIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775132689514-cofk4r08gsu8lcutc2d1shrd256jt9q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
