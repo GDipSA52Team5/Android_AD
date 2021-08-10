@@ -1,4 +1,4 @@
-package com.team5.splash.placeholder;
+package com.team5.splash;
 
 public class HawkerStall {
 

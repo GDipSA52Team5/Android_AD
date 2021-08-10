@@ -1,11 +1,9 @@
-package com.team5.splash.placeholder;
+package com.team5.splash;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import androidx.annotation.NonNull;
-
-import com.team5.splash.HawkerCentre;
+import com.team5.splash.HawkerStall;
 import com.team5.splash.R;
 
 import java.util.List;
