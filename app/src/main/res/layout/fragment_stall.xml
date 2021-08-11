@@ -33,13 +33,15 @@
         android:id="@+id/StallUnitNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Unit Number" />
+        android:text="Unit Number"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/StallContactNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contact Number" />
+        android:text="Contact Number"
+        android:padding="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

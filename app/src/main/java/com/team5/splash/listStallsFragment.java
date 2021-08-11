@@ -79,7 +79,6 @@ public class listStallsFragment extends Fragment {
         super.onStart();
 
         View view = getView();
-        AppCompatButton stallDetailsBtn = view.findViewById(R.id.stallDetailsBtn);
 
         TextView stallsTxt = view.findViewById(R.id.hawkerCentre_info);
 
@@ -88,7 +87,9 @@ public class listStallsFragment extends Fragment {
         {
             centreId = bundle.getString("centreId");
             hc = (HawkerCentre) bundle.getSerializable("centre");
-            stallsTxt.setText("Here are the list of stalls in Hawker Centre ID" + centreId);
+
+            String numStallsText = getString(R.string.NumStalls1) + hc.getNumOfStalls() + getString(R.string.NumStalls2) + hc.getName() + getString(R.string.NumStalls3);
+            stallsTxt.setText(numStallsText);
         }
 
         listHawkerStalls = view.findViewById(R.id.listHawkerStalls);
@@ -98,13 +99,6 @@ public class listStallsFragment extends Fragment {
 
         // Display list of stalls
         parseData();
-
-        stallDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                replaceFragment(999);
-            }
-        });
 
     }
 
@@ -176,8 +170,7 @@ public class listStallsFragment extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     hs = hawkerStalls.get(i);
                     Integer hcId = hs.getId();
-                    String stallName = hs.getStallName();
-                    Toast.makeText(getActivity().getApplicationContext(), "Hello I've been clicked! " + stallName, Toast.LENGTH_LONG).show();
+//                    String stallName = hs.getStallName();
                     replaceFragment(hcId);
                 }
             });

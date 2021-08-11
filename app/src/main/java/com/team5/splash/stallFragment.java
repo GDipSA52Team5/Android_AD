@@ -106,10 +106,10 @@ public class stallFragment extends Fragment {
                 .into(StallImage);
 
         TextView StallUnitNumber = view.findViewById(R.id.StallUnitNumber);
-        StallUnitNumber.setText(hs.getUnitNumber());
+        StallUnitNumber.setText(getString(R.string.Unit_Number)+ hs.getUnitNumber());
 
         TextView StallContactNumber = view.findViewById(R.id.StallContactNumber);
-        StallContactNumber.setText(hs.getContactNumber());
+        StallContactNumber.setText(getString(R.string.Contact_Number) + hs.getContactNumber());
 
         listMenuItems = view.findViewById(R.id.listMenuItems);
 

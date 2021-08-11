@@ -11,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
@@ -32,7 +31,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -68,7 +66,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
     int PERMISSION_ID = 44;
 
     FusedLocationProviderClient mFusedLocationClient;
-    TextView latitudeTextView, longitTextView;
 
     String lat;
     String lon;
@@ -122,9 +119,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
         // Display list of hawkers
         parseData();
-
-        latitudeTextView = view.findViewById(R.id.latTextView);
-        longitTextView = view.findViewById(R.id.lonTextView);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
 
@@ -259,7 +253,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     HawkerCentre hc = hawkerCentres.get(i);
                     String hcId = hc.getId();
-                    Toast.makeText(getActivity().getApplicationContext(), "Hello I've been clicked! ", Toast.LENGTH_LONG).show();
                     replaceFragment(hcId,hc);
                 }
             });
@@ -317,8 +310,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                         if (location == null) {
                             requestNewLocationData();
                         } else {
-                            latitudeTextView.setText(location.getLatitude() + "");
-                            longitTextView.setText(location.getLongitude() + "");
                             lat = String.valueOf(location.getLatitude());
                             lon = String.valueOf(location.getLongitude());
                         }
@@ -358,8 +349,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
-            latitudeTextView.setText("Latitude: " + mLastLocation.getLatitude() + "");
-            longitTextView.setText("Longitude: " + mLastLocation.getLongitude() + "");
             lat = String.valueOf(mLastLocation.getLatitude());
             lon = String.valueOf(mLastLocation.getLongitude());
         }

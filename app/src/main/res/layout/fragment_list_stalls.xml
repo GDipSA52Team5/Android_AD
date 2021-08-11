@@ -6,13 +6,6 @@
     tools:context=".listStallsFragment"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/stallDetailsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Tell me more about this stall"/>
-
     <TextView
         android:id="@+id/hawkerCentre_info"
         android:layout_width="match_parent"
