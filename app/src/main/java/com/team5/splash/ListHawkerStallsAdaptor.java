@@ -50,13 +50,13 @@ public class ListHawkerStallsAdaptor extends ArrayAdapter {
         hawkerStall_unitNumber.setText(hawkerStalls.get(pos).getUnitNumber());
 
         TextView hawkerStall_status = view.findViewById(R.id.hawkerStall_status);
-        if(hawkerStalls.get(pos).getStatus() == "Open")
+        if(hawkerStalls.get(pos).getStatus().equals("Open"))
         {
             hawkerStall_status.setText(hawkerStalls.get(pos).getStatus());
             hawkerStall_status.setTextColor(getContext().getResources().getColor(R.color.green));
-            hawkerStall_status.setTypeface(null, Typeface.BOLD);
+
         }
-        else if(hawkerStalls.get(pos).getStatus() == "Closed")
+        else if(hawkerStalls.get(pos).getStatus().equals("Closed"))
         {
             hawkerStall_status.setText(hawkerStalls.get(pos).getStatus());
             hawkerStall_status.setTextColor(getContext().getResources().getColor(R.color.error_red));

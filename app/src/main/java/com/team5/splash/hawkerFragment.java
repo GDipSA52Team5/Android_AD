@@ -93,7 +93,7 @@ public class hawkerFragment extends Fragment {
         findStallsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    replaceFragment("999");
+                    replaceFragment("999",null);
 
             }
         });
@@ -102,7 +102,7 @@ public class hawkerFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
+        String url = "http://10.40.1.56:8080/api/listCentre";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -161,16 +161,17 @@ public class hawkerFragment extends Fragment {
                     HawkerCentre hc = hawkerCentres.get(i);
                     String hcId = hc.getId();
                     Toast.makeText(getActivity().getApplicationContext(), "Hello I've been clicked! ", Toast.LENGTH_LONG).show();
-                    replaceFragment(hcId);
+                    replaceFragment(hcId,hc);
                 }
             });
         }
     }
 
-    public void replaceFragment(String hcId)
+    public void replaceFragment(String hcId,HawkerCentre hc)
     {
         Bundle arguments = new Bundle();
-        arguments.putString("stallId", hcId);
+        arguments.putString("centreId", hcId);
+        arguments.putSerializable("centre",hc);
 
         Fragment fragment = new listStallsFragment();
         fragment.setArguments(arguments);

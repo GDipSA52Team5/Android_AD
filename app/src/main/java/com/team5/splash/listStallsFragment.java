@@ -37,7 +37,8 @@ public class listStallsFragment extends Fragment {
 
     RequestQueue mQueue;
     ListView listHawkerStalls;
-    String stallId;
+    String centreId;
+    HawkerCentre hc;
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -83,8 +84,9 @@ public class listStallsFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null)
         {
-            stallId = bundle.getString("stallId");
-            stallsTxt.setText("Here are the list of stalls in Hawker Centre ID" + stallId);
+            centreId = bundle.getString("centreId");
+            hc = (HawkerCentre) bundle.getSerializable("centre");
+            stallsTxt.setText("Here are the list of stalls in Hawker Centre ID" + centreId);
         }
 
         listHawkerStalls = view.findViewById(R.id.listHawkerStalls);
@@ -106,7 +108,7 @@ public class listStallsFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/" + stallId;
+        String url = "http://10.40.1.56:8080/api/listHawkers/" + centreId;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -120,8 +122,8 @@ public class listStallsFragment extends Fragment {
                                 HawkerStall hawkerStall = new HawkerStall();
 
                                 hawkerStall.setId(hawkerStallJSONObj.getInt("id"));
-                                hawkerStall.setFirstName(hawkerStallJSONObj.getString("firstName"));
-                                hawkerStall.setLastName(hawkerStallJSONObj.getString("lastName"));
+//                                hawkerStall.setFirstName(hawkerStallJSONObj.getString("firstName"));
+//                                hawkerStall.setLastName(hawkerStallJSONObj.getString("lastName"));
                                 hawkerStall.setStallName(hawkerStallJSONObj.getString("stallName"));
                                 hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("unitNumber"));
                                 hawkerStall.setContactNumber(hawkerStallJSONObj.getString("contactNumber"));
@@ -129,9 +131,10 @@ public class listStallsFragment extends Fragment {
                                 hawkerStall.setStatus(hawkerStallJSONObj.getString("status"));
                                 hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("operatingHours"));
                                 hawkerStall.setCloseHours(hawkerStallJSONObj.getString("closeHours"));
-                                hawkerStall.setCentre(hawkerStallJSONObj.getString("centre"));
+//                                hawkerStall.setCentre(hawkerStallJSONObj.getString("centre"));
+                                hawkerStall.setCentre(hc.getName());
 //                                hawkerStall.setMenuItems();
-                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("stallImgUrl"));
+                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("hawkerImg"));
 
                                 hawkerStalls.add(hawkerStall);
 
