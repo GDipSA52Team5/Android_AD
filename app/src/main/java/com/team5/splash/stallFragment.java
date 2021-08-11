@@ -9,17 +9,28 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +42,8 @@ public class stallFragment extends Fragment {
     Integer stallId;
     HawkerCentre hc;
     HawkerStall hs;
+    List<MenuItem> menuItems = new ArrayList<MenuItem>();
+    ListView listMenuItems;
 
     RequestQueue mQueue;
 
@@ -98,10 +111,13 @@ public class stallFragment extends Fragment {
         TextView StallContactNumber = view.findViewById(R.id.StallContactNumber);
         StallContactNumber.setText(hs.getContactNumber());
 
-        ListView listMenuItems = view.findViewById(R.id.listMenuItems);
+        listMenuItems = view.findViewById(R.id.listMenuItems);
 
         // Instantiate the RequestQueue.
         mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+        // Display list of menu items
+        parseData();
 
         Button OpenMap = view.findViewById(R.id.OpenMap);
         OpenMap.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +142,64 @@ public class stallFragment extends Fragment {
             }
         });
 
+    }
+
+    public void parseData()
+    {
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listMenuItem/" + hs.getId();
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for (int i=0; i < response.length(); i++)
+                        {
+                            try {
+                                JSONObject menuItemJSONObj = response.getJSONObject(i);
+
+                                MenuItem menuItem = new MenuItem();
+
+                                menuItem.setId(menuItemJSONObj.getInt("id"));
+                                menuItem.setName(menuItemJSONObj.getString("name"));
+                                menuItem.setDescription(menuItemJSONObj.getString("description"));
+                                menuItem.setPrice(menuItemJSONObj.getDouble("price"));
+                                menuItem.setPhoto(menuItemJSONObj.getString("photo"));
+                                menuItem.setStatus(menuItemJSONObj.getString("status"));
+                                menuItem.setLocalUrl(menuItemJSONObj.getString("localUrl"));
+                                menuItem.setHawker(menuItemJSONObj.getString("hawker"));
+                                menuItem.setPhotoImagePath(menuItemJSONObj.getString("photoImagePath"));
+
+                                menuItems.add(menuItem);
+
+                                if(i == (response.length() - 1))
+                                {
+                                    createListMenuItemsView();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Menu Items", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mQueue.add(request);
+
+    }
+
+    public void createListMenuItemsView() {
+
+        ListMenuItemsAdaptor adaptor = new ListMenuItemsAdaptor(getActivity().getApplicationContext(), menuItems);
+
+        if (listMenuItems != null) {
+            listMenuItems.setAdapter(adaptor);
+
+        }
     }
 
     @Override
