@@ -14,6 +14,18 @@
         android:layout_height="wrap_content"
         android:text="@string/FindHCWithin"/>
 
+    <TextView
+        android:id="@+id/latTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="latTextView" />
+
+    <TextView
+        android:id="@+id/lonTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lonTextView" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,21 +38,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
-            android:text="<1km"/>
+            android:text="1km"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ThreeKmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="<3km"/>
+            android:text="3km"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/FiveKmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="<5km"/>
+            android:text="5km"/>
 
     </LinearLayout>
 
