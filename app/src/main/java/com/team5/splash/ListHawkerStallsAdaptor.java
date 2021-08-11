@@ -2,6 +2,7 @@ package com.team5.splash;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,15 +46,28 @@ public class ListHawkerStallsAdaptor extends ArrayAdapter {
         TextView hawkerStall_name = view.findViewById(R.id.hawkerStall_name);
         hawkerStall_name.setText(hawkerStalls.get(pos).getStallName());
 
-        TextView hawkerCentre_name = view.findViewById(R.id.hawkerCentre_name);
-        hawkerCentre_name.setText(hawkerStalls.get(pos).getCentre());
+        TextView hawkerStall_unitNumber = view.findViewById(R.id.hawkerStall_unitNumber);
+        hawkerStall_unitNumber.setText(hawkerStalls.get(pos).getUnitNumber());
 
-//        ImageView hawkerCentre_image = view.findViewById(R.id.hawkerCentre_image);
-//        Picasso.get()
-//                .load(hawkerStalls.get(pos).getImgUrl())
-//                .resize(150, 80)
-//                .centerCrop()
-//                .into(hawkerCentre_image);
+        TextView hawkerStall_status = view.findViewById(R.id.hawkerStall_status);
+        if(hawkerStalls.get(pos).getStatus().equals("Open"))
+        {
+            hawkerStall_status.setText(hawkerStalls.get(pos).getStatus());
+            hawkerStall_status.setTextColor(getContext().getResources().getColor(R.color.green));
+
+        }
+        else if(hawkerStalls.get(pos).getStatus().equals("Closed"))
+        {
+            hawkerStall_status.setText(hawkerStalls.get(pos).getStatus());
+            hawkerStall_status.setTextColor(getContext().getResources().getColor(R.color.error_red));
+        }
+
+        ImageView hawkerStall_image = view.findViewById(R.id.hawkerStall_image);
+        Picasso.get()
+                .load(hawkerStalls.get(pos).getStallImgUrl())
+                .resize(150, 80)
+                .centerCrop()
+                .into(hawkerStall_image);
 
         return view;
     }

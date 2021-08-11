@@ -1,6 +1,8 @@
 package com.team5.splash;
 
-public class HawkerCentre {
+import java.io.Serializable;
+
+public class HawkerCentre implements Serializable {
 
     // attributes
     private String id;

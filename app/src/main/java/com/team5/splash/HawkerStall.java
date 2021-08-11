@@ -15,6 +15,7 @@ public class HawkerStall {
     private String closeHours;
     private String centre;
     private String[] menuItems;
+    private String stallImgUrl;
 
     // empty constructor
     public HawkerStall()
@@ -118,5 +119,13 @@ public class HawkerStall {
 
     public void setMenuItems(String[] menuItems) {
         this.menuItems = menuItems;
+    }
+
+    public String getStallImgUrl() {
+        return stallImgUrl;
+    }
+
+    public void setStallImgUrl(String stallImgUrl) {
+        this.stallImgUrl = stallImgUrl;
     }
 }

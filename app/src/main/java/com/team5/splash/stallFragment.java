@@ -15,6 +15,8 @@ import android.view.ViewGroup;
  */
 public class stallFragment extends Fragment {
 
+    Integer stallId;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,6 +46,18 @@ public class stallFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Bundle bundle = getArguments();
+        if(bundle != null)
+        {
+            stallId = bundle.getInt("stallId");
+        }
+
     }
 
     @Override
