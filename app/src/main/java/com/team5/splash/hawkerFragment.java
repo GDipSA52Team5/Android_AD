@@ -435,8 +435,14 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
             distFrom = "5";
         }
 
-        parseDataDistFrom();
+        if (lat==null || lon == null)
+        {
+            Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            parseDataDistFrom();
+        }
 
-        Toast.makeText(mContext, "Hi you click me ah?", Toast.LENGTH_SHORT).show();
     }
 }
