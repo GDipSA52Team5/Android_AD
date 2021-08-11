@@ -33,6 +33,7 @@
 
     <EditText
         android:id="@+id/editTextRegisterName"
+        android:singleLine="true"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
