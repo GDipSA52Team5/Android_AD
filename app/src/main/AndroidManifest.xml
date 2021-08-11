@@ -18,9 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AD_Test_SplashScreen"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SignupActivity"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SignupActivity"/>
+
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -33,6 +33,7 @@
 
     <EditText
         android:id="@+id/editTextRegisterName"
+        android:singleLine="true"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -47,12 +48,13 @@
         android:id="@+id/editTextRegisterEmailAddress"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Email Address"
         android:inputType="textEmailAddress"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRegisterName" />
 
@@ -60,7 +62,7 @@
         android:id="@+id/editTextRegisterPassword"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -74,7 +76,7 @@
         android:id="@+id/registerBtn"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:text="Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
@@ -82,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextRegisterPassword" />
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/progressBarRegister"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,5 +93,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewReturnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Already have an Account?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
