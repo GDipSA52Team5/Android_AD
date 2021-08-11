@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ import java.util.List;
  * Use the {@link hawkerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class hawkerFragment extends Fragment {
+public class hawkerFragment extends Fragment implements View.OnClickListener {
 
     RequestQueue mQueue;
     List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
@@ -63,11 +64,14 @@ public class hawkerFragment extends Fragment {
     ListView listHawkerCentres;
 
     private Context mContext;
+    int PERMISSION_ID = 44;
 
     FusedLocationProviderClient mFusedLocationClient;
-
     TextView latitudeTextView, longitTextView;
-    int PERMISSION_ID = 44;
+
+    String lat;
+    String lon;
+    String distFrom;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -109,7 +113,7 @@ public class hawkerFragment extends Fragment {
         mContext = getContext();
 
         View view = getView();
-        findStallsBtn = view.findViewById(R.id.findStallsBtn);
+//        findStallsBtn = view.findViewById(R.id.findStallsBtn);
         listHawkerCentres = view.findViewById(R.id.listHawkerCentres);
 
         // Instantiate the RequestQueue.
@@ -118,13 +122,13 @@ public class hawkerFragment extends Fragment {
         // Display list of hawkers
         parseData();
 
-        findStallsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    replaceFragment("999",null);
-
-            }
-        });
+//        findStallsBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                    replaceFragment("999",null);
+//
+//            }
+//        });
 
         latitudeTextView = view.findViewById(R.id.latTextView);
         longitTextView = view.findViewById(R.id.lonTextView);
@@ -133,6 +137,15 @@ public class hawkerFragment extends Fragment {
 
         // method to get the location
         getLastLocation();
+
+        Button OneKmBtn = view.findViewById(R.id.OneKmBtn);
+        OneKmBtn.setOnClickListener(this);
+
+        Button ThreeKmBtn = view.findViewById(R.id.ThreeKmBtn);
+        ThreeKmBtn.setOnClickListener(this);
+
+        Button FiveKmBtn = view.findViewById(R.id.FiveKmBtn);
+        FiveKmBtn.setOnClickListener(this);
 
     }
 
@@ -256,6 +269,8 @@ public class hawkerFragment extends Fragment {
                         } else {
                             latitudeTextView.setText(location.getLatitude() + "");
                             longitTextView.setText(location.getLongitude() + "");
+                            lat = String.valueOf(location.getLatitude());
+                            lon = String.valueOf(location.getLongitude());
                         }
                     }
                 });
@@ -295,6 +310,8 @@ public class hawkerFragment extends Fragment {
             Location mLastLocation = locationResult.getLastLocation();
             latitudeTextView.setText("Latitude: " + mLastLocation.getLatitude() + "");
             longitTextView.setText("Longitude: " + mLastLocation.getLongitude() + "");
+            lat = String.valueOf(mLastLocation.getLatitude());
+            lon = String.valueOf(mLastLocation.getLongitude());
         }
     };
 
@@ -310,7 +327,7 @@ public class hawkerFragment extends Fragment {
 
     // method to request for permissions
     private void requestPermissions() {
-        ActivityCompat.requestPermissions((Activity) getActivity().getApplicationContext(), new String[]{
+        ActivityCompat.requestPermissions(getActivity(), new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
     }
@@ -341,5 +358,11 @@ public class hawkerFragment extends Fragment {
         if (checkPermissions()) {
             getLastLocation();
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        Toast.makeText(mContext, "Hi you click me ah?", Toast.LENGTH_SHORT).show();
     }
 }
