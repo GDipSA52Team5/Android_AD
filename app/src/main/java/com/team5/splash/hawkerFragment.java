@@ -58,6 +58,8 @@ import java.util.List;
 public class hawkerFragment extends Fragment implements View.OnClickListener {
 
     RequestQueue mQueue;
+    RequestQueue mQueue2;
+
     List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
 
     AppCompatButton findStallsBtn;
@@ -118,6 +120,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
         // Instantiate the RequestQueue.
         mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        mQueue2 = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         // Display list of hawkers
         parseData();
@@ -186,12 +189,64 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                listHawkerCentres.setText("That didn't work!");
                 Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
             }
         });
 
         mQueue.add(request);
+    }
+
+    public void parseDataDistFrom()
+    {
+        hawkerCentres = new ArrayList<HawkerCentre>();
+
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/nearestCentre/" + lat + "/" + lon + "/" + distFrom;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        if(response.length() == 0)
+                        {
+                            createListHawkersView();
+                            Toast.makeText(mContext, "Nothing to show lah!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        for (int i=0; i < response.length(); i++)
+                        {
+                            try {
+                                JSONObject hawkerCentreJSONObj = response.getJSONObject(i);
+
+                                HawkerCentre hawkerCentre = new HawkerCentre();
+                                hawkerCentre.setId(hawkerCentreJSONObj.getString("id"));
+                                hawkerCentre.setName(hawkerCentreJSONObj.getString("name"));
+                                hawkerCentre.setAddress(hawkerCentreJSONObj.getString("address"));
+                                hawkerCentre.setNumOfStalls(hawkerCentreJSONObj.getInt("numOfStalls"));
+                                hawkerCentre.setLatitude(hawkerCentreJSONObj.getDouble("latitude"));
+                                hawkerCentre.setLongitude(hawkerCentreJSONObj.getDouble("longitude"));
+                                hawkerCentre.setImgUrl(hawkerCentreJSONObj.getString("imgUrl"));
+
+                                hawkerCentres.add(hawkerCentre);
+
+                                if(i == (response.length() - 1))
+                                {
+                                    createListHawkersView();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mQueue2.add(request);
     }
 
     public void createListHawkersView()
@@ -362,6 +417,25 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+
+        int id = view.getId();
+
+        if (id == R.id.OneKmBtn)
+        {
+            distFrom = "1";
+        }
+
+        if (id == R.id.ThreeKmBtn)
+        {
+            distFrom = "3";
+        }
+
+        if (id == R.id.FiveKmBtn)
+        {
+            distFrom = "5";
+        }
+
+        parseDataDistFrom();
 
         Toast.makeText(mContext, "Hi you click me ah?", Toast.LENGTH_SHORT).show();
     }
