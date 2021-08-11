@@ -210,7 +210,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                         if(response.length() == 0)
                         {
                             createListHawkersView();
-                            Toast.makeText(mContext, "Nothing to show lah!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "There are no hawker centres near you.", Toast.LENGTH_SHORT).show();
                         }
 
                         for (int i=0; i < response.length(); i++)
@@ -435,7 +435,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
             distFrom = "5";
         }
 
-        if (lat==null || lon == null)
+        if (lat==null || lon==null)
         {
             Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
         }
