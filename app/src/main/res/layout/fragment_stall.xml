@@ -4,14 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".stallFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:padding="30dp"
+    android:paddingBottom="30dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/HawkerStallName"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello I am the Stall Fragment"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:text="Hawker Stall Name"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/MarketName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Market Name" />
+
+    <ImageView
+        android:id="@+id/StallImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/StallUnitNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unit Number" />
+
+    <TextView
+        android:id="@+id/StallContactNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Number" />
+
+    <ListView
+        android:id="@+id/listMenuItems"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/OpenMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Directions"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ReportProblem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report Problem"/>
 
 </LinearLayout>

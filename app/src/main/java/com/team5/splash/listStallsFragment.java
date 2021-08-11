@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class listStallsFragment extends Fragment {
     ListView listHawkerStalls;
     String centreId;
     HawkerCentre hc;
+    HawkerStall hs;
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -172,9 +174,9 @@ public class listStallsFragment extends Fragment {
             listHawkerStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    HawkerStall hc = hawkerStalls.get(i);
-                    Integer hcId = hc.getId();
-                    String stallName = hc.getStallName();
+                    hs = hawkerStalls.get(i);
+                    Integer hcId = hs.getId();
+                    String stallName = hs.getStallName();
                     Toast.makeText(getActivity().getApplicationContext(), "Hello I've been clicked! " + stallName, Toast.LENGTH_LONG).show();
                     replaceFragment(hcId);
                 }
@@ -186,6 +188,8 @@ public class listStallsFragment extends Fragment {
     {
         Bundle arguments = new Bundle();
         arguments.putInt("stallId", hcId);
+        arguments.putSerializable("centre", hc);
+        arguments.putSerializable("stall", hs);
 
         Fragment fragment = new stallFragment();
         fragment.setArguments(arguments);

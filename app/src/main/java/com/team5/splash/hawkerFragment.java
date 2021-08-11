@@ -62,7 +62,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
     List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
 
-    AppCompatButton findStallsBtn;
     ListView listHawkerCentres;
 
     private Context mContext;
@@ -115,7 +114,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
         mContext = getContext();
 
         View view = getView();
-//        findStallsBtn = view.findViewById(R.id.findStallsBtn);
         listHawkerCentres = view.findViewById(R.id.listHawkerCentres);
 
         // Instantiate the RequestQueue.
@@ -124,14 +122,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
         // Display list of hawkers
         parseData();
-
-//        findStallsBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                    replaceFragment("999",null);
-//
-//            }
-//        });
 
         latitudeTextView = view.findViewById(R.id.latTextView);
         longitTextView = view.findViewById(R.id.lonTextView);
@@ -150,10 +140,15 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
         Button FiveKmBtn = view.findViewById(R.id.FiveKmBtn);
         FiveKmBtn.setOnClickListener(this);
 
+        Button AllStallsBtn = view.findViewById(R.id.AllStallsBtn);
+        AllStallsBtn.setOnClickListener(this);
+
     }
 
     public void parseData()
     {
+        hawkerCentres = new ArrayList<HawkerCentre>();
+
         String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -420,28 +415,37 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
         int id = view.getId();
 
-        if (id == R.id.OneKmBtn)
+        if (id == R.id.AllStallsBtn)
         {
-            distFrom = "1";
+            parseData();
         }
 
-        if (id == R.id.ThreeKmBtn)
-        {
-            distFrom = "3";
-        }
-
-        if (id == R.id.FiveKmBtn)
-        {
-            distFrom = "5";
-        }
-
-        if (lat==null || lon==null)
-        {
-            Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
-        }
         else
         {
-            parseDataDistFrom();
+            if (id == R.id.OneKmBtn)
+            {
+                distFrom = "1";
+            }
+
+            if (id == R.id.ThreeKmBtn)
+            {
+                distFrom = "3";
+            }
+
+            if (id == R.id.FiveKmBtn)
+            {
+                distFrom = "5";
+            }
+
+            if (lat==null || lon==null)
+            {
+                Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                parseDataDistFrom();
+            }
         }
 
     }

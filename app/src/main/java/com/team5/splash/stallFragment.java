@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 public class stallFragment extends Fragment {
 
     Integer stallId;
+    HawkerCentre hc;
+    HawkerStall hs;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,7 +59,14 @@ public class stallFragment extends Fragment {
         if(bundle != null)
         {
             stallId = bundle.getInt("stallId");
+            hc = (HawkerCentre) bundle.getSerializable("centre");
+            hs = (HawkerStall) bundle.getSerializable("stall");
         }
+
+        View view = getView();
+
+        TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
+        HawkerStallName.setText(hs.getStallName());
 
     }
 

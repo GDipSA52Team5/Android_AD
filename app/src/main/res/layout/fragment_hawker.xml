@@ -38,31 +38,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
 
-            android:text="1km"/>
+            android:text="@string/lessThan1km"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ThreeKmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="3km"/>
+            android:text="@string/lessThan3km"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/FiveKmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="5km"/>
+            android:text="@string/lessThan5km"/>
 
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/findStallsBtn"
+        android:id="@+id/AllStallsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Find Stalls in this Market"/>
-
+        android:text="@string/AllHC"/>
     <ListView
         android:id="@+id/listHawkerCentres"
         android:layout_width="match_parent"
