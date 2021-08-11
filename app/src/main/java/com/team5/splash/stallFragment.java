@@ -7,7 +7,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,6 +74,38 @@ public class stallFragment extends Fragment {
 
         TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
         HawkerStallName.setText(hs.getStallName());
+
+        TextView MarketName = view.findViewById(R.id.MarketName);
+        MarketName.setText(hc.getName());
+
+        ImageView StallImage = view.findViewById(R.id.StallImage);
+        Picasso.get()
+                .load(hs.getStallImgUrl())
+                .resize(1000, 600)
+                .centerCrop()
+                .into(StallImage);
+
+        TextView StallUnitNumber = view.findViewById(R.id.StallUnitNumber);
+        StallUnitNumber.setText(hs.getUnitNumber());
+
+        TextView StallContactNumber = view.findViewById(R.id.StallContactNumber);
+        StallContactNumber.setText(hs.getContactNumber());
+
+        Button OpenMap = view.findViewById(R.id.OpenMap);
+        OpenMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity().getApplicationContext(), "Hello you want directions?", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button ReportProblem = view.findViewById(R.id.ReportProblem);
+        ReportProblem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity().getApplicationContext(), "Sorry, haven't implement this yet.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

@@ -43,7 +43,7 @@
     <ListView
         android:id="@+id/listMenuItems"
         android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        android:layout_height="180dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/OpenMap"
