@@ -11,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -28,6 +31,8 @@ public class stallFragment extends Fragment {
     Integer stallId;
     HawkerCentre hc;
     HawkerStall hs;
+
+    RequestQueue mQueue;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,6 +98,11 @@ public class stallFragment extends Fragment {
         TextView StallContactNumber = view.findViewById(R.id.StallContactNumber);
         StallContactNumber.setText(hs.getContactNumber());
 
+        ListView listMenuItems = view.findViewById(R.id.listMenuItems);
+
+        // Instantiate the RequestQueue.
+        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
         Button OpenMap = view.findViewById(R.id.OpenMap);
         OpenMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +114,6 @@ public class stallFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
                 startActivity(intent);
-
 
             }
         });
