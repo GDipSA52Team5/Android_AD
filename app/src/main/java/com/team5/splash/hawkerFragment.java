@@ -102,7 +102,7 @@ public class hawkerFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "http://10.40.1.56:8080/api/listCentre";
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
