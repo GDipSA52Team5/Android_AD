@@ -104,7 +104,11 @@ public class listStallsFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "http://10.40.1.56:8080/api/listHawkers/" + centreId;
+        String urlLocal = "http://10.40.1.56:8080/api/listHawkers/";
+
+        String urlHeroku  = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/";
+
+        String url = urlHeroku + centreId;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {

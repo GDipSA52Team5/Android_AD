@@ -1,5 +1,6 @@
 package com.team5.splash;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,13 +8,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link accountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class accountFragment extends Fragment {
+public class accountFragment extends Fragment implements View.OnClickListener{
+
+    private Button btnLogout;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,12 +57,28 @@ public class accountFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_account, container, false);
     }
+
+
+//Not working Yet
+    @Override
+    public void onClick(View v) {
+        View view = getView();
+        switch (v.getId()){
+            case R.id.loginBtn:
+                btnLogout = view.findViewById(R.id.loginBtn);
+                btnLogout.setOnClickListener(this);
+                startActivity(new Intent(getActivity(), SignupActivity.class));
+
+    }
+}
 }
