@@ -6,11 +6,9 @@ public class MenuItem {
     private String name;
     private String description;
     private Double price;
-    private String photo;
     private String status;
     private String localUrl;
-    private String hawker;
-    private String photoImagePath;
+
 
     // empty constructor
     public MenuItem()
@@ -51,14 +49,6 @@ public class MenuItem {
         this.price = price;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -75,19 +65,4 @@ public class MenuItem {
         this.localUrl = localUrl;
     }
 
-    public String getHawker() {
-        return hawker;
-    }
-
-    public void setHawker(String hawker) {
-        this.hawker = hawker;
-    }
-
-    public String getPhotoImagePath() {
-        return photoImagePath;
-    }
-
-    public void setPhotoImagePath(String photoImagePath) {
-        this.photoImagePath = photoImagePath;
-    }
 }

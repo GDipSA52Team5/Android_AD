@@ -6,8 +6,6 @@ public class HawkerStall implements Serializable {
 
     // attributes
     private int id;
-    private String firstName;
-    private String lastName;
     private String stallName;
     private String unitNumber;
     private String contactNumber;
@@ -15,8 +13,6 @@ public class HawkerStall implements Serializable {
     private String status;
     private String operatingHours;
     private String closeHours;
-    private String centre;
-    private String[] menuItems;
     private String stallImgUrl;
 
     // empty constructor
@@ -35,21 +31,6 @@ public class HawkerStall implements Serializable {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getStallName() {
         return stallName;
@@ -105,22 +86,6 @@ public class HawkerStall implements Serializable {
 
     public void setCloseHours(String closeHours) {
         this.closeHours = closeHours;
-    }
-
-    public String getCentre() {
-        return centre;
-    }
-
-    public void setCentre(String centre) {
-        this.centre = centre;
-    }
-
-    public String[] getMenuItems() {
-        return menuItems;
-    }
-
-    public void setMenuItems(String[] menuItems) {
-        this.menuItems = menuItems;
     }
 
     public String getStallImgUrl() {

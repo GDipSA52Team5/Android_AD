@@ -5,12 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".favouriteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/favouriteHawker_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_favourites_fragment"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:text="Here are your favourite stalls."
+        android:gravity="center_horizontal"
+        android:padding="20dp"/>
+
+    <ListView
+        android:id="@+id/listFavourites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>

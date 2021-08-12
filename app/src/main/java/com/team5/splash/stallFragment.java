@@ -146,7 +146,7 @@ public class stallFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listMenuItem/" + hs.getId();
+        String url = "http://10.40.1.56:8080/api/listMenuItem/" + hs.getId();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -163,11 +163,11 @@ public class stallFragment extends Fragment {
                                 menuItem.setName(menuItemJSONObj.getString("name"));
                                 menuItem.setDescription(menuItemJSONObj.getString("description"));
                                 menuItem.setPrice(menuItemJSONObj.getDouble("price"));
-                                menuItem.setPhoto(menuItemJSONObj.getString("photo"));
+//                                menuItem.setPhoto(menuItemJSONObj.getString("photo"));
                                 menuItem.setStatus(menuItemJSONObj.getString("status"));
                                 menuItem.setLocalUrl(menuItemJSONObj.getString("localUrl"));
-                                menuItem.setHawker(menuItemJSONObj.getString("hawker"));
-                                menuItem.setPhotoImagePath(menuItemJSONObj.getString("photoImagePath"));
+//                                menuItem.setHawker(menuItemJSONObj.getString("hawker"));
+//                                menuItem.setPhotoImagePath(menuItemJSONObj.getString("photoImagePath"));
 
                                 menuItems.add(menuItem);
 
