@@ -153,7 +153,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             userEmail  = user.getEmail();
 //                            userName = user.getDisplayName();
 //                            userUID = user.getUid();
-                            dbSourceHeroku = "https://gdipsa-ad-springboot.herokuapp.com/api";
+                            dbSourceHeroku = "https://gdipsa-ad-springboot.herokuapp.com/api/";
                             dbSourceLocal = "http://localhost:8080/api/";
 
                             String url = dbSourceHeroku + "saveUser/" + userEmail;
@@ -161,6 +161,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
+                                    return;
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
@@ -168,7 +169,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                     error.printStackTrace();
                                 }
                             });
-
+                            mQueue.add(request);
 
                             Toast.makeText(SignupActivity.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
