@@ -42,7 +42,6 @@ public class favouriteFragment extends Fragment {
 
     RequestQueue mQueue;
 
-
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
     List<HawkerCentre> hawkerCentres = new ArrayList<>();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -97,14 +96,13 @@ public class favouriteFragment extends Fragment {
 
         mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-
         listFavourites(user.getEmail());
 
     }
 
     public void listFavourites(String email)
     {
-        String url = "http://10.40.1.56:8080/api/listFavourites/" + email;
+        String url = "http://10.40.1.56:8080//api/listFavourites/" + email;
         hawkerStalls = new ArrayList<>();
         hawkerCentres = new ArrayList<>();
 
@@ -133,6 +131,15 @@ public class favouriteFragment extends Fragment {
                                 hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("stallOperatingHours"));
                                 hawkerStall.setCloseHours(hawkerStallJSONObj.getString("stallCloseHours"));
                                 hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("stallImg"));
+
+                                JSONArray fvtArray = hawkerStallJSONObj.getJSONArray("fvt_list");
+                                Number[] fvtlist = new Number[fvtArray.length()];
+
+                                for (int j = 0; j<fvtArray.length();j++){
+                                    fvtlist[j] = fvtArray.getInt(j);
+                                }
+                                hawkerStall.setFvt_list(fvtlist);
+
                                 hawkerStalls.add(hawkerStall);
 
                                 HawkerCentre hawkerCentre = new HawkerCentre();
@@ -178,7 +185,6 @@ public class favouriteFragment extends Fragment {
             listFavouriteStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
 
                     hs = hawkerStalls.get(i);
                     Integer hsId = hs.getId();

@@ -15,6 +15,10 @@ public class HawkerStall implements Serializable {
     private String closeHours;
     private String stallImgUrl;
 
+    private Number[] fvt_list;
+
+
+
     // empty constructor
     public HawkerStall()
     {
@@ -22,7 +26,9 @@ public class HawkerStall implements Serializable {
     }
 
     // accessors
+    public Number[] getFvt_list() { return fvt_list; }
 
+    public void setFvt_list(Number[] fvt_list) { this.fvt_list = fvt_list; }
     public int getId() {
         return id;
     }

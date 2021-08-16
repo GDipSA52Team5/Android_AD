@@ -23,6 +23,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,9 +42,9 @@ public class searchFragment extends Fragment {
 
     RequestQueue mQueue;
 
-
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
     List<HawkerCentre> hawkerCentres = new ArrayList<>();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     EditText searchInput;
     ListView listSearchStalls;
@@ -102,20 +104,15 @@ public class searchFragment extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchStalls(reqs);
-
+                searchStalls(reqs, user.getEmail());
             }
         });
-
-
-
-
     }
 
-    public void searchStalls(String reqs)
+    public void searchStalls(String reqs, String email)
     {
         reqs = searchInput.getText().toString();
-        String url = "http://10.40.1.56:8080/api/searchStalls/" + reqs;
+        String url = "http://10.40.1.56:8080//api/searchStalls/" + reqs + "/" + email;
         hawkerStalls = new ArrayList<>();
         hawkerCentres = new ArrayList<>();
 
@@ -135,6 +132,7 @@ public class searchFragment extends Fragment {
                             try {
                                 JSONObject hawkerStallJSONObj = response.getJSONObject(i);
 
+
                                 HawkerStall hawkerStall = new HawkerStall();
                                 hawkerStall.setId(hawkerStallJSONObj.getInt("stallId"));
                                 hawkerStall.setStallName(hawkerStallJSONObj.getString("stallName"));
@@ -144,6 +142,15 @@ public class searchFragment extends Fragment {
                                 hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("stallOperatingHours"));
                                 hawkerStall.setCloseHours(hawkerStallJSONObj.getString("stallCloseHours"));
                                 hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("stallImg"));
+
+                                JSONArray fvtArray = hawkerStallJSONObj.getJSONArray("fvt_list");
+                                Number[] fvtlist = new Number[fvtArray.length()];
+
+                                for (int j = 0; j<fvtArray.length();j++){
+                                    fvtlist[j] = fvtArray.getInt(j);
+                                }
+                                hawkerStall.setFvt_list(fvtlist);
+
                                 hawkerStalls.add(hawkerStall);
 
                                 HawkerCentre hawkerCentre = new HawkerCentre();
