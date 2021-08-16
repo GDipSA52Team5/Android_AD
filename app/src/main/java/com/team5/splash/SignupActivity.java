@@ -154,9 +154,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 //                            userName = user.getDisplayName();
 //                            userUID = user.getUid();
                             dbSourceHeroku = "https://gdipsa-ad-springboot.herokuapp.com/api/";
-                            dbSourceLocal = "http://localhost:8080/api/";
+                            dbSourceLocal = "http://10.40.1.56:8080/api/";
 
-                            String url = dbSourceHeroku + "saveUser/" + userEmail;
+                            String url = dbSourceLocal + "saveUser/" + userEmail;
 
                             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                                 @Override

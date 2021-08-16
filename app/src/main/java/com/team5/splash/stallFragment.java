@@ -11,17 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -45,8 +52,13 @@ public class stallFragment extends Fragment {
     List<MenuItem> menuItems = new ArrayList<MenuItem>();
     ListView listMenuItems;
 
-    RequestQueue mQueue;
 
+    //LSQ
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    Button fvrt_brn;
+    Boolean fvrtCheck = false;
+
+    RequestQueue mQueue;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -81,7 +93,6 @@ public class stallFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         Bundle bundle = getArguments();
         if(bundle != null)
         {
@@ -89,9 +100,7 @@ public class stallFragment extends Fragment {
             hc = (HawkerCentre) bundle.getSerializable("centre");
             hs = (HawkerStall) bundle.getSerializable("stall");
         }
-
         View view = getView();
-
         TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
         HawkerStallName.setText(hs.getStallName());
 
@@ -105,6 +114,72 @@ public class stallFragment extends Fragment {
                 .centerCrop()
                 .into(StallImage);
 
+        //LSQ
+        Number[] num = {1,2,4};
+        fvrt_brn = view.findViewById(R.id.fvrt_item);
+        for (Number i: num) {
+            if (i == stallId){
+                fvrtCheck = true;
+                fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                break;
+            }
+            else{
+                fvrtCheck = false;
+                fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
+            }
+        }
+
+        fvrt_brn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (fvrtCheck == true){
+                    view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
+                    fvrtCheck = false;
+                    String uemail = user.getEmail();
+                    String url ="http://10.40.1.56:8080/api/favorites/" + uemail + "/" + stallId;
+
+                    RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+                    JsonRequest request = new JsonObjectRequest(url,
+                            null, //if jsonRequest == null then Method.GET otherwise Method.POST
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    //handler the response here
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //handler the error here
+                        }
+                    });
+                    queue.add(request);
+                }
+                else{
+                    view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                    fvrtCheck = true;
+                    String uemail = user.getEmail();
+                    String url ="http://10.40.1.56:8080/api/favorites/" + uemail + "/" + stallId;
+
+                    RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+                    JsonRequest request = new JsonObjectRequest(url,
+                            null, //if jsonRequest == null then Method.GET otherwise Method.POST
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    //handler the response here
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //handler the error here
+                        }
+                    });
+                    queue.add(request);
+                }
+            }
+        });
+
         TextView StallUnitNumber = view.findViewById(R.id.StallUnitNumber);
         StallUnitNumber.setText(getString(R.string.Unit_Number)+ hs.getUnitNumber());
 
@@ -114,7 +189,7 @@ public class stallFragment extends Fragment {
         listMenuItems = view.findViewById(R.id.listMenuItems);
 
         // Instantiate the RequestQueue.
-        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+//        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         // Display list of menu items
         parseData();
@@ -130,7 +205,6 @@ public class stallFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
                 startActivity(intent);
-
             }
         });
 
@@ -148,6 +222,7 @@ public class stallFragment extends Fragment {
     {
         String url = "http://10.40.1.56:8080/api/listMenuItem/" + hs.getId();
 
+        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -163,11 +238,11 @@ public class stallFragment extends Fragment {
                                 menuItem.setName(menuItemJSONObj.getString("name"));
                                 menuItem.setDescription(menuItemJSONObj.getString("description"));
                                 menuItem.setPrice(menuItemJSONObj.getDouble("price"));
-//                                menuItem.setPhoto(menuItemJSONObj.getString("photo"));
+//                              menuItem.setPhoto(menuItemJSONObj.getString("photo"));
                                 menuItem.setStatus(menuItemJSONObj.getString("status"));
                                 menuItem.setLocalUrl(menuItemJSONObj.getString("localUrl"));
-//                                menuItem.setHawker(menuItemJSONObj.getString("hawker"));
-//                                menuItem.setPhotoImagePath(menuItemJSONObj.getString("photoImagePath"));
+//                              menuItem.setHawker(menuItemJSONObj.getString("hawker"));
+//                              menuItem.setPhotoImagePath(menuItemJSONObj.getString("photoImagePath"));
 
                                 menuItems.add(menuItem);
 

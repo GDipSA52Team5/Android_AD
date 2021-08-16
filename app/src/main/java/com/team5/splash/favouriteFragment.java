@@ -1,5 +1,6 @@
 package com.team5.splash;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,13 +8,51 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link favouriteFragment#newInstance} factory method to
+ * Use the {@link searchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class favouriteFragment extends Fragment {
+
+    RequestQueue mQueue;
+
+
+    List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
+    List<HawkerCentre> hawkerCentres = new ArrayList<>();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    ListView listFavouriteStalls;
+    HawkerCentre hc;
+    HawkerStall hs;
+
+
+    private Context mContext;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +73,7 @@ public class favouriteFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment favouriteFragment.
+     * @return A new instance of fragment searchFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static favouriteFragment newInstance(String param1, String param2) {
@@ -44,6 +83,128 @@ public class favouriteFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mContext = getContext();
+
+        View view = getView();
+
+        listFavouriteStalls = view.findViewById(R.id.listFavourites);
+
+        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+
+        listFavourites(user.getEmail());
+
+    }
+
+    public void listFavourites(String email)
+    {
+        String url = "http://10.40.1.56:8080/api/listFavourites/" + email;
+        hawkerStalls = new ArrayList<>();
+        hawkerCentres = new ArrayList<>();
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if(response.length() == 0)
+                        {
+                            createListFavouriteStallsView();
+                            Toast.makeText(mContext, "No favourite stalls!", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                        for (int i=0; i < response.length(); i++)
+                        {
+                            try {
+                                JSONObject hawkerStallJSONObj = response.getJSONObject(i);
+
+                                HawkerStall hawkerStall = new HawkerStall();
+                                hawkerStall.setId(hawkerStallJSONObj.getInt("stallId"));
+                                hawkerStall.setStallName(hawkerStallJSONObj.getString("stallName"));
+                                hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("stallUnitNumber"));
+                                hawkerStall.setContactNumber(hawkerStallJSONObj.getString("stallContactNumber"));
+                                hawkerStall.setStatus(hawkerStallJSONObj.getString("stallStatus"));
+                                hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("stallOperatingHours"));
+                                hawkerStall.setCloseHours(hawkerStallJSONObj.getString("stallCloseHours"));
+                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("stallImg"));
+                                hawkerStalls.add(hawkerStall);
+
+                                HawkerCentre hawkerCentre = new HawkerCentre();
+                                hawkerCentre.setId(hawkerStallJSONObj.getString("centreId"));
+                                hawkerCentre.setName(hawkerStallJSONObj.getString("centreName"));
+                                hawkerCentre.setAddress(hawkerStallJSONObj.getString("centreAddress"));
+                                hawkerCentre.setNumOfStalls(hawkerStallJSONObj.getInt("centreNumOfStalls"));
+                                hawkerCentre.setLatitude(hawkerStallJSONObj.getDouble("centreLatitude"));
+                                hawkerCentre.setLongitude(hawkerStallJSONObj.getDouble("centreLongitude"));
+                                hawkerCentre.setImgUrl(hawkerStallJSONObj.getString("centreImg"));
+                                hawkerCentres.add(hawkerCentre);
+
+                                if(i == (response.length() - 1))
+                                {
+                                    createListFavouriteStallsView();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity().getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mQueue.add(request);
+    }
+
+    public void createListFavouriteStallsView()
+    {
+
+
+        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(getActivity().getApplicationContext(), hawkerStalls);
+
+        if(listFavouriteStalls !=null)
+        {
+            listFavouriteStalls.setAdapter(adaptor);
+
+            // implement onItemClick(...) for listView
+            listFavouriteStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                    hs = hawkerStalls.get(i);
+                    Integer hsId = hs.getId();
+                    hc = hawkerCentres.get(i);
+
+//                    String stallName = hs.getStallName();
+                    replaceFragment(hsId);
+                }
+            });
+        }
+    }
+
+
+    public void replaceFragment(Integer hsId)
+    {
+        Bundle arguments = new Bundle();
+        arguments.putInt("stallId", hsId);
+        arguments.putSerializable("centre", hc);
+        arguments.putSerializable("stall", hs);
+
+        Fragment fragment = new stallFragment();
+        fragment.setArguments(arguments);
+
+        this.getParentFragmentManager().beginTransaction()
+                .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();
+
     }
 
     @Override

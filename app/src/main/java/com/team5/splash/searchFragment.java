@@ -39,9 +39,10 @@ import java.util.List;
 public class searchFragment extends Fragment {
 
     RequestQueue mQueue;
-    RequestQueue mQueue2;
+
 
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
+    List<HawkerCentre> hawkerCentres = new ArrayList<>();
 
     EditText searchInput;
     ListView listSearchStalls;
@@ -96,7 +97,7 @@ public class searchFragment extends Fragment {
         searchBtn = view.findViewById(R.id.searchBtn);
 
         mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        mQueue2 = Volley.newRequestQueue(getActivity().getApplicationContext());
+
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +116,8 @@ public class searchFragment extends Fragment {
     {
         reqs = searchInput.getText().toString();
         String url = "http://10.40.1.56:8080/api/searchStalls/" + reqs;
+        hawkerStalls = new ArrayList<>();
+        hawkerCentres = new ArrayList<>();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -130,21 +133,28 @@ public class searchFragment extends Fragment {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
-                                hawkerStalls = new ArrayList<HawkerStall>();
                                 JSONObject hawkerStallJSONObj = response.getJSONObject(i);
 
                                 HawkerStall hawkerStall = new HawkerStall();
-
-                                hawkerStall.setId(hawkerStallJSONObj.getInt("id"));
+                                hawkerStall.setId(hawkerStallJSONObj.getInt("stallId"));
                                 hawkerStall.setStallName(hawkerStallJSONObj.getString("stallName"));
-                                hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("unitNumber"));
-                                hawkerStall.setContactNumber(hawkerStallJSONObj.getString("contactNumber"));
-                                hawkerStall.setStatus(hawkerStallJSONObj.getString("status"));
-                                hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("operatingHours"));
-                                hawkerStall.setCloseHours(hawkerStallJSONObj.getString("closeHours"));
-                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("hawkerImg"));
-
+                                hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("stallUnitNumber"));
+                                hawkerStall.setContactNumber(hawkerStallJSONObj.getString("stallContactNumber"));
+                                hawkerStall.setStatus(hawkerStallJSONObj.getString("stallStatus"));
+                                hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("stallOperatingHours"));
+                                hawkerStall.setCloseHours(hawkerStallJSONObj.getString("stallCloseHours"));
+                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("stallImg"));
                                 hawkerStalls.add(hawkerStall);
+
+                                HawkerCentre hawkerCentre = new HawkerCentre();
+                                hawkerCentre.setId(hawkerStallJSONObj.getString("centreId"));
+                                hawkerCentre.setName(hawkerStallJSONObj.getString("centreName"));
+                                hawkerCentre.setAddress(hawkerStallJSONObj.getString("centreAddress"));
+                                hawkerCentre.setNumOfStalls(hawkerStallJSONObj.getInt("centreNumOfStalls"));
+                                hawkerCentre.setLatitude(hawkerStallJSONObj.getDouble("centreLatitude"));
+                                hawkerCentre.setLongitude(hawkerStallJSONObj.getDouble("centreLongitude"));
+                                hawkerCentre.setImgUrl(hawkerStallJSONObj.getString("centreImg"));
+                                hawkerCentres.add(hawkerCentre);
 
                                 if(i == (response.length() - 1))
                                 {
@@ -180,9 +190,10 @@ public class searchFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+
                     hs = hawkerStalls.get(i);
                     Integer hsId = hs.getId();
-                    findBelongCentre(hsId);
+                    hc = hawkerCentres.get(i);
 
 //                    String stallName = hs.getStallName();
                     replaceFragment(hsId);
@@ -190,43 +201,6 @@ public class searchFragment extends Fragment {
             });
         }
     }
-
-
-
-    public void findBelongCentre(int hsid)
-    {
-        String url = "http://10.40.1.56:8080/api/findBelongCentre/" + hsid;
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try{
-
-                            HawkerCentre hawkerCentre = new HawkerCentre();
-                            hawkerCentre.setId(response.getString("id"));
-                            hawkerCentre.setName(response.getString("name"));
-                            hawkerCentre.setAddress(response.getString("address"));
-                            hawkerCentre.setNumOfStalls(response.getInt("numOfStalls"));
-                            hawkerCentre.setLatitude(response.getDouble("latitude"));
-                            hawkerCentre.setLongitude(response.getDouble("longitude"));
-                            hawkerCentre.setImgUrl(response.getString("imgUrl"));
-
-                            hc = hawkerCentre;
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQueue2.add(request);
-    }
-
 
 
     public void replaceFragment(Integer hsId)

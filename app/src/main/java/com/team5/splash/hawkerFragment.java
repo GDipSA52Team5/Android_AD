@@ -2,7 +2,6 @@ package com.team5.splash;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 
 import android.os.Looper;
 import android.provider.Settings;
@@ -23,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -147,7 +144,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
         String urlHeroku  = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
 
-        String url = urlHeroku;
+        String url = urlLocal;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {

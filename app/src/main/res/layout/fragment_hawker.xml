@@ -50,9 +50,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/AllHC"/>
+
     <ListView
         android:id="@+id/listHawkerCentres"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="440dp" />
 
 </LinearLayout>
