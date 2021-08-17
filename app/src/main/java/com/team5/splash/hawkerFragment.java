@@ -117,7 +117,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
         // Display list of hawkers
         parseData();
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
 
         // method to get the location
         getLastLocation();
@@ -177,7 +177,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -233,7 +233,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -243,19 +243,22 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
     public void createListHawkersView()
     {
 
-        ListHawkerCentresAdaptor adaptor = new ListHawkerCentresAdaptor(getActivity().getApplicationContext(), hawkerCentres);
+        ListHawkerCentresAdaptor adaptor = new ListHawkerCentresAdaptor(mContext, hawkerCentres);
 
         if(listHawkerCentres !=null)
         {
             listHawkerCentres.setAdapter(adaptor);
 
-            // implement onItemClick(...) for listView
+//             implement onItemClick(...) for listView
             listHawkerCentres.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    HawkerCentre hc = hawkerCentres.get(i);
-                    String hcId = hc.getId();
-                    replaceFragment(hcId,hc);
+                    if (hawkerCentres.size() != 0)
+                    {
+                        HawkerCentre hc = hawkerCentres.get(i);
+                        String hcId = hc.getId();
+                        replaceFragment(hcId, hc);
+                    }
                 }
             });
         }
@@ -318,7 +321,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                     }
                 });
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -342,7 +345,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
         // setting LocationRequest
         // on FusedLocationClient
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
@@ -358,7 +361,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
     // method to check for permissions
     private boolean checkPermissions() {
-        return ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
         // If we want background location
         // on Android 10.0 and higher,

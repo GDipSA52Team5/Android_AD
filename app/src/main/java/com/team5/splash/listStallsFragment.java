@@ -1,5 +1,6 @@
 package com.team5.splash;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -45,6 +46,7 @@ public class listStallsFragment extends Fragment {
     HawkerStall hs;
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private Context mContext;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +83,8 @@ public class listStallsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        mContext = getContext();
+
         View view = getView();
 
         TextView stallsTxt = view.findViewById(R.id.hawkerCentre_info);
@@ -98,7 +102,7 @@ public class listStallsFragment extends Fragment {
         listHawkerStalls = view.findViewById(R.id.listHawkerStalls);
 
         // Instantiate the RequestQueue.
-        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        mQueue = Volley.newRequestQueue(mContext);
 
         // Display list of stalls
         parseData();
@@ -107,7 +111,17 @@ public class listStallsFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/" + centreId + "/" + user.getEmail();
+        String url = "";
+
+        if (user == null)
+        {
+            url = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/" + centreId + "/akon@qq.com";
+        }
+        else
+        {
+            url = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/" + centreId + "/" + user.getEmail();
+        }
+
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -150,7 +164,7 @@ public class listStallsFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 //                listHawkerCentres.setText("That didn't work!");
-                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Stalls", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error Retrieving Hawker Stalls", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -160,7 +174,7 @@ public class listStallsFragment extends Fragment {
     public void createListStallsView()
     {
 
-        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(getActivity().getApplicationContext(), hawkerStalls);
+        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(mContext, hawkerStalls);
 
         if(listHawkerStalls !=null)
         {

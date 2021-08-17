@@ -50,7 +50,6 @@ public class favouriteFragment extends Fragment {
     HawkerCentre hc;
     HawkerStall hs;
 
-
     private Context mContext;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -94,9 +93,12 @@ public class favouriteFragment extends Fragment {
 
         listFavouriteStalls = view.findViewById(R.id.listFavourites);
 
-        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        mQueue = Volley.newRequestQueue(mContext);
 
-        listFavourites(user.getEmail());
+        if (user != null)
+        {
+            listFavourites(user.getEmail());
+        }
 
     }
 
@@ -165,7 +167,7 @@ public class favouriteFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error!", Toast.LENGTH_SHORT).show();
             }
         });
         mQueue.add(request);
@@ -173,9 +175,7 @@ public class favouriteFragment extends Fragment {
 
     public void createListFavouriteStallsView()
     {
-
-
-        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(getActivity().getApplicationContext(), hawkerStalls);
+        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(mContext, hawkerStalls);
 
         if(listFavouriteStalls !=null)
         {
@@ -196,7 +196,6 @@ public class favouriteFragment extends Fragment {
             });
         }
     }
-
 
     public void replaceFragment(Integer hsId)
     {

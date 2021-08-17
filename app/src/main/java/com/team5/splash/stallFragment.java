@@ -1,5 +1,6 @@
 package com.team5.splash;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class stallFragment extends Fragment {
     HawkerStall hs;
     List<MenuItem> menuItems = new ArrayList<MenuItem>();
     ListView listMenuItems;
-
+    private Context mContext;
 
     //LSQ
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -101,6 +102,9 @@ public class stallFragment extends Fragment {
             hc = (HawkerCentre) bundle.getSerializable("centre");
             hs = (HawkerStall) bundle.getSerializable("stall");
         }
+
+        mContext = getContext();
+
         View view = getView();
         TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
         HawkerStallName.setText(hs.getStallName());
@@ -141,7 +145,7 @@ public class stallFragment extends Fragment {
                     String uemail = user.getEmail();
                     String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
 
-                    RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+                    RequestQueue queue = Volley.newRequestQueue(mContext);
                     JsonRequest request = new JsonObjectRequest(url,
                             null, //if jsonRequest == null then Method.GET otherwise Method.POST
                             new Response.Listener<JSONObject>() {
@@ -163,7 +167,7 @@ public class stallFragment extends Fragment {
                     String uemail = user.getEmail();
                     String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
 
-                    RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+                    RequestQueue queue = Volley.newRequestQueue(mContext);
                     JsonRequest request = new JsonObjectRequest(url,
                             null, //if jsonRequest == null then Method.GET otherwise Method.POST
                             new Response.Listener<JSONObject>() {
@@ -191,7 +195,7 @@ public class stallFragment extends Fragment {
         listMenuItems = view.findViewById(R.id.listMenuItems);
 
         // Instantiate the RequestQueue.
-        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        mQueue = Volley.newRequestQueue(mContext);
 
         // Display list of menu items
         parseData();
@@ -214,7 +218,7 @@ public class stallFragment extends Fragment {
         ReportProblem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "Sorry, haven't implement this yet.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Sorry, haven't implement this yet.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -260,7 +264,7 @@ public class stallFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Menu Items", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error Retrieving Menu Items", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -270,7 +274,7 @@ public class stallFragment extends Fragment {
 
     public void createListMenuItemsView() {
 
-        ListMenuItemsAdaptor adaptor = new ListMenuItemsAdaptor(getActivity().getApplicationContext(), menuItems);
+        ListMenuItemsAdaptor adaptor = new ListMenuItemsAdaptor(mContext, menuItems);
 
         if (listMenuItems != null) {
             listMenuItems.setAdapter(adaptor);

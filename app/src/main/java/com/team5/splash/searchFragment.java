@@ -98,8 +98,7 @@ public class searchFragment extends Fragment {
         searchInput = view.findViewById(R.id.searchInput);
         searchBtn = view.findViewById(R.id.searchBtn);
 
-        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
+        mQueue = Volley.newRequestQueue(mContext);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +175,7 @@ public class searchFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error!", Toast.LENGTH_SHORT).show();
             }
         });
         mQueue.add(request);
@@ -184,9 +183,7 @@ public class searchFragment extends Fragment {
 
     public void createListSearchStallsView()
     {
-
-
-        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(getActivity().getApplicationContext(), hawkerStalls);
+        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(mContext, hawkerStalls);
 
         if(listSearchStalls !=null)
         {
@@ -196,7 +193,6 @@ public class searchFragment extends Fragment {
             listSearchStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
 
                     hs = hawkerStalls.get(i);
                     Integer hsId = hs.getId();
