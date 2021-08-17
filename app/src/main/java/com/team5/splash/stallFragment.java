@@ -122,7 +122,7 @@ public class stallFragment extends Fragment {
         for (Number i: num) {
             if (i == stallId){
                 fvrtCheck = true;
-                fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_25));
                 break;
             }
             else{
@@ -139,7 +139,7 @@ public class stallFragment extends Fragment {
                     view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
                     fvrtCheck = false;
                     String uemail = user.getEmail();
-                    String url ="http://10.40.1.56:8080//api/favorites/" + uemail + "/" + stallId;
+                    String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
 
                     RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
                     JsonRequest request = new JsonObjectRequest(url,
@@ -161,7 +161,7 @@ public class stallFragment extends Fragment {
                     view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
                     fvrtCheck = true;
                     String uemail = user.getEmail();
-                    String url ="http://10.40.1.56:8080//api/favorites/" + uemail + "/" + stallId;
+                    String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
 
                     RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
                     JsonRequest request = new JsonObjectRequest(url,
@@ -222,7 +222,7 @@ public class stallFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "http://10.40.1.56:8080//api/listMenuItem/" + hs.getId();
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listMenuItem/" + hs.getId();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {

@@ -107,7 +107,7 @@ public class listStallsFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "http://10.40.1.56:8080//api/listHawkers/" + centreId + "/" + user.getEmail();
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/" + centreId + "/" + user.getEmail();
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -135,24 +135,6 @@ public class listStallsFragment extends Fragment {
                                 hawkerStall.setFvt_list(fvtlist);
 
                                 hawkerStalls.add(hawkerStall);
-//                                JSONObject hawkerStallJSONObj = response.getJSONObject(i);
-//                                HawkerStall hawkerStall = new HawkerStall();
-//                                hawkerStall.setId(hawkerStallJSONObj.getInt("id"));
-//                                hawkerStall.setStallName(hawkerStallJSONObj.getString("stallName"));
-//                                hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("unitNumber"));
-//                                hawkerStall.setContactNumber(hawkerStallJSONObj.getString("contactNumber"));
-//                                hawkerStall.setStatus(hawkerStallJSONObj.getString("status"));
-//                                hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("operatingHours"));
-//                                hawkerStall.setCloseHours(hawkerStallJSONObj.getString("closeHours"));
-//                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("hawkerImg"));
-
-//                                JSONArray fvtArray = hawkerStallJSONObj.getJSONArray("fvt_list");
-//                                Number[] fvtlist = new Number[fvtArray.length()];
-//
-//                                for (int j = 0; j<fvtArray.length();j++){
-//                                    fvtlist[j] = fvtArray.getInt(j);
-//                                }
-//                                hawkerStall.setFvt_list(fvtlist);
 
                                 if(i == (response.length() - 1))
                                 {

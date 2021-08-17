@@ -102,7 +102,7 @@ public class favouriteFragment extends Fragment {
 
     public void listFavourites(String email)
     {
-        String url = "http://10.40.1.56:8080//api/listFavourites/" + email;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listFavourites/" + email;
         hawkerStalls = new ArrayList<>();
         hawkerCentres = new ArrayList<>();
 

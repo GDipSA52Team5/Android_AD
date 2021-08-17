@@ -140,11 +140,9 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
     {
         hawkerCentres = new ArrayList<HawkerCentre>();
 
-        String urlLocal = "http://10.40.1.56:8080/api/listCentre";
 
-        String urlHeroku  = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
+        String url  = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
 
-        String url = urlLocal;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -190,7 +188,6 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
     {
         hawkerCentres = new ArrayList<HawkerCentre>();
 
-        String urlLocal = "http://10.40.1.56:8080/api/nearestCentre/";
 
         String urlHeroku  = "https://gdipsa-ad-springboot.herokuapp.com/api/nearestCentre/";
 

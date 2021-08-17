@@ -112,7 +112,7 @@ public class searchFragment extends Fragment {
     public void searchStalls(String reqs, String email)
     {
         reqs = searchInput.getText().toString();
-        String url = "http://10.40.1.56:8080//api/searchStalls/" + reqs + "/" + email;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/searchStalls/" + reqs + "/" + email;
         hawkerStalls = new ArrayList<>();
         hawkerCentres = new ArrayList<>();
 
