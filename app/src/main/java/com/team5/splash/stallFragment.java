@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,8 @@ public class stallFragment extends Fragment {
     List<MenuItem> menuItems = new ArrayList<MenuItem>();
     ListView listMenuItems;
     private Context mContext;
+
+    RatingBar stallRatingBar;
 
     //LSQ
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -118,6 +121,20 @@ public class stallFragment extends Fragment {
                 .resize(1000, 600)
                 .centerCrop()
                 .into(StallImage);
+
+        // rating bar
+        if (user != null)
+        {
+            stallRatingBar = view.findViewById(R.id.stallRatingBar);
+            stallRatingBar.setStepSize(1);
+
+            stallRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                    // on change, ping API Endpoint with latest rating and user email
+                }
+            });
+        }
 
         //LSQ
         //Number[] num = {1,2,4};

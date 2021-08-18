@@ -33,7 +33,13 @@
 
     </LinearLayout>
 
-
+    <RatingBar
+        android:id="@+id/stallRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:rating="0"
+        style="?android:attr/ratingBarStyleSmall"/>
 
     <TextView
         android:id="@+id/MarketName"

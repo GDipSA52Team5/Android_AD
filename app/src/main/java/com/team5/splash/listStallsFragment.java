@@ -163,7 +163,6 @@ public class listStallsFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                listHawkerCentres.setText("That didn't work!");
                 Toast.makeText(mContext, "Error Retrieving Hawker Stalls", Toast.LENGTH_SHORT).show();
             }
         });
