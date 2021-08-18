@@ -215,14 +215,17 @@ public class stallFragment extends Fragment {
         mQueue = Volley.newRequestQueue(mContext);
 
         // Display list of menu items
-        parseData();
+        if (menuItems.size() == 0)
+        {
+            parseData();
+        }
 
         Button OpenMap = view.findViewById(R.id.OpenMap);
         OpenMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String latLongDirections = "geo:" + hc.getLatitude() + "," + hc.getLongitude() + "q=" + hc.getLatitude() + "," + hc.getLongitude() + "(" + hc.getName() + ")";
+                String latLongDirections = "geo:" + hc.getLatitude() + "," + hc.getLongitude() + "?q=" + hc.getLatitude() + "," + hc.getLongitude() + "(" + hc.getName() + ")";
                 Uri uri = Uri.parse(latLongDirections);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
