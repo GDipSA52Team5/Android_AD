@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Use the {@link accountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class accountFragment extends Fragment implements View.OnClickListener{
+public class accountFragment extends Fragment{
 
     private Button btnLogout;
 
@@ -67,22 +67,21 @@ public class accountFragment extends Fragment implements View.OnClickListener{
 
         View view = getView();
 
+        btnLogout = view.findViewById(R.id.buttonLogout);
+
         TextView textView3 = view.findViewById(R.id.textView3);
         textView3.setVisibility(View.INVISIBLE);
 
-        if(user == null)
-        {
+        if (user == null) {
             TextView textViewAccountWelcome = view.findViewById(R.id.textViewAccountWelcome);
             textViewAccountWelcome.setText("Please login to enjoy more features!");
-        }
-        else
-        {
+            btnLogout.setText("Create An Account Now!");
+        } else {
             String name = user.getDisplayName();
 
             TextView textViewAccountWelcome = view.findViewById(R.id.textViewAccountWelcome);
             textViewAccountWelcome.setText("Welcome, " + name);
         }
-
     }
 
     @Override
@@ -99,21 +98,32 @@ public class accountFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-        return inflater.inflate(R.layout.fragment_account, container, false);
+
+
+        Button buttonLogout = (Button) view.findViewById(R.id.buttonLogout);
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(user != null){
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), SignupActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        return view;
+
     }
 
 
-//Not working Yet
-    @Override
-    public void onClick(View v) {
-        View view = getView();
-        switch (v.getId()){
-            case R.id.loginBtn:
-                btnLogout = view.findViewById(R.id.loginBtn);
-                btnLogout.setOnClickListener(this);
-                startActivity(new Intent(getActivity(), SignupActivity.class));
 
-    }
 }
-}
+

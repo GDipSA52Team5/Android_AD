@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -98,6 +99,10 @@ public class favouriteFragment extends Fragment {
         if (user != null)
         {
             listFavourites(user.getEmail());
+        }
+        else{
+            TextView textViewAccountWelcome = view.findViewById(R.id.favouriteHawker_info);
+            textViewAccountWelcome.setText("Please Login to view your favourite stalls!");
         }
 
     }
