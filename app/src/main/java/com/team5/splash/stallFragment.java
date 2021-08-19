@@ -250,25 +250,23 @@ public class stallFragment extends Fragment {
             // fetch current number of stars
             email = user.getEmail();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    getCurrentRating();
-                }
-            }).start();
+            getCurrentRating();
 
             stallRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
-                    // put API here
+                    float newRating = v;
+
                     if(v < 1)
                     {
                         ratingBar.setRating(1);
+                        newRating = 1;
                     }
 
-                    Toast.makeText(mContext, String.valueOf(v), Toast.LENGTH_SHORT).show();
-
+                    // put API here
+                    setRating(Math.round(newRating));
+                    getCurrentRating();
                 }
             });
         }
@@ -344,6 +342,25 @@ public class stallFragment extends Fragment {
                                 stallRatingBar.setRating(currentRating);
                             }
 
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error Retrieving Ratings", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
+    }
+
+    public void setRating(int newRating)
+    {
+        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/setRating/" + email + "/" + stallId + "/" + newRating;
+
+        StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
                     }
                 }, new Response.ErrorListener() {
             @Override
