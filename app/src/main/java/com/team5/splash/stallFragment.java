@@ -329,15 +329,12 @@ public class stallFragment extends Fragment {
     {
         String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, ratingUrl, null,
-                new Response.Listener<JSONObject>() {
+        StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject objResponse) {
-                            JSONObject rating= objResponse;
-                        String ratingString = null;
-                        try {
-                            currentRating = rating.getInt("rating");
-                            // set rating to currentRating
+                    public void onResponse(String response) {
+                            currentRating = Integer.parseInt(response);
+
                             if (currentRating == 9)
                             {
                                 // do nothing as 9 means not found
@@ -346,11 +343,6 @@ public class stallFragment extends Fragment {
                             {
                                 stallRatingBar.setRating(currentRating);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        Toast.makeText(mContext, ratingString, Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Response.ErrorListener() {
