@@ -1,5 +1,6 @@
 package com.team5.splash;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -54,6 +55,8 @@ public class stallFragment extends Fragment {
     List<MenuItem> menuItems = new ArrayList<MenuItem>();
     ListView listMenuItems;
     private Context mContext;
+    private int currentRating;
+    private String email;
 
     RatingBar stallRatingBar;
 
@@ -62,8 +65,9 @@ public class stallFragment extends Fragment {
     Button fvrt_brn;
     Boolean fvrtCheck = false;
 
-    RequestQueue mQueue;
-    RequestQueue mQueue2;
+    // Get a RequestQueue
+    RequestQueue queue;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -108,6 +112,12 @@ public class stallFragment extends Fragment {
 
         mContext = getContext();
 
+        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
+
+        // Instantiate the RequestQueue.
+//        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+//        mQueue2 = Volley.newRequestQueue(getActivity().getApplicationContext());
+
         View view = getView();
         TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
         HawkerStallName.setText(hs.getStallName());
@@ -122,19 +132,6 @@ public class stallFragment extends Fragment {
                 .centerCrop()
                 .into(StallImage);
 
-        // rating bar
-        if (user != null)
-        {
-            stallRatingBar = view.findViewById(R.id.stallRatingBar);
-            stallRatingBar.setStepSize(1);
-
-            stallRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                @Override
-                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                    // on change, ping API Endpoint with latest rating and user email
-                }
-            });
-        }
 
         //LSQ
         //Number[] num = {1,2,4};
@@ -211,9 +208,6 @@ public class stallFragment extends Fragment {
 
         listMenuItems = view.findViewById(R.id.listMenuItems);
 
-        // Instantiate the RequestQueue.
-        mQueue = Volley.newRequestQueue(mContext);
-
         // Display list of menu items
         if (menuItems.size() == 0)
         {
@@ -241,6 +235,43 @@ public class stallFragment extends Fragment {
                 Toast.makeText(mContext, "Sorry, haven't implement this yet.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // rating bar
+        stallRatingBar = view.findViewById(R.id.stallRatingBar);
+
+        if (user == null)
+        {
+            stallRatingBar.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            stallRatingBar.setStepSize(1);
+
+            // fetch current number of stars
+            email = user.getEmail();
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getCurrentRating();
+                }
+            }).start();
+
+            stallRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+                    // put API here
+                    if(v < 1)
+                    {
+                        ratingBar.setRating(1);
+                    }
+
+                    Toast.makeText(mContext, String.valueOf(v), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
 
     }
 
@@ -288,8 +319,48 @@ public class stallFragment extends Fragment {
             }
         });
 
-        mQueue.add(request);
+        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
 
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
+
+    }
+
+    public void getCurrentRating()
+    {
+        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, ratingUrl, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject objResponse) {
+                            JSONObject rating= objResponse;
+                        String ratingString = null;
+                        try {
+                            currentRating = rating.getInt("rating");
+                            // set rating to currentRating
+                            if (currentRating == 9)
+                            {
+                                // do nothing as 9 means not found
+                            }
+                            else
+                            {
+                                stallRatingBar.setRating(currentRating);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast.makeText(mContext, ratingString, Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error Retrieving Ratings", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
 
     public void createListMenuItemsView() {
