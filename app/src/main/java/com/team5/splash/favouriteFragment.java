@@ -103,6 +103,7 @@ public class favouriteFragment extends Fragment {
         else{
             TextView textViewAccountWelcome = view.findViewById(R.id.favouriteHawker_info);
             textViewAccountWelcome.setText("Please Login to view your favourite stalls!");
+            listFavouriteStalls.setVisibility(View.GONE);
         }
 
     }
