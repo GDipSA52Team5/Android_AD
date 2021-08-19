@@ -1,6 +1,8 @@
 package com.team5.splash;
 
-public class MenuItem {
+import java.io.Serializable;
+
+public class MenuItem implements Serializable {
     // attributes
     private int id;
     private String name;
@@ -11,10 +13,7 @@ public class MenuItem {
 
 
     // empty constructor
-    public MenuItem()
-    {
-
-    }
+    public MenuItem() { }
 
     // accessors
     public int getId() {

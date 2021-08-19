@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_forget_password.xml" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/activity_signup.xml" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/fragment_account.xml" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/fragment_favourite.xml" value="0.19927536231884058" />
+        <entry key="app/src/main/res/layout/fragment_hawker.xml" value="0.23484115391252097" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.153125" />
+        <entry key="app/src/main/res/layout/fragment_list_stalls.xml" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/fragment_menu_item.xml" value="0.21739130434782608" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.19021739130434784" />
+        <entry key="app/src/main/res/layout/fragment_stall.xml" value="0.2307008895416283" />
+        <entry key="app/src/main/res/layout/hawker_centre.xml" value="0.153125" />
+        <entry key="app/src/main/res/layout/hawker_stall_list.xml" value="0.153125" />
+        <entry key="app/src/main/res/layout/menu_items_list.xml" value="0.19021739130434784" />
+        <entry key="app/src/main/res/menu/bottom_nav.xml" value="0.153125" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

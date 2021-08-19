@@ -22,5 +22,10 @@
     <string name="Unit_Number">Unit Number:&#160;</string>
     <string name="Contact_Number">Contact Number:&#160;</string>
 
+    <string name="menuItemName">Menu Item Name</string>
+    <string name="menuItemDesc">Description: %1$s</string>
+    <string name="menuItemPrice">Price: $</string>
+    <string name="menuItemStatus">Status: %1$s</string>
+    <string name="hsName">Hawker Stall Name</string>
 
 </resources>

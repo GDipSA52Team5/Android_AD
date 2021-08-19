@@ -52,6 +52,7 @@ public class stallFragment extends Fragment {
     Integer stallId;
     HawkerCentre hc;
     HawkerStall hs;
+    MenuItem menuItem;
     List<MenuItem> menuItems = new ArrayList<MenuItem>();
     ListView listMenuItems;
     private Context mContext;
@@ -376,11 +377,36 @@ public class stallFragment extends Fragment {
 
         ListMenuItemsAdaptor adaptor = new ListMenuItemsAdaptor(mContext, menuItems);
 
-        if (listMenuItems != null) {
+        if(listMenuItems !=null) {
             listMenuItems.setAdapter(adaptor);
 
+            listMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    menuItem = menuItems.get(i);
+                    Integer menuItemId = menuItem.getId();
+                    replaceFragment(menuItemId);
+                }
+            });
         }
     }
+
+    private void replaceFragment(Integer menuItemId) {
+
+        Bundle arguments = new Bundle();
+        arguments.putInt("menuItemId", menuItemId);
+        arguments.putSerializable("centre", hc);
+        arguments.putSerializable("stall", hs);
+        arguments.putSerializable("menuItem", menuItem);
+
+        Fragment fragment = new menuItemFragment();
+        fragment.setArguments(arguments);
+
+        this.getParentFragmentManager().beginTransaction()
+                .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();
+
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
