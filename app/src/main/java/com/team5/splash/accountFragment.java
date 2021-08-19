@@ -1,5 +1,6 @@
 package com.team5.splash;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +23,10 @@ import android.widget.Button;
 public class accountFragment extends Fragment implements View.OnClickListener{
 
     private Button btnLogout;
+
+    private Context mContext;
+
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,6 +57,32 @@ public class accountFragment extends Fragment implements View.OnClickListener{
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mContext = getContext();
+
+        View view = getView();
+
+        TextView textView3 = view.findViewById(R.id.textView3);
+        textView3.setVisibility(View.INVISIBLE);
+
+        if(user == null)
+        {
+            TextView textViewAccountWelcome = view.findViewById(R.id.textViewAccountWelcome);
+            textViewAccountWelcome.setText("Please login to enjoy more features!");
+        }
+        else
+        {
+            String name = user.getDisplayName();
+
+            TextView textViewAccountWelcome = view.findViewById(R.id.textViewAccountWelcome);
+            textViewAccountWelcome.setText("Welcome, " + name);
+        }
+
     }
 
     @Override
