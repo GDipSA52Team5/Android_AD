@@ -188,7 +188,7 @@ public class searchFragment extends Fragment {
     public HawkerCentre findBelongCentre(Integer stallId)
     {
 
-        String url = "http://10.40.1.56:8080/api/findBelongCentre/" + stallId;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
 //        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
 
         HawkerCentre hawkerCentre = new HawkerCentre();

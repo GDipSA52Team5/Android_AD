@@ -194,7 +194,7 @@ public class stallFragment extends Fragment {
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
                         fvrtCheck = false;
                         String uemail = user.getEmail();
-                        String url ="http://10.40.1.56:8080/api/favorites/" + uemail + "/" + stallId;
+                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
 
                         JsonRequest request = new JsonObjectRequest(url,
                                 null, //if jsonRequest == null then Method.GET otherwise Method.POST
@@ -216,7 +216,7 @@ public class stallFragment extends Fragment {
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
                         fvrtCheck = true;
                         String uemail = user.getEmail();
-                        String url ="http://10.40.1.56:8080/api/favorites/" + uemail + "/" + stallId;
+                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
 
 
                         JsonRequest request = new JsonObjectRequest(url,
@@ -281,7 +281,7 @@ public class stallFragment extends Fragment {
 
     public void getLikeOrNotLike(String email,int stallId)
     {
-        String url = "http://10.40.1.56:8080/api/getFavouriteList/" + email + "/" + stallId;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getFavouriteList/" + email + "/" + stallId;
         favourites = new ArrayList<>();
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -314,7 +314,7 @@ public class stallFragment extends Fragment {
 
     public void parseData()
     {
-        String url = "http://10.40.1.56:8080/api/listMenuItem/" + hs.getId();
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listMenuItem/" + hs.getId();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -361,7 +361,7 @@ public class stallFragment extends Fragment {
 
     public void getCurrentRating()
     {
-        String ratingUrl = "http://10.40.1.56:8080/api/findRating/" + email + "/" + stallId;
+        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
 
         StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
                 new Response.Listener<String>() {
@@ -391,7 +391,7 @@ public class stallFragment extends Fragment {
 
     public void setRating(int newRating)
     {
-        String ratingUrl = "http://10.40.1.56:8080/api/setRating/" + email + "/" + stallId + "/" + newRating;
+        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/setRating/" + email + "/" + stallId + "/" + newRating;
 
         StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
                 new Response.Listener<String>() {

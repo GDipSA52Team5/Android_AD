@@ -110,7 +110,7 @@ public class favouriteFragment extends Fragment {
 
     public void listFavourites(String email)
     {
-        String url = "http://10.40.1.56:8080/api/listFavourites/" + email;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listFavourites/" + email;
 //        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listFavourites/" + email;
         hawkerStalls = new ArrayList<>();
 
@@ -189,7 +189,7 @@ public class favouriteFragment extends Fragment {
     public HawkerCentre findBelongCentre(Integer stallId)
     {
 
-        String url = "http://10.40.1.56:8080/api/findBelongCentre/" + stallId;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
 //        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
 
         HawkerCentre hawkerCentre = new HawkerCentre();
