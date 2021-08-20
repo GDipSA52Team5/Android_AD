@@ -49,25 +49,26 @@ import java.util.List;
  */
 public class stallFragment extends Fragment {
 
+    RequestQueue queue;
+    private Context mContext;
+
+    List<Favourite> favourites = new ArrayList<>();
+
     Integer stallId;
     HawkerCentre hc;
     HawkerStall hs;
     MenuItem menuItem;
     List<MenuItem> menuItems = new ArrayList<MenuItem>();
     ListView listMenuItems;
-    private Context mContext;
     private int currentRating;
+    private int likeOrNot;
     private String email;
 
     RatingBar stallRatingBar;
 
-    //LSQ
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Button fvrt_brn;
     Boolean fvrtCheck = false;
-
-    // Get a RequestQueue
-    RequestQueue queue;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -103,6 +104,10 @@ public class stallFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        mContext = getContext();
+        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
+
         Bundle bundle = getArguments();
         if(bundle != null)
         {
@@ -111,13 +116,6 @@ public class stallFragment extends Fragment {
             hs = (HawkerStall) bundle.getSerializable("stall");
         }
 
-        mContext = getContext();
-
-        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
-
-        // Instantiate the RequestQueue.
-//        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-//        mQueue2 = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         View view = getView();
         TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
@@ -134,72 +132,8 @@ public class stallFragment extends Fragment {
                 .into(StallImage);
 
 
-        //LSQ
-        //Number[] num = {1,2,4};
-        Number[] num = hs.getFvt_list();
-        fvrt_brn = view.findViewById(R.id.fvrt_item);
-        for (Number i: num) {
-            if (i == stallId){
-                fvrtCheck = true;
-                fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_25));
-                break;
-            }
-            else{
-                fvrtCheck = false;
-                fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
-            }
-        }
 
-        fvrt_brn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (fvrtCheck == true){
-                    view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
-                    fvrtCheck = false;
-                    String uemail = user.getEmail();
-                    String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
-
-                    RequestQueue queue = Volley.newRequestQueue(mContext);
-                    JsonRequest request = new JsonObjectRequest(url,
-                            null, //if jsonRequest == null then Method.GET otherwise Method.POST
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    //handler the response here
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //handler the error here
-                        }
-                    });
-                    queue.add(request);
-                }
-                else{
-                    view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
-                    fvrtCheck = true;
-                    String uemail = user.getEmail();
-                    String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
-
-                    RequestQueue queue = Volley.newRequestQueue(mContext);
-                    JsonRequest request = new JsonObjectRequest(url,
-                            null, //if jsonRequest == null then Method.GET otherwise Method.POST
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    //handler the response here
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //handler the error here
-                        }
-                    });
-                    queue.add(request);
-                }
-            }
-        });
 
         TextView StallUnitNumber = view.findViewById(R.id.StallUnitNumber);
         StallUnitNumber.setText(getString(R.string.Unit_Number)+ hs.getUnitNumber());
@@ -236,6 +170,76 @@ public class stallFragment extends Fragment {
                 Toast.makeText(mContext, "Sorry, haven't implement this yet.", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+
+        // favourite button
+        fvrt_brn = view.findViewById(R.id.fvrt_item);
+
+        if (user == null)
+        {
+            fvrt_brn.setVisibility(View.INVISIBLE);
+        }
+
+        else
+        {
+            getLikeOrNotLike(user.getEmail(), hs.getId());
+
+            fvrt_brn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (fvrtCheck == true){
+                        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
+                        fvrtCheck = false;
+                        String uemail = user.getEmail();
+                        String url ="http://10.40.1.56:8080/api/favorites/" + uemail + "/" + stallId;
+
+                        JsonRequest request = new JsonObjectRequest(url,
+                                null, //if jsonRequest == null then Method.GET otherwise Method.POST
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        //handler the response here
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //handler the error here
+                            }
+                        });
+
+                        MySingleton.getInstance(mContext).addToRequestQueue(request);
+                    }
+                    else{
+                        view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                        fvrtCheck = true;
+                        String uemail = user.getEmail();
+                        String url ="http://10.40.1.56:8080/api/favorites/" + uemail + "/" + stallId;
+
+
+                        JsonRequest request = new JsonObjectRequest(url,
+                                null, //if jsonRequest == null then Method.GET otherwise Method.POST
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        //handler the response here
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //handler the error here
+                            }
+                        });
+
+                        MySingleton.getInstance(mContext).addToRequestQueue(request);
+                    }
+                }
+            });
+        }
+
+
 
         // rating bar
         stallRatingBar = view.findViewById(R.id.stallRatingBar);
@@ -274,9 +278,43 @@ public class stallFragment extends Fragment {
 
     }
 
+
+    public void getLikeOrNotLike(String email,int stallId)
+    {
+        String url = "http://10.40.1.56:8080/api/getFavouriteList/" + email + "/" + stallId;
+        favourites = new ArrayList<>();
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        likeOrNot = Integer.parseInt(response);
+
+                        if (likeOrNot ==0)
+                        {
+                            // do nothing as 0 means not like
+                        }
+                        else
+                        {
+                            fvrtCheck = true;
+                            fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error Retrieving Ratings", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
+    }
+
+
+
     public void parseData()
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listMenuItem/" + hs.getId();
+        String url = "http://10.40.1.56:8080/api/listMenuItem/" + hs.getId();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -293,11 +331,9 @@ public class stallFragment extends Fragment {
                                 menuItem.setName(menuItemJSONObj.getString("name"));
                                 menuItem.setDescription(menuItemJSONObj.getString("description"));
                                 menuItem.setPrice(menuItemJSONObj.getDouble("price"));
-//                              menuItem.setPhoto(menuItemJSONObj.getString("photo"));
                                 menuItem.setStatus(menuItemJSONObj.getString("status"));
                                 menuItem.setLocalUrl(menuItemJSONObj.getString("localUrl"));
-//                              menuItem.setHawker(menuItemJSONObj.getString("hawker"));
-//                              menuItem.setPhotoImagePath(menuItemJSONObj.getString("photoImagePath"));
+
 
                                 menuItems.add(menuItem);
 
@@ -318,7 +354,6 @@ public class stallFragment extends Fragment {
             }
         });
 
-        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
 
         MySingleton.getInstance(mContext).addToRequestQueue(request);
 
@@ -326,7 +361,7 @@ public class stallFragment extends Fragment {
 
     public void getCurrentRating()
     {
-        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
+        String ratingUrl = "http://10.40.1.56:8080/api/findRating/" + email + "/" + stallId;
 
         StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
                 new Response.Listener<String>() {
@@ -356,7 +391,7 @@ public class stallFragment extends Fragment {
 
     public void setRating(int newRating)
     {
-        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/setRating/" + email + "/" + stallId + "/" + newRating;
+        String ratingUrl = "http://10.40.1.56:8080/api/setRating/" + email + "/" + stallId + "/" + newRating;
 
         StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
                 new Response.Listener<String>() {

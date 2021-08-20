@@ -153,7 +153,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             userEmail  = user.getEmail();
 //                            userName = user.getDisplayName();
 //                            userUID = user.getUid();
-                            dbSourceHeroku = "https://gdipsa-ad-springboot.herokuapp.com/api/";
+                            dbSourceHeroku = "http://10.40.1.56:8080/api/";
 
                             String url = dbSourceHeroku + "saveUser/" + userEmail;
 

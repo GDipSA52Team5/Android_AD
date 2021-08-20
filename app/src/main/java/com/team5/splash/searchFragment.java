@@ -40,11 +40,10 @@ import java.util.List;
  */
 public class searchFragment extends Fragment {
 
-    RequestQueue mQueue;
+    RequestQueue queue;
+    private Context mContext;
 
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
-    List<HawkerCentre> hawkerCentres = new ArrayList<>();
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     EditText searchInput;
     ListView listSearchStalls;
@@ -53,7 +52,6 @@ public class searchFragment extends Fragment {
     String reqs;
     Button searchBtn;
 
-    private Context mContext;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,6 +89,7 @@ public class searchFragment extends Fragment {
         super.onStart();
 
         mContext = getContext();
+        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
 
         View view = getView();
 
@@ -98,22 +97,22 @@ public class searchFragment extends Fragment {
         searchInput = view.findViewById(R.id.searchInput);
         searchBtn = view.findViewById(R.id.searchBtn);
 
-        mQueue = Volley.newRequestQueue(mContext);
-
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchStalls(reqs, user.getEmail());
+
+                reqs = searchInput.getText().toString();
+                searchStalls(reqs);
             }
         });
     }
 
-    public void searchStalls(String reqs, String email)
+    public void searchStalls(String reqs)
     {
-        reqs = searchInput.getText().toString();
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/searchStalls/" + reqs + "/" + email;
+
+        String url = "http://10.40.1.56:8080/api/searchStalls/" + reqs;
+//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/searchStalls/" + reqs;
         hawkerStalls = new ArrayList<>();
-        hawkerCentres = new ArrayList<>();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -131,36 +130,17 @@ public class searchFragment extends Fragment {
                             try {
                                 JSONObject hawkerStallJSONObj = response.getJSONObject(i);
 
-
                                 HawkerStall hawkerStall = new HawkerStall();
-                                hawkerStall.setId(hawkerStallJSONObj.getInt("stallId"));
+                                hawkerStall.setId(hawkerStallJSONObj.getInt("id"));
                                 hawkerStall.setStallName(hawkerStallJSONObj.getString("stallName"));
-                                hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("stallUnitNumber"));
-                                hawkerStall.setContactNumber(hawkerStallJSONObj.getString("stallContactNumber"));
-                                hawkerStall.setStatus(hawkerStallJSONObj.getString("stallStatus"));
-                                hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("stallOperatingHours"));
-                                hawkerStall.setCloseHours(hawkerStallJSONObj.getString("stallCloseHours"));
-                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("stallImg"));
-
-                                JSONArray fvtArray = hawkerStallJSONObj.getJSONArray("fvt_list");
-                                Number[] fvtlist = new Number[fvtArray.length()];
-
-                                for (int j = 0; j<fvtArray.length();j++){
-                                    fvtlist[j] = fvtArray.getInt(j);
-                                }
-                                hawkerStall.setFvt_list(fvtlist);
+                                hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("unitNumber"));
+                                hawkerStall.setContactNumber(hawkerStallJSONObj.getString("contactNumber"));
+                                hawkerStall.setStatus(hawkerStallJSONObj.getString("status"));
+                                hawkerStall.setOperatingHours(hawkerStallJSONObj.getString("operatingHours"));
+                                hawkerStall.setCloseHours(hawkerStallJSONObj.getString("closeHours"));
+                                hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("hawkerImg"));
 
                                 hawkerStalls.add(hawkerStall);
-
-                                HawkerCentre hawkerCentre = new HawkerCentre();
-                                hawkerCentre.setId(hawkerStallJSONObj.getString("centreId"));
-                                hawkerCentre.setName(hawkerStallJSONObj.getString("centreName"));
-                                hawkerCentre.setAddress(hawkerStallJSONObj.getString("centreAddress"));
-                                hawkerCentre.setNumOfStalls(hawkerStallJSONObj.getInt("centreNumOfStalls"));
-                                hawkerCentre.setLatitude(hawkerStallJSONObj.getDouble("centreLatitude"));
-                                hawkerCentre.setLongitude(hawkerStallJSONObj.getDouble("centreLongitude"));
-                                hawkerCentre.setImgUrl(hawkerStallJSONObj.getString("centreImg"));
-                                hawkerCentres.add(hawkerCentre);
 
                                 if(i == (response.length() - 1))
                                 {
@@ -178,7 +158,8 @@ public class searchFragment extends Fragment {
                 Toast.makeText(mContext, "Error!", Toast.LENGTH_SHORT).show();
             }
         });
-        mQueue.add(request);
+
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
 
     public void createListSearchStallsView()
@@ -196,13 +177,50 @@ public class searchFragment extends Fragment {
 
                     hs = hawkerStalls.get(i);
                     Integer hsId = hs.getId();
-                    hc = hawkerCentres.get(i);
+                    hc = findBelongCentre(hsId);
 
-//                    String stallName = hs.getStallName();
                     replaceFragment(hsId);
                 }
             });
         }
+    }
+
+    public HawkerCentre findBelongCentre(Integer stallId)
+    {
+
+        String url = "http://10.40.1.56:8080/api/findBelongCentre/" + stallId;
+//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
+
+        HawkerCentre hawkerCentre = new HawkerCentre();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try
+                {
+
+                    hawkerCentre.setId(response.getString("id"));
+                    hawkerCentre.setName(response.getString("name"));
+                    hawkerCentre.setAddress(response.getString("address"));
+                    hawkerCentre.setNumOfStalls(response.getInt("numOfStalls"));
+                    hawkerCentre.setLatitude(response.getDouble("latitude"));
+                    hawkerCentre.setLongitude(response.getDouble("longitude"));
+                    hawkerCentre.setImgUrl(response.getString("imgUrl"));
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Retrieving Centre Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
+
+        return hawkerCentre;
     }
 
 

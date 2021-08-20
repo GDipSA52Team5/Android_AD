@@ -1,5 +1,7 @@
 package com.team5.splash;
 
+import org.json.JSONArray;
+
 import java.io.Serializable;
 
 public class HawkerStall implements Serializable {
@@ -9,13 +11,12 @@ public class HawkerStall implements Serializable {
     private String stallName;
     private String unitNumber;
     private String contactNumber;
-    private String[] tags;
     private String status;
     private String operatingHours;
     private String closeHours;
     private String stallImgUrl;
 
-    private Number[] fvt_list;
+
 
 
 
@@ -26,9 +27,7 @@ public class HawkerStall implements Serializable {
     }
 
     // accessors
-    public Number[] getFvt_list() { return fvt_list; }
 
-    public void setFvt_list(Number[] fvt_list) { this.fvt_list = fvt_list; }
     public int getId() {
         return id;
     }
@@ -62,13 +61,6 @@ public class HawkerStall implements Serializable {
         this.contactNumber = contactNumber;
     }
 
-    public String[] getTags() {
-        return tags;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
-    }
 
     public String getStatus() {
         return status;
@@ -101,4 +93,6 @@ public class HawkerStall implements Serializable {
     public void setStallImgUrl(String stallImgUrl) {
         this.stallImgUrl = stallImgUrl;
     }
+
+
 }
