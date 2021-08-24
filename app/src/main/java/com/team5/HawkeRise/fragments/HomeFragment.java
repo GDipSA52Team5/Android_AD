@@ -33,108 +33,89 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment {
 
+    // initialise fragment variables
     private Context mContext;
     private View view;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    // initialise views
+    private TextView home_txt;
+    private ListView home_lv;
+    private ProgressBar home_pb;
+
+    // initialise variables
     private String userDisplayName;
     private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
-    private TextView homeTxt;
-    private ListView listHawkerStalls;
     private String userEmail;
-    private ProgressBar progressBarHome;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String highestRatedStalls;
+    private String recommendStalls;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
+        // instantiate fragment variables
         mContext = getContext();
         view = getView();
 
-        progressBarHome = view.findViewById(R.id.progressBarHome);
+        // instantiate fragment views
+        home_pb = view.findViewById(R.id.home_pb);
+        home_txt = view.findViewById(R.id.home_txt);
+        home_lv = view.findViewById(R.id.home_lv);
 
-        homeTxt = view.findViewById(R.id.homeTxt);
-        listHawkerStalls = view.findViewById(R.id.listRecommended);
-
+        // if guest user, display top stalls
         if (user == null)
         {
-            homeTxt.setText(getString(R.string.welcome_guest));
+            home_txt.setText(getString(R.string.welcome_guest));
             getTopStalls();
         }
+        // if logged-in user, display recommended stalls for user
         else
         {
             userDisplayName = user.getDisplayName();
             userEmail = user.getEmail();
 
-            homeTxt.setText("Hello " + userDisplayName + getString(R.string.welcome_user));
+            home_txt.setText("Hello " + userDisplayName + getString(R.string.welcome_user));
 
             getRecommendedStalls();
-
         }
 
     }
 
     public void getTopStalls()
     {
-        String url = "https://gdipsa-ad-ml.herokuapp.com/highestRatedStalls";
+        highestRatedStalls = "https://gdipsa-ad-ml.herokuapp.com/highestRatedStalls";
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, highestRatedStalls, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
+                                // get JSON object
                                 JSONObject hawkerStallObj = response.getJSONObject(i);
 
+                                // initialise and instantiate a new empty HawkerStall object
                                 HawkerStall hawkerStall = new HawkerStall();
 
+                                // set attributes for new HawkerStall object from JSON object
                                 hawkerStall.setId(hawkerStallObj.getInt("id"));
                                 hawkerStall.setStallName(hawkerStallObj.getString("stall_name"));
                                 hawkerStall.setUnitNumber(hawkerStallObj.getString("unit_number"));
@@ -143,6 +124,7 @@ public class HomeFragment extends Fragment {
                                 hawkerStall.setOperatingHours(hawkerStallObj.getString("operating_hours"));
                                 hawkerStall.setStallImgUrl(hawkerStallObj.getString("hawker_img"));
 
+                                // add HawkerStall to list of hakwerStalls
                                 hawkerStalls.add(hawkerStall);
 
                                 if(i == (response.length() - 1))
@@ -154,12 +136,12 @@ public class HomeFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
-                        progressBarHome.setVisibility(View.GONE);
+                        home_pb.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressBarHome.setVisibility(View.GONE);
+                home_pb.setVisibility(View.GONE);
                 Toast.makeText(mContext, "Error Retrieving Top Stalls", Toast.LENGTH_SHORT).show();
             }
         });
@@ -173,19 +155,22 @@ public class HomeFragment extends Fragment {
 
     public void getRecommendedStalls()
     {
-        String url = "https://gdipsa-ad-ml.herokuapp.com/recommendStalls?uid=" + userEmail;
+        recommendStalls = "https://gdipsa-ad-ml.herokuapp.com/recommendStalls?uid=" + userEmail;
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, recommendStalls, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
+                                // get JSON object
                                 JSONObject hawkerStallObj = response.getJSONObject(i);
 
+                                // initialise and instantiate a new empty HawkerStall object
                                 HawkerStall hawkerStall = new HawkerStall();
 
+                                // set attributes for new HawkerStall object from JSON object
                                 hawkerStall.setId(hawkerStallObj.getInt("id"));
                                 hawkerStall.setStallName(hawkerStallObj.getString("stall_name"));
                                 hawkerStall.setUnitNumber(hawkerStallObj.getString("unit_number"));
@@ -194,11 +179,11 @@ public class HomeFragment extends Fragment {
                                 hawkerStall.setOperatingHours(hawkerStallObj.getString("operating_hours"));
                                 hawkerStall.setStallImgUrl(hawkerStallObj.getString("hawker_img"));
 
+                                // add HawkerStall to list of hakwerStalls
                                 hawkerStalls.add(hawkerStall);
 
                                 if(i == (response.length() - 1))
                                 {
-
                                     createListStallsView();
                                 }
 
@@ -227,12 +212,12 @@ public class HomeFragment extends Fragment {
 
         ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(mContext, hawkerStalls);
 
-        if(listHawkerStalls !=null)
+        if(home_lv !=null)
         {
-            listHawkerStalls.setAdapter(adaptor);
+            home_lv.setAdapter(adaptor);
 
 //             implement onItemClick(...) for listView
-            listHawkerStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            home_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     if (hawkerStalls.size() != 0)
