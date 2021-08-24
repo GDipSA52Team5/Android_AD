@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -110,8 +111,8 @@ public class SearchFragment extends Fragment {
     public void searchStalls(String reqs)
     {
 
-        String url = "http://10.40.1.56:8080/api/searchStalls/" + reqs;
-//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/searchStalls/" + reqs;
+//        String url = "http://10.40.1.56:8080/api/searchStalls/" + reqs;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/searchStalls/" + reqs;
         hawkerStalls = new ArrayList<>();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -158,6 +159,10 @@ public class SearchFragment extends Fragment {
                 Toast.makeText(mContext, "Error!", Toast.LENGTH_SHORT).show();
             }
         });
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
@@ -198,7 +203,6 @@ public class SearchFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 try
                 {
-
                     hawkerCentre.setId(response.getString("id"));
                     hawkerCentre.setName(response.getString("name"));
                     hawkerCentre.setAddress(response.getString("address"));
@@ -217,7 +221,10 @@ public class SearchFragment extends Fragment {
                 Toast.makeText(mContext, "Retrieving Centre Error!", Toast.LENGTH_SHORT).show();
             }
         });
-
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         MySingleton.getInstance(mContext).addToRequestQueue(request);
 
         return hawkerCentre;

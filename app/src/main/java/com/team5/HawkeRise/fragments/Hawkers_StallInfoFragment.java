@@ -18,6 +18,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,10 +48,7 @@ import java.util.List;
 
 public class Hawkers_StallInfoFragment extends Fragment {
 
-    private RequestQueue queue;
     private Context mContext;
-
-    private List<Favourite> favourites = new ArrayList<>();
 
     private Integer stallId;
     private HawkerCentre hc;
@@ -69,22 +67,12 @@ public class Hawkers_StallInfoFragment extends Fragment {
     private Button fvrt_brn;
     private Boolean fvrtCheck = false;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
     public Hawkers_StallInfoFragment() {
         // Required empty public constructor
     }
 
     public static Hawkers_StallInfoFragment newInstance(String param1, String param2) {
         Hawkers_StallInfoFragment fragment = new Hawkers_StallInfoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -93,7 +81,6 @@ public class Hawkers_StallInfoFragment extends Fragment {
         super.onStart();
 
         mContext = getContext();
-        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
 
         Bundle bundle = getArguments();
         if(bundle != null)
@@ -185,8 +172,8 @@ public class Hawkers_StallInfoFragment extends Fragment {
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
                         fvrtCheck = false;
                         String uemail = user.getEmail();
-                        //String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
-                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
+                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
+//                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
 
                         JsonRequest request = new JsonObjectRequest(url,
                                 null, //if jsonRequest == null then Method.GET otherwise Method.POST
@@ -198,9 +185,13 @@ public class Hawkers_StallInfoFragment extends Fragment {
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                //handler the error here
+                                Toast.makeText(mContext, "Error Fav", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        request.setRetryPolicy(new DefaultRetryPolicy(
+                                10000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
                         MySingleton.getInstance(mContext).addToRequestQueue(request);
                     }
@@ -208,8 +199,8 @@ public class Hawkers_StallInfoFragment extends Fragment {
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
                         fvrtCheck = true;
                         String uemail = user.getEmail();
-                        //String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
-                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
+                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
+//                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
 
 
                         JsonRequest request = new JsonObjectRequest(url,
@@ -217,7 +208,7 @@ public class Hawkers_StallInfoFragment extends Fragment {
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        //handler the response here
+                                        Toast.makeText(mContext, "Error Fav", Toast.LENGTH_SHORT).show();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -225,6 +216,10 @@ public class Hawkers_StallInfoFragment extends Fragment {
                                 //handler the error here
                             }
                         });
+                        request.setRetryPolicy(new DefaultRetryPolicy(
+                                10000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
                         MySingleton.getInstance(mContext).addToRequestQueue(request);
                     }
@@ -274,9 +269,8 @@ public class Hawkers_StallInfoFragment extends Fragment {
 
     public void getLikeOrNotLike(String email,int stallId)
     {
-        //String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getFavouriteList/" + email + "/" + stallId;
-        String url = "http://192.168.1.230:8080/api/getFavouriteList/" + email + "/" + stallId;
-        favourites = new ArrayList<>();
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getFavouriteList/" + email + "/" + stallId;
+//        String url = "http://192.168.1.230:8080/api/getFavouriteList/" + email + "/" + stallId;
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -445,10 +439,6 @@ public class Hawkers_StallInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override

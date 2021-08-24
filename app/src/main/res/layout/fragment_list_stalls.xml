@@ -13,13 +13,13 @@
         android:padding="20dp">
 
         <ImageView
-            android:id="@+id/backBtn"
+            android:id="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"/>
 
         <TextView
-            android:id="@+id/hawkerCentre_info"
+            android:id="@+id/hakwerStalls_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="There are X Stalls in Y Market."
@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/listHawkerStalls"
+        android:id="@+id/hawkerStalls_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"/>

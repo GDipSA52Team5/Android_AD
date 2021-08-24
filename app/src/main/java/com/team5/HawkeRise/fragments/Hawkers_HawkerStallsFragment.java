@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -35,21 +34,21 @@ import java.util.List;
 
 public class Hawkers_HawkerStallsFragment extends Fragment {
 
-    private RequestQueue queue;
+    // initialise fragment variables
     private Context mContext;
+    private View view;
 
+    // initialise views
+    private ImageView backBtn;
     private ListView listHawkerStalls;
+    private TextView stallsTxt;
+
+    // initialise variables
     private String centreId;
     private HawkerCentre hc;
     private HawkerStall hs;
     private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
-    private ImageView backBtn;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+    private String findHawkerStallsURL;
 
     public Hawkers_HawkerStallsFragment() {
         // Required empty public constructor
@@ -57,10 +56,6 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
 
     public static Hawkers_HawkerStallsFragment newInstance(String param1, String param2) {
         Hawkers_HawkerStallsFragment fragment = new Hawkers_HawkerStallsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -68,11 +63,14 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        View view = getView();
+        // instantiate fragment variables
+        view = getView();
+        mContext = getContext();
+        listHawkerStalls = view.findViewById(R.id.hawkerStalls_lv);
 
-        TextView stallsTxt = view.findViewById(R.id.hawkerCentre_info);
-        backBtn = view.findViewById(R.id.backBtn);
-
+        // instantiate fragment views
+        stallsTxt = view.findViewById(R.id.hakwerStalls_txt);
+        backBtn = view.findViewById(R.id.back_btn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +78,7 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
             }
         });
 
+        // get bundle arguments from previous fragment
         Bundle bundle = getArguments();
         if(bundle != null)
         {
@@ -90,33 +89,41 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
             stallsTxt.setText(numStallsText);
         }
 
-        listHawkerStalls = view.findViewById(R.id.listHawkerStalls);
-
-        // Instantiate the RequestQueue.
-        mContext = getContext();
-
-        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
-
         // Display list of stalls
-        parseData();
+        findHawkerStalls();
 
     }
 
-    public void parseData()
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_list_stalls, container, false);
+    }
+
+    public void findHawkerStalls()
     {
-//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/" + centreId ;
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listHawkers/" + centreId ;
+        findHawkerStallsURL = "https://gdipsa-ad-springboot.herokuapp.com/api/findHawkerStalls/" + centreId ;
 
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, findHawkerStallsURL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
+                                // get JSON object
                                 JSONObject hawkerStallJSONObj = response.getJSONObject(i);
+
+                                // initialise and instantiate a new empty HawkerStall object
                                 HawkerStall hawkerStall = new HawkerStall();
+
+                                // set attributes for new HawkerStall object from JSON object
                                 hawkerStall.setId(hawkerStallJSONObj.getInt("id"));
                                 hawkerStall.setStallName(hawkerStallJSONObj.getString("stallName"));
                                 hawkerStall.setUnitNumber(hawkerStallJSONObj.getString("unitNumber"));
@@ -126,6 +133,7 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
                                 hawkerStall.setCloseHours(hawkerStallJSONObj.getString("closeHours"));
                                 hawkerStall.setStallImgUrl(hawkerStallJSONObj.getString("hawkerImg"));
 
+                                // add HawkerStall to list of hawkerStalls
                                 hawkerStalls.add(hawkerStall);
 
                                 if(i == (response.length() - 1))
@@ -142,7 +150,7 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 //                listHawkerCentres.setText("That didn't work!");
-                Toast.makeText(getActivity().getApplicationContext(), "Error Retrieving Hawker Stalls", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error Retrieving Hawker Stalls", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -152,7 +160,7 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
     public void createListStallsView()
     {
 
-        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(getActivity().getApplicationContext(), hawkerStalls);
+        ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(mContext, hawkerStalls);
 
         if(listHawkerStalls !=null)
         {
@@ -163,17 +171,17 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     hs = hawkerStalls.get(i);
-                    Integer hcId = hs.getId();
-                    replaceFragment(hcId);
+                    Integer hsId = hs.getId();
+                    replaceFragment(hsId);
                 }
             });
         }
     }
 
-    public void replaceFragment(Integer hcId)
+    public void replaceFragment(Integer hsId)
     {
         Bundle arguments = new Bundle();
-        arguments.putInt("stallId", hcId);
+        arguments.putInt("stallId", hsId);
         arguments.putSerializable("centre", hc);
         arguments.putSerializable("stall", hs);
 
@@ -193,19 +201,4 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
 //                .commit();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_stalls, container, false);
-    }
 }
