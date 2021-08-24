@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -52,6 +54,8 @@ public class SearchFragment extends Fragment {
     private HawkerStall hs;
     private String reqs;
     private Button searchBtn;
+    private ProgressBar progressBarSearch;
+    private TextView textViewSearch;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -97,11 +101,13 @@ public class SearchFragment extends Fragment {
         listSearchStalls = view.findViewById(R.id.listSearchStalls);
         searchInput = view.findViewById(R.id.searchInput);
         searchBtn = view.findViewById(R.id.searchBtn);
+        progressBarSearch = view.findViewById(R.id.progressBarSearch);
+        textViewSearch = view.findViewById(R.id.textViewSearch);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressBarSearch.setVisibility(View.VISIBLE);
                 reqs = searchInput.getText().toString();
                 searchStalls(reqs);
             }
@@ -122,7 +128,7 @@ public class SearchFragment extends Fragment {
                         if(response.length() == 0)
                         {
                             createListSearchStallsView();
-                            Toast.makeText(mContext, "No stalls satisfy!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "No stalls found!", Toast.LENGTH_LONG).show();
                         }
 
 
@@ -152,11 +158,16 @@ public class SearchFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
+                        textViewSearch.setVisibility(View.VISIBLE);
+                        progressBarSearch.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(mContext, "Error!", Toast.LENGTH_SHORT).show();
+                progressBarSearch.setVisibility(View.GONE);
+                textViewSearch.setVisibility(View.VISIBLE);
+                textViewSearch.setText("No stalls found, please try again!");
+                Toast.makeText(mContext, "Error!", Toast.LENGTH_LONG).show();
             }
         });
         request.setRetryPolicy(new DefaultRetryPolicy(

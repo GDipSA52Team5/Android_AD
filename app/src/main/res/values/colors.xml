@@ -10,6 +10,7 @@
     <color name="red">#EF3340</color>
     <color name="red_secondary">#C4EF3340</color>
     <color name="pink">#F8DADA</color>
+    <color name="light_pink">#FFFBFB</color>
     <color name="green">#339933</color>
     <color name="error_red">#ff0033</color>
     <color name="orange">#ff6600</color>
