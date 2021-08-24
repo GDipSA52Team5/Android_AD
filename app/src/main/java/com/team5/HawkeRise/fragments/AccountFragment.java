@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,19 +14,22 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.team5.HawkeRise.activities.LoginActivity;
+import com.team5.HawkeRise.R;
+import com.team5.HawkeRise.activities.SignupActivity;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link accountFragment#newInstance} factory method to
+ * Use the {@link AccountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class accountFragment extends Fragment{
+public class AccountFragment extends Fragment{
 
     private Button btnLogout;
 
     private Context mContext;
 
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +40,7 @@ public class accountFragment extends Fragment{
     private String mParam1;
     private String mParam2;
 
-    public accountFragment() {
+    public AccountFragment() {
         // Required empty public constructor
     }
 
@@ -50,8 +53,8 @@ public class accountFragment extends Fragment{
      * @return A new instance of fragment accountFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static accountFragment newInstance(String param1, String param2) {
-        accountFragment fragment = new accountFragment();
+    public static AccountFragment newInstance(String param1, String param2) {
+        AccountFragment fragment = new AccountFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

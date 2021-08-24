@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -12,17 +12,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
 import com.team5.HawkeRise.models.HawkerStall;
+import com.team5.HawkeRise.models.MenuItem;
 
-public class menuItemFragment extends Fragment {
+public class Hawkers_MenuFragment extends Fragment {
 
-    Integer menuItemId;
-    MenuItem menuItem;
-    HawkerCentre hc;
-    HawkerStall hs;
-    TextView menuItemName, hsName, menuItemPrice, menuItemStatus, menuItemDesc;
-    ImageView menuItemImg, backBtn;
+    private Integer menuItemId;
+    private MenuItem menuItem;
+    private HawkerCentre hc;
+    private HawkerStall hs;
+    private TextView menuItemName, hsName, menuItemPrice, menuItemStatus, menuItemDesc;
+    private ImageView menuItemImg, backBtn;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -30,12 +32,12 @@ public class menuItemFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public menuItemFragment() {
+    public Hawkers_MenuFragment() {
         // Required empty public constructor
     }
 
-    public static menuItemFragment newInstance(String param1, String param2) {
-        menuItemFragment fragment = new menuItemFragment();
+    public static Hawkers_MenuFragment newInstance(String param1, String param2) {
+        Hawkers_MenuFragment fragment = new Hawkers_MenuFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

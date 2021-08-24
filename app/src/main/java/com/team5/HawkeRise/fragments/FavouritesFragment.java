@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +21,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.team5.HawkeRise.utilities.ListHawkerStallsAdaptor;
+import com.team5.HawkeRise.utilities.MySingleton;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
 import com.team5.HawkeRise.models.HawkerStall;
 
@@ -33,20 +36,21 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link searchFragment#newInstance} factory method to
+ * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class favouriteFragment extends Fragment {
+public class FavouritesFragment extends Fragment {
 
-    RequestQueue queue;
+    private RequestQueue queue;
     private Context mContext;
 
-    List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
 
-    ListView listFavouriteStalls;
-    HawkerCentre hc;
-    HawkerStall hs;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+    private ListView listFavouriteStalls;
+    private HawkerCentre hc;
+    private HawkerStall hs;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -58,7 +62,7 @@ public class favouriteFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public favouriteFragment() {
+    public FavouritesFragment() {
         // Required empty public constructor
     }
 
@@ -71,8 +75,8 @@ public class favouriteFragment extends Fragment {
      * @return A new instance of fragment searchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static favouriteFragment newInstance(String param1, String param2) {
-        favouriteFragment fragment = new favouriteFragment();
+    public static FavouritesFragment newInstance(String param1, String param2) {
+        FavouritesFragment fragment = new FavouritesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -228,7 +232,7 @@ public class favouriteFragment extends Fragment {
         arguments.putSerializable("centre", hc);
         arguments.putSerializable("stall", hs);
 
-        Fragment fragment = new stallFragment();
+        Fragment fragment = new Hawkers_StallInfoFragment();
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()

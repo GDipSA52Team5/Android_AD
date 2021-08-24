@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.team5.HawkeRise.R;
 
 
 import org.json.JSONObject;

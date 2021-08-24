@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +21,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.team5.HawkeRise.utilities.ListHawkerStallsAdaptor;
+import com.team5.HawkeRise.utilities.MySingleton;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerStall;
 
 import org.json.JSONArray;

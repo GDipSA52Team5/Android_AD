@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.team5.HawkeRise.utilities.ListHawkerStallsAdaptor;
+import com.team5.HawkeRise.utilities.MySingleton;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
 import com.team5.HawkeRise.models.HawkerStall;
 
@@ -32,22 +35,22 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link searchFragment#newInstance} factory method to
+ * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class searchFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
-    RequestQueue queue;
+    private RequestQueue queue;
     private Context mContext;
 
-    List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
+    private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
 
-    EditText searchInput;
-    ListView listSearchStalls;
-    HawkerCentre hc;
-    HawkerStall hs;
-    String reqs;
-    Button searchBtn;
+    private EditText searchInput;
+    private ListView listSearchStalls;
+    private HawkerCentre hc;
+    private HawkerStall hs;
+    private String reqs;
+    private Button searchBtn;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -59,7 +62,7 @@ public class searchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public searchFragment() {
+    public SearchFragment() {
         // Required empty public constructor
     }
 
@@ -72,8 +75,8 @@ public class searchFragment extends Fragment {
      * @return A new instance of fragment searchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static searchFragment newInstance(String param1, String param2) {
-        searchFragment fragment = new searchFragment();
+    public static SearchFragment newInstance(String param1, String param2) {
+        SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -228,7 +231,7 @@ public class searchFragment extends Fragment {
         arguments.putSerializable("centre", hc);
         arguments.putSerializable("stall", hs);
 
-        Fragment fragment = new stallFragment();
+        Fragment fragment = new Hawkers_StallInfoFragment();
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()

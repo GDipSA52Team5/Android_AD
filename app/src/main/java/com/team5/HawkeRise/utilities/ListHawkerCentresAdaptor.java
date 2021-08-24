@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.utilities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ListHawkerCentresAdaptor extends ArrayAdapter {
 
     private final Context context;
-    List<HawkerCentre> hawkerCentres;
+    private List<HawkerCentre> hawkerCentres;
 
     public ListHawkerCentresAdaptor(Context context, List<HawkerCentre> hawkerCentres) {
         super(context, R.layout.hawker_centre);

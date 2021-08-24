@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,8 +29,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+import com.team5.HawkeRise.utilities.ListMenuItemsAdaptor;
+import com.team5.HawkeRise.utilities.MySingleton;
+import com.team5.HawkeRise.R;
+import com.team5.HawkeRise.models.Favourite;
 import com.team5.HawkeRise.models.HawkerCentre;
 import com.team5.HawkeRise.models.HawkerStall;
+import com.team5.HawkeRise.models.MenuItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,29 +45,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class stallFragment extends Fragment {
+public class Hawkers_StallInfoFragment extends Fragment {
 
-    RequestQueue queue;
+    private RequestQueue queue;
     private Context mContext;
 
-    List<Favourite> favourites = new ArrayList<>();
+    private List<Favourite> favourites = new ArrayList<>();
 
-    Integer stallId;
-    HawkerCentre hc;
-    HawkerStall hs;
-    MenuItem menuItem;
-    List<MenuItem> menuItems = new ArrayList<MenuItem>();
-    ListView listMenuItems;
-    ImageView backBtn;
+    private Integer stallId;
+    private HawkerCentre hc;
+    private HawkerStall hs;
+    private MenuItem menuItem;
+    private List<MenuItem> menuItems = new ArrayList<MenuItem>();
+    private ListView listMenuItems;
+    private ImageView backBtn;
     private int currentRating;
     private int likeOrNot;
     private String email;
 
-    RatingBar stallRatingBar;
+    private RatingBar stallRatingBar;
 
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    Button fvrt_brn;
-    Boolean fvrtCheck = false;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private Button fvrt_brn;
+    private Boolean fvrtCheck = false;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -70,12 +75,12 @@ public class stallFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public stallFragment() {
+    public Hawkers_StallInfoFragment() {
         // Required empty public constructor
     }
 
-    public static stallFragment newInstance(String param1, String param2) {
-        stallFragment fragment = new stallFragment();
+    public static Hawkers_StallInfoFragment newInstance(String param1, String param2) {
+        Hawkers_StallInfoFragment fragment = new Hawkers_StallInfoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -423,7 +428,7 @@ public class stallFragment extends Fragment {
         arguments.putSerializable("stall", hs);
         arguments.putSerializable("menuItem", menuItem);
 
-        Fragment fragment = new menuItemFragment();
+        Fragment fragment = new Hawkers_MenuFragment();
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()

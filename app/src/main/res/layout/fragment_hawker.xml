@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".hawkerFragment"
+    tools:context=".fragments.HawkersFragment"
     android:orientation="vertical">
 
     <TextView
@@ -19,40 +19,64 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/AllStallsBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/AllHC"/>
 
-        <androidx.appcompat.widget.AppCompatButton
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/OneKmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lessThan1km"/>
+            android:text="@string/lessThan1km"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/ThreeKmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lessThan3km"/>
+            android:text="@string/lessThan3km"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/FiveKmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lessThan5km"/>
-
+            android:text="@string/lessThan5km"
+            />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/AllStallsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/AllHC"
+            />
+
+     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarHawkers"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
     <ListView
         android:id="@+id/listHawkerCentres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp">
+    </ListView>
+
+
 
 </LinearLayout>

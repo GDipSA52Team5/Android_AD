@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AD_Test_SplashScreen"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.team5.HawkeRise.ForgetPasswordActivity"></activity>
-        <activity android:name="com.team5.HawkeRise.SignupActivity"/>
+        <activity android:name="com.team5.HawkeRise.activities.ForgetPasswordActivity"></activity>
+        <activity android:name="com.team5.HawkeRise.activities.SignupActivity"/>
         <activity android:name="com.team5.HawkeRise.MainActivity" />
-        <activity android:name="com.team5.HawkeRise.LoginActivity">
+        <activity android:name="com.team5.HawkeRise.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

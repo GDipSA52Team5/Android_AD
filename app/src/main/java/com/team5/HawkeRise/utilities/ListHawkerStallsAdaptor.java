@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.utilities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerStall;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ListHawkerStallsAdaptor extends ArrayAdapter {
 
     private final Context context;
-    List<HawkerStall> hawkerStalls;
+    private List<HawkerStall> hawkerStalls;
 
     public ListHawkerStallsAdaptor(Context context, List<HawkerStall> hawkerStalls) {
         super(context, R.layout.hawker_stall_list);

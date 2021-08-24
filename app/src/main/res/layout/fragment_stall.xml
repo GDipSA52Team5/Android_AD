@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".stallFragment"
+    tools:context=".fragments.Hawkers_StallInfoFragment"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"

@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,6 +19,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.team5.HawkeRise.utilities.ListHawkerStallsAdaptor;
+import com.team5.HawkeRise.utilities.MySingleton;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
 import com.team5.HawkeRise.models.HawkerStall;
 
@@ -30,17 +33,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class listStallsFragment extends Fragment {
+public class Hawkers_HawkerStallsFragment extends Fragment {
 
-    RequestQueue queue;
+    private RequestQueue queue;
     private Context mContext;
 
-    ListView listHawkerStalls;
-    String centreId;
-    HawkerCentre hc;
-    HawkerStall hs;
-    List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
-    ImageView backBtn;
+    private ListView listHawkerStalls;
+    private String centreId;
+    private HawkerCentre hc;
+    private HawkerStall hs;
+    private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
+    private ImageView backBtn;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -48,12 +51,12 @@ public class listStallsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public listStallsFragment() {
+    public Hawkers_HawkerStallsFragment() {
         // Required empty public constructor
     }
 
-    public static listStallsFragment newInstance(String param1, String param2) {
-        listStallsFragment fragment = new listStallsFragment();
+    public static Hawkers_HawkerStallsFragment newInstance(String param1, String param2) {
+        Hawkers_HawkerStallsFragment fragment = new Hawkers_HawkerStallsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -174,7 +177,7 @@ public class listStallsFragment extends Fragment {
         arguments.putSerializable("centre", hc);
         arguments.putSerializable("stall", hs);
 
-        Fragment fragment = new stallFragment();
+        Fragment fragment = new Hawkers_StallInfoFragment();
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()

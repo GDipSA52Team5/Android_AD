@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,6 +37,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.team5.HawkeRise.utilities.ListHawkerCentresAdaptor;
+import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
 
 import org.json.JSONArray;
@@ -48,26 +51,27 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link hawkerFragment#newInstance} factory method to
+ * Use the {@link HawkersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class hawkerFragment extends Fragment implements View.OnClickListener {
+public class HawkersFragment extends Fragment implements View.OnClickListener {
 
-    RequestQueue mQueue;
-    RequestQueue mQueue2;
+    private RequestQueue mQueue;
+    private RequestQueue mQueue2;
 
-    List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
+    private List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
 
-    ListView listHawkerCentres;
+    private ListView listHawkerCentres;
+    private ProgressBar progressBarHawker;
 
     private Context mContext;
     int PERMISSION_ID = 44;
 
-    FusedLocationProviderClient mFusedLocationClient;
+    private FusedLocationProviderClient mFusedLocationClient;
 
-    String lat;
-    String lon;
-    String distFrom;
+    private String lat;
+    private String lon;
+    private String distFrom;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,7 +84,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
     public int getId;
 
-    public hawkerFragment() {
+    public HawkersFragment() {
         // Required empty public constructor
     }
 
@@ -93,8 +97,8 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
      * @return A new instance of fragment hawkerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static hawkerFragment newInstance(String param1, String param2) {
-        hawkerFragment fragment = new hawkerFragment();
+    public static HawkersFragment newInstance(String param1, String param2) {
+        HawkersFragment fragment = new HawkersFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -110,6 +114,8 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
 
         View view = getView();
         listHawkerCentres = view.findViewById(R.id.listHawkerCentres);
+
+        progressBarHawker = view.findViewById(R.id.progressBarHawkers);
 
         // Instantiate the RequestQueue.
         mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -174,10 +180,12 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
                                 e.printStackTrace();
                             }
                         }
+                        progressBarHawker.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressBarHawker.setVisibility(View.GONE);
                 Toast.makeText(mContext, "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
             }
         });
@@ -271,7 +279,7 @@ public class hawkerFragment extends Fragment implements View.OnClickListener {
         arguments.putString("centreId", hcId);
         arguments.putSerializable("centre",hc);
 
-        Fragment fragment = new listStallsFragment();
+        Fragment fragment = new Hawkers_HawkerStallsFragment();
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()

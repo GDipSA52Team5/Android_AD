@@ -1,4 +1,4 @@
-package com.team5.HawkeRise;
+package com.team5.HawkeRise.utilities;
 
 import android.content.Context;
 import android.graphics.Bitmap;
