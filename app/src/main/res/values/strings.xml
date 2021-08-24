@@ -28,4 +28,7 @@
     <string name="menuItemStatus">Status: %1$s</string>
     <string name="hsName">Hawker Stall Name</string>
 
+    <string name="welcome_guest">Hello Guest, here are the top rated stalls by our registered members:</string>
+    <string name="welcome_user">&#160;, here are some stall reccomendations that we have specialy curated for you:</string>
+
 </resources>
