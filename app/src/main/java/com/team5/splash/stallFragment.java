@@ -42,11 +42,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link stallFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class stallFragment extends Fragment {
 
     RequestQueue queue;
@@ -60,6 +56,7 @@ public class stallFragment extends Fragment {
     MenuItem menuItem;
     List<MenuItem> menuItems = new ArrayList<MenuItem>();
     ListView listMenuItems;
+    ImageView backBtn;
     private int currentRating;
     private int likeOrNot;
     private String email;
@@ -70,12 +67,9 @@ public class stallFragment extends Fragment {
     Button fvrt_brn;
     Boolean fvrtCheck = false;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -83,15 +77,6 @@ public class stallFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment stallFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static stallFragment newInstance(String param1, String param2) {
         stallFragment fragment = new stallFragment();
         Bundle args = new Bundle();
@@ -116,7 +101,6 @@ public class stallFragment extends Fragment {
             hs = (HawkerStall) bundle.getSerializable("stall");
         }
 
-
         View view = getView();
         TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
         HawkerStallName.setText(hs.getStallName());
@@ -131,10 +115,6 @@ public class stallFragment extends Fragment {
                 .centerCrop()
                 .into(StallImage);
 
-
-
-
-
         TextView StallUnitNumber = view.findViewById(R.id.StallUnitNumber);
         StallUnitNumber.setText(getString(R.string.Unit_Number)+ hs.getUnitNumber());
 
@@ -148,6 +128,15 @@ public class stallFragment extends Fragment {
         {
             parseData();
         }
+
+        backBtn = view.findViewById(R.id.backBtn);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeFragment();
+            }
+        });
 
         Button OpenMap = view.findViewById(R.id.OpenMap);
         OpenMap.setOnClickListener(new View.OnClickListener() {
@@ -194,7 +183,8 @@ public class stallFragment extends Fragment {
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
                         fvrtCheck = false;
                         String uemail = user.getEmail();
-                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
+                        //String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
+                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
 
                         JsonRequest request = new JsonObjectRequest(url,
                                 null, //if jsonRequest == null then Method.GET otherwise Method.POST
@@ -216,7 +206,8 @@ public class stallFragment extends Fragment {
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
                         fvrtCheck = true;
                         String uemail = user.getEmail();
-                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
+                        //String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
+                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
 
 
                         JsonRequest request = new JsonObjectRequest(url,
@@ -281,7 +272,8 @@ public class stallFragment extends Fragment {
 
     public void getLikeOrNotLike(String email,int stallId)
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getFavouriteList/" + email + "/" + stallId;
+        //String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getFavouriteList/" + email + "/" + stallId;
+        String url = "http://192.168.1.230:8080/api/getFavouriteList/" + email + "/" + stallId;
         favourites = new ArrayList<>();
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -438,10 +430,15 @@ public class stallFragment extends Fragment {
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()
-                .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();
+                .replace(((ViewGroup) getView().getParent()).getId(), fragment, null)
+                .addToBackStack(null)
+                .commit();
 
     }
 
+    public void removeFragment() {
+        this.getParentFragmentManager().popBackStack();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

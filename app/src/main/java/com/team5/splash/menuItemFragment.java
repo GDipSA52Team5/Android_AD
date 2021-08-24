@@ -26,11 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link menuItemFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class menuItemFragment extends Fragment {
 
     Integer menuItemId;
@@ -38,7 +33,7 @@ public class menuItemFragment extends Fragment {
     HawkerCentre hc;
     HawkerStall hs;
     TextView menuItemName, hsName, menuItemPrice, menuItemStatus, menuItemDesc;
-    ImageView menuItemImg;
+    ImageView menuItemImg, backBtn;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -90,6 +85,15 @@ public class menuItemFragment extends Fragment {
 
         View view = getView();
 
+        backBtn = view.findViewById(R.id.backBtn);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeFragment();
+            }
+        });
+
         menuItemName = view.findViewById(R.id.menuItemName);
         menuItemName.setText(menuItem.getName());
 
@@ -111,5 +115,9 @@ public class menuItemFragment extends Fragment {
 
         menuItemDesc = view.findViewById(R.id.menuItemDesc);
         menuItemDesc.setText(getString(R.string.menuItemDesc, menuItem.getDescription()));
+    }
+
+    public void removeFragment() {
+        this.getParentFragmentManager().popBackStack();
     }
 }

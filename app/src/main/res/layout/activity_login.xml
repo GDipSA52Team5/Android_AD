@@ -21,8 +21,8 @@
 
     <TextView
         android:id="@+id/bannerText"
-        android:layout_width="304dp"
-        android:layout_height="85dp"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Preserving our Hawker Culture"
         android:textSize="21sp"
@@ -34,7 +34,7 @@
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
-        android:layout_width="350dp"
+        android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:ems="10"
@@ -47,7 +47,7 @@
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:layout_width="350dp"
+        android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:ems="10"

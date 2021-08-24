@@ -4,53 +4,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".menuItemFragment"
-    android:orientation="vertical"
-    android:layout_margin="30dp">
-
-    <TextView
-        android:id="@+id/menuItemName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/menuItemName"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/hsName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hsName"
-        android:layout_marginVertical="5dp"/>
+    android:orientation="horizontal"
+    android:layout_marginTop="30dp"
+    android:layout_marginStart="30dp">
 
     <ImageView
-        android:id="@+id/menuItemImg"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginVertical="20dp"/>
-
-    <TextView
-        android:id="@+id/menuItemPrice"
+        android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/menuItemPrice"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginVertical="5dp"/>
+        android:src="@drawable/ic_back"/>
 
-    <TextView
-        android:id="@+id/menuItemStatus"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/menuItemStatus"
-        android:textSize="18sp"
-        android:layout_marginVertical="5dp"/>
+        android:orientation="vertical"
+        android:layout_marginStart="10dp">
 
-    <TextView
-        android:id="@+id/menuItemDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/menuItemDesc"
-        android:textSize="18sp"
-        android:layout_marginVertical="5dp"/>
+        <TextView
+            android:id="@+id/menuItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menuItemName"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/hsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hsName"
+            android:layout_marginVertical="5dp"/>
+
+        <ImageView
+            android:id="@+id/menuItemImg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginVertical="20dp"/>
+
+        <TextView
+            android:id="@+id/menuItemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menuItemPrice"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginVertical="5dp"/>
+
+        <TextView
+            android:id="@+id/menuItemStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menuItemStatus"
+            android:textSize="18sp"
+            android:layout_marginVertical="5dp"/>
+
+        <TextView
+            android:id="@+id/menuItemDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menuItemDesc"
+            android:textSize="18sp"
+            android:layout_marginVertical="5dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
