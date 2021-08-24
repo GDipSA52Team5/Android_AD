@@ -107,13 +107,13 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/OpenMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Get Directions"/>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/ReportProblem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
