@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.team5.splash.models.HawkerCentre;
-import com.team5.splash.models.HawkerStall;
+import com.team5.HawkeRise.models.HawkerCentre;
+import com.team5.HawkeRise.models.HawkerStall;
 
 public class menuItemFragment extends Fragment {
 

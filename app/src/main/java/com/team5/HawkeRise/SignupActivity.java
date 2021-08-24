@@ -1,11 +1,8 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;

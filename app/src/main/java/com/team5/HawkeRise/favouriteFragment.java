@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,8 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.team5.splash.models.HawkerCentre;
-import com.team5.splash.models.HawkerStall;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.team5.HawkeRise.models.HawkerCentre;
+import com.team5.HawkeRise.models.HawkerStall;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,19 +36,17 @@ import java.util.List;
  * Use the {@link searchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class searchFragment extends Fragment {
+public class favouriteFragment extends Fragment {
 
     RequestQueue queue;
     private Context mContext;
 
     List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    EditText searchInput;
-    ListView listSearchStalls;
+    ListView listFavouriteStalls;
     HawkerCentre hc;
     HawkerStall hs;
-    String reqs;
-    Button searchBtn;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -59,7 +58,7 @@ public class searchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public searchFragment() {
+    public favouriteFragment() {
         // Required empty public constructor
     }
 
@@ -72,8 +71,8 @@ public class searchFragment extends Fragment {
      * @return A new instance of fragment searchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static searchFragment newInstance(String param1, String param2) {
-        searchFragment fragment = new searchFragment();
+    public static favouriteFragment newInstance(String param1, String param2) {
+        favouriteFragment fragment = new favouriteFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -86,29 +85,30 @@ public class searchFragment extends Fragment {
         super.onStart();
 
         mContext = getContext();
+
         queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
 
         View view = getView();
 
-        listSearchStalls = view.findViewById(R.id.listSearchStalls);
-        searchInput = view.findViewById(R.id.searchInput);
-        searchBtn = view.findViewById(R.id.searchBtn);
+        listFavouriteStalls = view.findViewById(R.id.listFavourites);
 
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                reqs = searchInput.getText().toString();
-                searchStalls(reqs);
-            }
-        });
+        if (user != null)
+        {
+            listFavourites(user.getEmail());
+        }
+        else{
+            TextView textViewAccountWelcome = view.findViewById(R.id.favouriteHawker_info);
+            textViewAccountWelcome.setText("Please Login to view your favourite stalls!");
+            listFavouriteStalls.setVisibility(View.GONE);
+        }
+
     }
 
-    public void searchStalls(String reqs)
+    public void listFavourites(String email)
     {
-
-        String url = "http://10.40.1.56:8080/api/searchStalls/" + reqs;
-//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/searchStalls/" + reqs;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listFavourites/" + email;
+//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listFavourites/" + email;
         hawkerStalls = new ArrayList<>();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -117,8 +117,8 @@ public class searchFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         if(response.length() == 0)
                         {
-                            createListSearchStallsView();
-                            Toast.makeText(mContext, "No stalls satisfy!", Toast.LENGTH_SHORT).show();
+                            createListFavouriteStallsView();
+                            Toast.makeText(mContext, "No favourite stalls!", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -141,7 +141,7 @@ public class searchFragment extends Fragment {
 
                                 if(i == (response.length() - 1))
                                 {
-                                    createListSearchStallsView();
+                                    createListFavouriteStallsView();
                                 }
 
                             } catch (JSONException e) {
@@ -159,16 +159,16 @@ public class searchFragment extends Fragment {
         MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
 
-    public void createListSearchStallsView()
+    public void createListFavouriteStallsView()
     {
         ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(mContext, hawkerStalls);
 
-        if(listSearchStalls !=null)
+        if(listFavouriteStalls !=null)
         {
-            listSearchStalls.setAdapter(adaptor);
+            listFavouriteStalls.setAdapter(adaptor);
 
             // implement onItemClick(...) for listView
-            listSearchStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            listFavouriteStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -176,6 +176,7 @@ public class searchFragment extends Fragment {
                     Integer hsId = hs.getId();
                     hc = findBelongCentre(hsId);
 
+//                    String stallName = hs.getStallName();
                     replaceFragment(hsId);
                 }
             });
@@ -220,7 +221,6 @@ public class searchFragment extends Fragment {
         return hawkerCentre;
     }
 
-
     public void replaceFragment(Integer hsId)
     {
         Bundle arguments = new Bundle();
@@ -249,6 +249,6 @@ public class searchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        return inflater.inflate(R.layout.fragment_favourite, container, false);
     }
 }

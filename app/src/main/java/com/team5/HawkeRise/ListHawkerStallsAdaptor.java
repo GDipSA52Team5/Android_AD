@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
-import com.team5.splash.models.HawkerStall;
+import com.team5.HawkeRise.models.HawkerStall;
 
 import java.util.List;
 

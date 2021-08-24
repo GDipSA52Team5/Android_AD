@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

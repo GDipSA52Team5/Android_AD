@@ -1,6 +1,4 @@
-package com.team5.splash.models;
-
-import org.json.JSONArray;
+package com.team5.HawkeRise.models;
 
 import java.io.Serializable;
 

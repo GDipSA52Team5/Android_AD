@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,8 +19,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.team5.splash.models.HawkerCentre;
-import com.team5.splash.models.HawkerStall;
+import com.team5.HawkeRise.models.HawkerCentre;
+import com.team5.HawkeRise.models.HawkerStall;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.team5.splash.models.HawkerStall;
+import com.team5.HawkeRise.models.HawkerStall;
 
 import org.json.JSONArray;
 import org.json.JSONException;

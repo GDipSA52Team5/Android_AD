@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.HawkeRise;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -36,7 +36,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.team5.splash.models.HawkerCentre;
+import com.team5.HawkeRise.models.HawkerCentre;
 
 import org.json.JSONArray;
 import org.json.JSONException;

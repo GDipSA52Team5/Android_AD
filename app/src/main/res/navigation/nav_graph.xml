@@ -7,27 +7,27 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.team5.splash.HomeFragment"
+        android:name="com.team5.HawkeRise.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/hawkerFragment"
-        android:name="com.team5.splash.hawkerFragment"
+        android:name="com.team5.HawkeRise.hawkerFragment"
         android:label="fragment_hawker"
         tools:layout="@layout/fragment_hawker" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.team5.splash.searchFragment"
+        android:name="com.team5.HawkeRise.searchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.team5.splash.favouriteFragment"
+        android:name="com.team5.HawkeRise.favouriteFragment"
         android:label="fragment_favourite"
         tools:layout="@layout/fragment_favourite" />
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.team5.splash.accountFragment"
+        android:name="com.team5.HawkeRise.accountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
 </navigation>

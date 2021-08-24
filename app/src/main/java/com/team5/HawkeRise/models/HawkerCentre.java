@@ -1,4 +1,4 @@
-package com.team5.splash.models;
+package com.team5.HawkeRise.models;
 
 import java.io.Serializable;
 
