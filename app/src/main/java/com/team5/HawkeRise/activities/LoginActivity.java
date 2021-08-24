@@ -24,6 +24,7 @@ import com.team5.HawkeRise.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
+    // Initialize necessary variable
     private TextView register;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;

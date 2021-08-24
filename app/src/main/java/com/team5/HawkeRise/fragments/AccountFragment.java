@@ -25,11 +25,10 @@ import com.team5.HawkeRise.activities.SignupActivity;
  */
 public class AccountFragment extends Fragment{
 
+    // Initialize necessary variable
     private Button btnLogout;
     private Button btnLogin;
-
     private Context mContext;
-
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     public AccountFragment() {

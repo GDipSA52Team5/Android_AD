@@ -31,18 +31,16 @@ import com.team5.HawkeRise.R;
 
 import org.json.JSONObject;
 
-
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Initialize necessary variable
     private RequestQueue mQueue;
-
     private FirebaseAuth mAuth;
-
     private TextView textViewReturnLogin, registerUser;
     private EditText editTextName, editTextEmail, editTextPassword;
     private ProgressBar progressBarRegister;
 
-    private String userEmail, dbSourceLocal, dbSourceHeroku;
+    private String userEmail, dbSourceHeroku;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +70,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
         }
-
-
 
     @Override
     public void onClick(View v) {
@@ -129,15 +124,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()) {
-//                            User user = new User(name, email);
-//                            FirebaseDatabase.getInstance().getReference("User")
-//                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-//
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if
-//                                    (task.isSuccessful()){
 
                             progressBarRegister.setVisibility(View.GONE);
 
@@ -149,8 +135,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             user.updateProfile(profileUpdates);
 
                             userEmail  = user.getEmail();
-//                            userName = user.getDisplayName();
-//                            userUID = user.getUid();
                             dbSourceHeroku = "https://gdipsa-ad-springboot.herokuapp.com/api/";
 
                             String url = dbSourceHeroku + "saveUser/" + userEmail;
@@ -175,11 +159,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             Toast.makeText(SignupActivity.this, "Failed to register! Please Try Again!", Toast.LENGTH_LONG).show();
                             progressBarRegister.setVisibility(View.GONE);
                         }
-
                     }
-
                 });
-
-
     }
 }

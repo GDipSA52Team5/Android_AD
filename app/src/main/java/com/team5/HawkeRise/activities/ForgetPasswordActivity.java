@@ -20,11 +20,11 @@ import com.team5.HawkeRise.R;
 
 public class ForgetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Initialize necessary variable
     private Button forgetPassword;
     private EditText editTextPasswordEmail;
     private TextView backToLogin;
-
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
