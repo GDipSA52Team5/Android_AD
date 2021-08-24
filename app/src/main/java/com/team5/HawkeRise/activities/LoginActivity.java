@@ -24,10 +24,9 @@ import com.team5.HawkeRise.R;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView register, proceedGuest;
+    private TextView register;
     private EditText editTextEmail, editTextPassword;
     private Button signIn;
-
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -35,8 +34,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide(); // hide the title bar
+        // Hide the title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // Hide the title bar
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
         if (user != null)
@@ -46,18 +47,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         register = (TextView) findViewById(R.id.textRegister);
         register.setOnClickListener(this);
-
         signIn = (Button) findViewById(R.id.loginBtn);
         signIn.setOnClickListener(this);
-
         editTextEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         editTextPassword = (EditText) findViewById(R.id.editTextTextPassword);
-
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
         mAuth = FirebaseAuth.getInstance();
 
-        proceedGuest = (TextView) findViewById(R.id.textViewProceedAsGuest);
 
     }
 

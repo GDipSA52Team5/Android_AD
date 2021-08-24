@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,53 +35,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FavouritesFragment extends Fragment {
 
+    // Initialize necessary variable
     private RequestQueue queue;
     private Context mContext;
-
     private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
-
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
     private ListView listFavouriteStalls;
     private HawkerCentre hc;
     private HawkerStall hs;
+    private ProgressBar progressBarFavourite;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public FavouritesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment searchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static FavouritesFragment newInstance(String param1, String param2) {
         FavouritesFragment fragment = new FavouritesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -88,17 +62,18 @@ public class FavouritesFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        mContext = getContext();
-
-        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
-
+        // Instantiate necessary variable
         View view = getView();
-
+        mContext = getContext();
+        queue = MySingleton.getInstance(mContext.getApplicationContext()).getRequestQueue();
+        progressBarFavourite = view.findViewById(R.id.progressBarFavourite);
         listFavouriteStalls = view.findViewById(R.id.listFavourites);
 
 
+        // Determine if user is logged in
         if (user != null)
         {
+            progressBarFavourite.setVisibility(View.VISIBLE);
             listFavourites(user.getEmail());
         }
         else{
@@ -112,7 +87,6 @@ public class FavouritesFragment extends Fragment {
     public void listFavourites(String email)
     {
         String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listFavourites/" + email;
-//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listFavourites/" + email;
         hawkerStalls = new ArrayList<>();
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
@@ -121,8 +95,9 @@ public class FavouritesFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         if(response.length() == 0)
                         {
+                            progressBarFavourite.setVisibility(View.GONE);
                             createListFavouriteStallsView();
-                            Toast.makeText(mContext, "No favourite stalls!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "No favourite stalls!", Toast.LENGTH_LONG).show();
                         }
 
 
@@ -152,6 +127,7 @@ public class FavouritesFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
+                        progressBarFavourite.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -189,18 +165,13 @@ public class FavouritesFragment extends Fragment {
 
     public HawkerCentre findBelongCentre(Integer stallId)
     {
-
         String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
-//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
-
         HawkerCentre hawkerCentre = new HawkerCentre();
-
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try
                 {
-
                     hawkerCentre.setId(response.getString("id"));
                     hawkerCentre.setName(response.getString("name"));
                     hawkerCentre.setAddress(response.getString("address"));
@@ -231,23 +202,13 @@ public class FavouritesFragment extends Fragment {
         arguments.putInt("stallId", hsId);
         arguments.putSerializable("centre", hc);
         arguments.putSerializable("stall", hs);
-
         Fragment fragment = new Hawkers_StallInfoFragment();
         fragment.setArguments(arguments);
-
         this.getParentFragmentManager().beginTransaction()
                 .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();
 
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
