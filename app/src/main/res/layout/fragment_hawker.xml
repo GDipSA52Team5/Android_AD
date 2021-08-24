@@ -12,17 +12,14 @@
         android:layout_height="wrap_content"
         android:text="@string/listHC"/>
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal">
 
-
-
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/OneKmBtn"
+            android:id="@+id/oneKm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,7 +27,7 @@
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/ThreeKmBtn"
+            android:id="@+id/threeKm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -38,7 +35,7 @@
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/FiveKmBtn"
+            android:id="@+id/fiveKm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -54,7 +51,7 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/AllStallsBtn"
+            android:id="@+id/allStalls_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -64,14 +61,14 @@
      </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressBarHawkers"
+        android:id="@+id/hawkers_pb"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
     <ListView
-        android:id="@+id/listHawkerCentres"
+        android:id="@+id/hawkers_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">

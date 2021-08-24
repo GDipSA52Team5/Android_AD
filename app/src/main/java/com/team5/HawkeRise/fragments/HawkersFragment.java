@@ -25,11 +25,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -40,6 +38,7 @@ import com.google.android.gms.tasks.Task;
 import com.team5.HawkeRise.utilities.ListHawkerCentresAdaptor;
 import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
+import com.team5.HawkeRise.utilities.MySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,61 +47,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HawkersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HawkersFragment extends Fragment implements View.OnClickListener {
 
-    private RequestQueue mQueue;
-    private RequestQueue mQueue2;
+    // initialise fragment variables
+    private Context mContext;
+    private View view;
+    private FusedLocationProviderClient mFusedLocationClient;
 
-    private List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
-
+    // initialise views
     private ListView listHawkerCentres;
     private ProgressBar progressBarHawker;
 
-    private Context mContext;
-    int PERMISSION_ID = 44;
-
-    private FusedLocationProviderClient mFusedLocationClient;
-
+    // initialise variables
+    private List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
+    private final int PERMISSION_ID = 44;
     private String lat;
     private String lon;
     private String distFrom;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public int getId;
+    private String getAllHawkerCentresURL;
+    private String getHawkerCentresByDistanceURL;
 
     public HawkersFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment hawkerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HawkersFragment newInstance(String param1, String param2) {
         HawkersFragment fragment = new HawkersFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -110,57 +80,108 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
+        // instantiate fragment variables
         mContext = getContext();
-
-        View view = getView();
-        listHawkerCentres = view.findViewById(R.id.listHawkerCentres);
-
-        progressBarHawker = view.findViewById(R.id.progressBarHawkers);
-
-        // Instantiate the RequestQueue.
-        mQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        mQueue2 = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        // Display list of hawkers
-        parseData();
-
+        view = getView();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
 
-        // method to get the location
-        getLastLocation();
+        // instantiate fragment views
+        listHawkerCentres = view.findViewById(R.id.hawkers_lv);
+        progressBarHawker = view.findViewById(R.id.hawkers_pb);
 
-        Button OneKmBtn = view.findViewById(R.id.OneKmBtn);
+        Button OneKmBtn = view.findViewById(R.id.oneKm_btn);
         OneKmBtn.setOnClickListener(this);
 
-        Button ThreeKmBtn = view.findViewById(R.id.ThreeKmBtn);
+        Button ThreeKmBtn = view.findViewById(R.id.threeKm_btn);
         ThreeKmBtn.setOnClickListener(this);
 
-        Button FiveKmBtn = view.findViewById(R.id.FiveKmBtn);
+        Button FiveKmBtn = view.findViewById(R.id.fiveKm_btn);
         FiveKmBtn.setOnClickListener(this);
 
-        Button AllStallsBtn = view.findViewById(R.id.AllStallsBtn);
+        Button AllStallsBtn = view.findViewById(R.id.allStalls_btn);
         AllStallsBtn.setOnClickListener(this);
+
+        // Get user's location
+        getUserLocation();
+
+        // Display list of all Hawker Centres
+        getAllHawkerCentres();
 
     }
 
-    public void parseData()
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_hawker, container, false);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        int id = view.getId();
+
+        if (id == R.id.allStalls_btn)
+        {
+            getAllHawkerCentres();
+        }
+
+        else
+        {
+            if (id == R.id.oneKm_btn)
+            {
+                distFrom = "1";
+            }
+
+            if (id == R.id.threeKm_btn)
+            {
+                distFrom = "3";
+            }
+
+            if (id == R.id.fiveKm_btn)
+            {
+                distFrom = "5";
+            }
+
+            if (lat==null || lon==null)
+            {
+                Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                getHawkerCentresByDistance();
+            }
+        }
+
+    }
+
+    public void getAllHawkerCentres()
     {
         hawkerCentres = new ArrayList<HawkerCentre>();
 
+        getAllHawkerCentresURL = "https://gdipsa-ad-springboot.herokuapp.com/api/getAllHawkerCentres";
 
-        String url  = "https://gdipsa-ad-springboot.herokuapp.com/api/listCentre";
-
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getAllHawkerCentresURL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
+                                // get JSON object
                                 JSONObject hawkerCentreJSONObj = response.getJSONObject(i);
 
+                                // initialise and instantiate a new empty HawkerCentre object
                                 HawkerCentre hawkerCentre = new HawkerCentre();
+
+                                // set attributes for new HawkerCentre object from JSON object
                                 hawkerCentre.setId(hawkerCentreJSONObj.getString("id"));
                                 hawkerCentre.setName(hawkerCentreJSONObj.getString("name"));
                                 hawkerCentre.setAddress(hawkerCentreJSONObj.getString("address"));
@@ -169,6 +190,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
                                 hawkerCentre.setLongitude(hawkerCentreJSONObj.getDouble("longitude"));
                                 hawkerCentre.setImgUrl(hawkerCentreJSONObj.getString("imgUrl"));
 
+                                // add HawkerCentre to list of hawkerCentres
                                 hawkerCentres.add(hawkerCentre);
 
                                 if(i == (response.length() - 1))
@@ -190,19 +212,16 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        mQueue.add(request);
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
 
-    public void parseDataDistFrom()
+    public void getHawkerCentresByDistance()
     {
         hawkerCentres = new ArrayList<HawkerCentre>();
 
+        getHawkerCentresByDistanceURL  = "https://gdipsa-ad-springboot.herokuapp.com/api/getHawkerCentresByDistance/" + lat + "/" + lon + "/" + distFrom;
 
-        String urlHeroku  = "https://gdipsa-ad-springboot.herokuapp.com/api/nearestCentre/";
-
-        String url = urlHeroku + lat + "/" + lon + "/" + distFrom;
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getHawkerCentresByDistanceURL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -216,9 +235,13 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
+                                // get JSON object
                                 JSONObject hawkerCentreJSONObj = response.getJSONObject(i);
 
+                                // initialise and instantiate a new empty HawkerCentre object
                                 HawkerCentre hawkerCentre = new HawkerCentre();
+
+                                // set attributes for new HawkerCentre object from JSON object
                                 hawkerCentre.setId(hawkerCentreJSONObj.getString("id"));
                                 hawkerCentre.setName(hawkerCentreJSONObj.getString("name"));
                                 hawkerCentre.setAddress(hawkerCentreJSONObj.getString("address"));
@@ -227,6 +250,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
                                 hawkerCentre.setLongitude(hawkerCentreJSONObj.getDouble("longitude"));
                                 hawkerCentre.setImgUrl(hawkerCentreJSONObj.getString("imgUrl"));
 
+                                // add HawkerCentre to list of hawkerCentres
                                 hawkerCentres.add(hawkerCentre);
 
                                 if(i == (response.length() - 1))
@@ -246,12 +270,11 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        mQueue2.add(request);
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
 
     public void createListHawkersView()
     {
-
         ListHawkerCentresAdaptor adaptor = new ListHawkerCentresAdaptor(mContext, hawkerCentres);
 
         if(listHawkerCentres !=null)
@@ -273,7 +296,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void replaceFragment(String hcId,HawkerCentre hc)
+    public void replaceFragment(String hcId, HawkerCentre hc)
     {
         Bundle arguments = new Bundle();
         arguments.putString("centreId", hcId);
@@ -287,36 +310,15 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_hawker, container, false);
-    }
-
     @SuppressLint("MissingPermission")
-    private void getLastLocation() {
+    private void getUserLocation() {
         // check if permissions are given
         if (checkPermissions()) {
 
             // check if location is enabled
             if (isLocationEnabled()) {
 
-                // getting last
-                // location from
-                // FusedLocationClient
-                // object
+                // getting last location from FusedLocationClient object
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
@@ -335,8 +337,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
             }
         } else {
-            // if permissions aren't available,
-            // request for permissions
+            // if permissions aren't available, request for permissions
             requestPermissions();
         }
     }
@@ -344,16 +345,14 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
 
-        // Initializing LocationRequest
-        // object with appropriate methods
+        // Initializing LocationRequest object with appropriate methods
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(5);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
 
-        // setting LocationRequest
-        // on FusedLocationClient
+        // setting LocationRequest on FusedLocationClient
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
@@ -368,31 +367,21 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
         }
     };
 
-    // method to check for permissions
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-
-        // If we want background location
-        // on Android 10.0 and higher,
-        // use:
-        // ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
-    // method to request for permissions
     private void requestPermissions() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
     }
 
-    // method to check
-    // if location is enabled
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    // If everything is alright then
     @Override
     public void
     onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -400,7 +389,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
 
         if (requestCode == PERMISSION_ID) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation();
+                getUserLocation();
             }
         }
     }
@@ -409,47 +398,9 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         if (checkPermissions()) {
-            getLastLocation();
+            getUserLocation();
         }
     }
 
-    @Override
-    public void onClick(View view) {
 
-        int id = view.getId();
-
-        if (id == R.id.AllStallsBtn)
-        {
-            parseData();
-        }
-
-        else
-        {
-            if (id == R.id.OneKmBtn)
-            {
-                distFrom = "1";
-            }
-
-            if (id == R.id.ThreeKmBtn)
-            {
-                distFrom = "3";
-            }
-
-            if (id == R.id.FiveKmBtn)
-            {
-                distFrom = "5";
-            }
-
-            if (lat==null || lon==null)
-            {
-                Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                parseDataDistFrom();
-            }
-        }
-
-    }
 }

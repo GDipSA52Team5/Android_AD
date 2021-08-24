@@ -124,7 +124,7 @@ public class HomeFragment extends Fragment {
                                 hawkerStall.setOperatingHours(hawkerStallObj.getString("operating_hours"));
                                 hawkerStall.setStallImgUrl(hawkerStallObj.getString("hawker_img"));
 
-                                // add HawkerStall to list of hakwerStalls
+                                // add HawkerStall to list of hawkerStalls
                                 hawkerStalls.add(hawkerStall);
 
                                 if(i == (response.length() - 1))
