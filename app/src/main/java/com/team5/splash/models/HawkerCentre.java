@@ -1,4 +1,4 @@
-package com.team5.splash;
+package com.team5.splash.models;
 
 import java.io.Serializable;
 

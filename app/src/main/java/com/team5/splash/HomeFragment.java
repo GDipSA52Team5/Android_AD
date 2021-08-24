@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +19,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.team5.splash.models.HawkerStall;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
     private TextView homeTxt;
     private ListView listHawkerStalls;
     private String userEmail;
+    private ProgressBar progressBarHome;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,8 +94,10 @@ public class HomeFragment extends Fragment {
         mContext = getContext();
         view = getView();
 
+        progressBarHome = view.findViewById(R.id.progressBarHome);
+
         homeTxt = view.findViewById(R.id.homeTxt);
-        listHawkerStalls = view.findViewById(R.id.listReccomended);
+        listHawkerStalls = view.findViewById(R.id.listRecommended);
 
         if (user == null)
         {
@@ -147,10 +151,12 @@ public class HomeFragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
+                        progressBarHome.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressBarHome.setVisibility(View.GONE);
                 Toast.makeText(mContext, "Error Retrieving Top Stalls", Toast.LENGTH_SHORT).show();
             }
         });

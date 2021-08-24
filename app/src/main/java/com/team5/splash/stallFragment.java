@@ -29,6 +29,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+import com.team5.splash.models.HawkerCentre;
+import com.team5.splash.models.HawkerStall;
 
 import org.json.JSONArray;
 import org.json.JSONException;

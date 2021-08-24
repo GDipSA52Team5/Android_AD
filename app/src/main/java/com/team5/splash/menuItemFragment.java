@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.team5.splash.models.HawkerCentre;
+import com.team5.splash.models.HawkerStall;
 
 public class menuItemFragment extends Fragment {
 

@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.team5.splash.models.HawkerCentre;
 
 import org.json.JSONArray;
 import org.json.JSONException;

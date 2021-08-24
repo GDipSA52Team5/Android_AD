@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
+import com.team5.splash.models.HawkerCentre;
 
 import java.util.List;
 

@@ -69,8 +69,6 @@ public class accountFragment extends Fragment{
 
         btnLogout = view.findViewById(R.id.buttonLogout);
 
-        TextView textView3 = view.findViewById(R.id.textView3);
-        textView3.setVisibility(View.INVISIBLE);
 
         if (user == null) {
             TextView textViewAccountWelcome = view.findViewById(R.id.textViewAccountWelcome);

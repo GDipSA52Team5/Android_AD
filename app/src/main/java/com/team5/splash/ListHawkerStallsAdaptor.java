@@ -2,7 +2,6 @@ package com.team5.splash;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.squareup.picasso.Picasso;
-import com.team5.splash.HawkerStall;
-import com.team5.splash.R;
+import com.team5.splash.models.HawkerStall;
 
 import java.util.List;
 
