@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -42,6 +43,7 @@ public class HomeFragment extends Fragment {
     private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
     private TextView homeTxt;
     private ListView listHawkerStalls;
+    private String userEmail;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -101,8 +103,12 @@ public class HomeFragment extends Fragment {
         else
         {
             userDisplayName = user.getDisplayName();
+            userEmail = user.getEmail();
 
             homeTxt.setText("Hello " + userDisplayName + getString(R.string.welcome_user));
+
+            getRecommendedStalls();
+
         }
 
     }
@@ -148,6 +154,57 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(mContext, "Error Retrieving Top Stalls", Toast.LENGTH_SHORT).show();
             }
         });
+
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
+    }
+
+    public void getRecommendedStalls()
+    {
+        String url = "https://gdipsa-ad-ml.herokuapp.com/recommendStalls?uid=" + userEmail;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for (int i=0; i < response.length(); i++)
+                        {
+                            try {
+                                JSONObject hawkerStallObj = response.getJSONObject(i);
+
+                                HawkerStall hawkerStall = new HawkerStall();
+
+                                hawkerStall.setId(hawkerStallObj.getInt("id"));
+                                hawkerStall.setStallName(hawkerStallObj.getString("stall_name"));
+                                hawkerStall.setUnitNumber(hawkerStallObj.getString("unit_number"));
+                                hawkerStall.setContactNumber(hawkerStallObj.getString("contact_number"));
+                                hawkerStall.setStatus(hawkerStallObj.getString("status"));
+                                hawkerStall.setOperatingHours(hawkerStallObj.getString("operating_hours"));
+                                hawkerStall.setStallImgUrl(hawkerStallObj.getString("hawker_img"));
+
+                                hawkerStalls.add(hawkerStall);
+
+                                if(i == (response.length() - 1))
+                                {
+
+                                    createListStallsView();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error Retrieving Recommended Stalls", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
