@@ -6,7 +6,6 @@
     <string name="hello_search_fragment">Hello search fragment</string>
     <string name="hello_favourites_fragment">Hello favourites fragment</string>
     <string name="hello_account_fragment">Hello account fragment</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="stalls"> stalls</string>
@@ -30,6 +29,6 @@
     <string name="hsName">Hawker Stall Name</string>
 
     <string name="welcome_guest">Hello Guest, here are the top rated stalls by our registered members:</string>
-    <string name="welcome_user">&#160;, here are some stall reccomendations that we have specialy curated for you:</string>
+    <string name="welcome_user">&#160;, here are some stall recommendations that we have specially curated for you:</string>
 
 </resources>

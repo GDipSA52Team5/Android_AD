@@ -3,7 +3,6 @@ package com.team5.splash;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -28,11 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link listStallsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class listStallsFragment extends Fragment {
 
     RequestQueue queue;
