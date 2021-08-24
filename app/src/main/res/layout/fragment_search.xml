@@ -37,6 +37,7 @@
 
     <TextView
         android:id="@+id/textViewSearch"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Stalls that matches search requirements:"
@@ -49,9 +50,9 @@
     <ListView
         android:id="@+id/listSearchStalls"
         android:layout_width="match_parent"
-        android:layout_height="569dp"
+        android:layout_height="500dp"
         android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
