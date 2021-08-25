@@ -19,8 +19,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.team5.HawkeRise.models.HawkerCentre;
 import com.team5.HawkeRise.utilities.ListHawkerStallsAdaptor;
 import com.team5.HawkeRise.utilities.MySingleton;
 import com.team5.HawkeRise.R;
@@ -48,15 +50,18 @@ public class HomeFragment extends Fragment {
     // initialise variables
     private String userDisplayName;
     private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
+    private String getHawkerCentreFromHawkerStallURL;
     private String userEmail;
     private String highestRatedStalls;
     private String recommendStalls;
+    private HawkerCentre hc;
+    private HawkerStall hs;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
@@ -222,11 +227,70 @@ public class HomeFragment extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     if (hawkerStalls.size() != 0)
                     {
-                        // replace fragment
+                        hs = hawkerStalls.get(i);
+                        Integer hsId = hs.getId();
+                        hc = getHawkerCentreFromHawkerStall(hsId);
+
+                        replaceFragment(hsId);
                     }
                 }
             });
         }
+    }
+
+    public void replaceFragment(Integer hsId)
+    {
+        Bundle arguments = new Bundle();
+        arguments.putInt("stallId", hsId);
+        arguments.putSerializable("centre", hc);
+        arguments.putSerializable("stall", hs);
+
+        Fragment fragment = new Hawkers_StallInfoFragment();
+        fragment.setArguments(arguments);
+
+        this.getParentFragmentManager().beginTransaction()
+                .replace(((ViewGroup) getView().getParent()).getId(), fragment, null)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public HawkerCentre getHawkerCentreFromHawkerStall(Integer stallId)
+    {
+
+        getHawkerCentreFromHawkerStallURL = "https://gdipsa-ad-springboot.herokuapp.com/api/getHawkerCentreFromHawkerStall/" + stallId;
+
+        HawkerCentre hawkerCentre = new HawkerCentre();
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getHawkerCentreFromHawkerStallURL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try
+                {
+                    hawkerCentre.setId(response.getString("id"));
+                    hawkerCentre.setName(response.getString("name"));
+                    hawkerCentre.setAddress(response.getString("address"));
+                    hawkerCentre.setNumOfStalls(response.getInt("numOfStalls"));
+                    hawkerCentre.setLatitude(response.getDouble("latitude"));
+                    hawkerCentre.setLongitude(response.getDouble("longitude"));
+                    hawkerCentre.setImgUrl(response.getString("imgUrl"));
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error retrieving hawker centre!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
+
+        return hawkerCentre;
     }
 
     @Override

@@ -57,7 +57,6 @@ public class SearchFragment extends Fragment {
     private ProgressBar progressBarSearch;
     private TextView textViewSearch;
 
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -204,8 +203,7 @@ public class SearchFragment extends Fragment {
     public HawkerCentre findBelongCentre(Integer stallId)
     {
 
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
-//        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getHawkerCentreFromHawkerStall/" + stallId;
 
         HawkerCentre hawkerCentre = new HawkerCentre();
 
@@ -229,7 +227,7 @@ public class SearchFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(mContext, "Retrieving Centre Error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error retrieving hawker centre!", Toast.LENGTH_SHORT).show();
             }
         });
         request.setRetryPolicy(new DefaultRetryPolicy(
