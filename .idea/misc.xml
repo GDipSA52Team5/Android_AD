@@ -3,17 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/activity_forget_password.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_account.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_favourite.xml" value="0.29259259259259257" />
         <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_hawker.xml" value="0.29259259259259257" />
         <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_home.xml" value="0.2" />
-        <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_list_stalls.xml" value="0.29259259259259257" />
-        <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_menu_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_search.xml" value="0.29259259259259257" />
-        <entry key="..\:/Users/begfo/AndroidStudioProjects/Android_AD-19Aug/app/src/main/res/layout/fragment_stall.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/belin/Dropbox/School/GDIPSA_2021/AD Project/Git/Android/v24Aug - Refactoring Afternoon/app/src/main/res/layout/fragment_list_stalls.xml" value="0.15881458966565348" />
+        <entry key="..\:/Users/belin/Dropbox/School/GDIPSA_2021/AD Project/Git/Android/v24Aug - Refactoring Afternoon/app/src/main/res/layout/fragment_stall.xml" value="0.24818840579710144" />
         <entry key="app/src/main/res/layout/activity_forget_password.xml" value="0.19021739130434784" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.19021739130434784" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15070921985815602" />

@@ -39,9 +39,9 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
     private View view;
 
     // initialise views
-    private ImageView backBtn;
-    private ListView listHawkerStalls;
-    private TextView stallsTxt;
+    private ImageView back_btn;
+    private ListView hawkerStalls_lv;
+    private TextView hawkerStalls_txt;
 
     // initialise variables
     private String centreId;
@@ -66,12 +66,12 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
         // instantiate fragment variables
         view = getView();
         mContext = getContext();
-        listHawkerStalls = view.findViewById(R.id.hawkerStalls_lv);
 
         // instantiate fragment views
-        stallsTxt = view.findViewById(R.id.hakwerStalls_txt);
-        backBtn = view.findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        hawkerStalls_txt = view.findViewById(R.id.hawkerStalls_txt);
+        hawkerStalls_lv = view.findViewById(R.id.hawkerStalls_lv);
+        back_btn = view.findViewById(R.id.back_btn);
+        back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeFragment();
@@ -86,8 +86,10 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
             hc = (HawkerCentre) bundle.getSerializable("centre");
 
             String numStallsText = getString(R.string.NumStalls1) + hc.getNumOfStalls() + getString(R.string.NumStalls2) + hc.getName() + getString(R.string.NumStalls3);
-            stallsTxt.setText(numStallsText);
+            hawkerStalls_txt.setText(numStallsText);
         }
+
+
 
         // Display list of stalls
         findHawkerStalls();
@@ -162,12 +164,12 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
 
         ListHawkerStallsAdaptor adaptor = new ListHawkerStallsAdaptor(mContext, hawkerStalls);
 
-        if(listHawkerStalls !=null)
+        if(hawkerStalls_lv !=null)
         {
-            listHawkerStalls.setAdapter(adaptor);
+            hawkerStalls_lv.setAdapter(adaptor);
 
             // implement onItemClick(...) for listView
-            listHawkerStalls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            hawkerStalls_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     hs = hawkerStalls.get(i);

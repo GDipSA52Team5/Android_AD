@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -33,7 +32,6 @@ import com.squareup.picasso.Picasso;
 import com.team5.HawkeRise.utilities.ListMenuItemsAdaptor;
 import com.team5.HawkeRise.utilities.MySingleton;
 import com.team5.HawkeRise.R;
-import com.team5.HawkeRise.models.Favourite;
 import com.team5.HawkeRise.models.HawkerCentre;
 import com.team5.HawkeRise.models.HawkerStall;
 import com.team5.HawkeRise.models.MenuItem;
@@ -48,24 +46,38 @@ import java.util.List;
 
 public class Hawkers_StallInfoFragment extends Fragment {
 
+    // initialise fragment variables
     private Context mContext;
+    private View view;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+    // initialise views
+    private ListView menuItems_lv;
+    private ImageView back_btn;
+    private RatingBar stall_rb;
+    private Button favourite_btn;
+    private TextView stallName_txt;
+    private TextView hawkerCentreName_txt;
+    private ImageView stall_img;
+    private TextView unitNumber_txt;
+    private TextView contactNumber_txt;
+    private Button getDirections_btn;
+    private Button reportProblem_btn;
+
+    // initialise variables
     private Integer stallId;
     private HawkerCentre hc;
     private HawkerStall hs;
     private MenuItem menuItem;
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
-    private ListView listMenuItems;
-    private ImageView backBtn;
     private int currentRating;
     private int likeOrNot;
     private String email;
-
-    private RatingBar stallRatingBar;
-
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private Button fvrt_brn;
-    private Boolean fvrtCheck = false;
+    private Boolean favouriteFlag = false;
+    private String getMenuItemsURL;
+    private String getFavouriteStatusURL;
+    private String findRatingURL;
+    private String setRatingURL;
 
     public Hawkers_StallInfoFragment() {
         // Required empty public constructor
@@ -80,8 +92,11 @@ public class Hawkers_StallInfoFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        // instantiate fragment variables
         mContext = getContext();
+        view = getView();
 
+        // get bundle arguments from previous fragment
         Bundle bundle = getArguments();
         if(bundle != null)
         {
@@ -90,45 +105,34 @@ public class Hawkers_StallInfoFragment extends Fragment {
             hs = (HawkerStall) bundle.getSerializable("stall");
         }
 
-        View view = getView();
-        TextView HawkerStallName = view.findViewById(R.id.HawkerStallName);
-        HawkerStallName.setText(hs.getStallName());
+        // instantiate fragment views
+        stallName_txt = view.findViewById(R.id.stallName_txt);
+        stallName_txt.setText(hs.getStallName());
 
-        TextView MarketName = view.findViewById(R.id.MarketName);
-        MarketName.setText(hc.getName());
+        hawkerCentreName_txt = view.findViewById(R.id.hawkerCentreName_txt);
+        hawkerCentreName_txt.setText(hc.getName());
 
-        ImageView StallImage = view.findViewById(R.id.StallImage);
+        stall_img = view.findViewById(R.id.stall_img);
         Picasso.get()
                 .load(hs.getStallImgUrl())
                 .resize(1000, 600)
                 .centerCrop()
-                .into(StallImage);
+                .into(stall_img);
 
-        TextView StallUnitNumber = view.findViewById(R.id.StallUnitNumber);
-        StallUnitNumber.setText(getString(R.string.Unit_Number)+ hs.getUnitNumber());
+        unitNumber_txt = view.findViewById(R.id.unitNumber_txt);
+        unitNumber_txt.setText(getString(R.string.Unit_Number)+ hs.getUnitNumber());
 
-        TextView StallContactNumber = view.findViewById(R.id.StallContactNumber);
-        StallContactNumber.setText(getString(R.string.Contact_Number) + hs.getContactNumber());
+        contactNumber_txt = view.findViewById(R.id.contactNumber_txt);
+        contactNumber_txt.setText(getString(R.string.Contact_Number) + hs.getContactNumber());
 
-        listMenuItems = view.findViewById(R.id.listMenuItems);
-
-        // Display list of menu items
+        menuItems_lv = view.findViewById(R.id.menuItems_lv);
         if (menuItems.size() == 0)
         {
-            parseData();
+            getMenuItems();
         }
 
-        backBtn = view.findViewById(R.id.backBtn);
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeFragment();
-            }
-        });
-
-        Button OpenMap = view.findViewById(R.id.OpenMap);
-        OpenMap.setOnClickListener(new View.OnClickListener() {
+        getDirections_btn = view.findViewById(R.id.getDirections_btn);
+        getDirections_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -141,39 +145,73 @@ public class Hawkers_StallInfoFragment extends Fragment {
             }
         });
 
-        Button ReportProblem = view.findViewById(R.id.ReportProblem);
-        ReportProblem.setOnClickListener(new View.OnClickListener() {
+        reportProblem_btn = view.findViewById(R.id.reportProblem_btn);
+        reportProblem_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Sorry, haven't implement this yet.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "This function will only be implemented in the next update.", Toast.LENGTH_SHORT).show();
             }
         });
 
+        back_btn = view.findViewById(R.id.back_btn);
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeFragment();
+            }
+        });
 
-
-
-        // favourite button
-        fvrt_brn = view.findViewById(R.id.fvrt_item);
-
+        // rating bar
+        stall_rb = view.findViewById(R.id.stall_rb);
         if (user == null)
         {
-            fvrt_brn.setVisibility(View.INVISIBLE);
+            stall_rb.setVisibility(View.INVISIBLE);
         }
-
         else
         {
-            getLikeOrNotLike(user.getEmail(), hs.getId());
+            stall_rb.setStepSize(1);
 
-            fvrt_brn.setOnClickListener(new View.OnClickListener() {
+            // fetch current rating
+            email = user.getEmail();
+            getCurrentRating();
+
+            stall_rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+                    float newRating = v;
+
+                    if(v < 1)
+                    {
+                        ratingBar.setRating(1);
+                        newRating = 1;
+                    }
+
+                    setRating(Math.round(newRating));
+                    getCurrentRating();
+                }
+            });
+        }
+
+        // favourite button
+        favourite_btn = view.findViewById(R.id.favourite_btn);
+        if (user == null)
+        {
+            favourite_btn.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            getFavouriteStatus(user.getEmail(), hs.getId());
+
+            favourite_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    if (fvrtCheck == true){
+                    if (favouriteFlag == true){
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_border_24));
-                        fvrtCheck = false;
-                        String uemail = user.getEmail();
-                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
-//                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
+                        favouriteFlag = false;
+                        email = user.getEmail();
+                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + email + "/" + stallId;
 
                         JsonRequest request = new JsonObjectRequest(url,
                                 null, //if jsonRequest == null then Method.GET otherwise Method.POST
@@ -197,11 +235,9 @@ public class Hawkers_StallInfoFragment extends Fragment {
                     }
                     else{
                         view.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
-                        fvrtCheck = true;
-                        String uemail = user.getEmail();
-                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + uemail + "/" + stallId;
-//                        String url ="http://192.168.1.230:8080/api/favorites/" + uemail + "/" + stallId;
-
+                        favouriteFlag = true;
+                        email = user.getEmail();
+                        String url ="https://gdipsa-ad-springboot.herokuapp.com/api/favorites/" + email + "/" + stallId;
 
                         JsonRequest request = new JsonObjectRequest(url,
                                 null, //if jsonRequest == null then Method.GET otherwise Method.POST
@@ -227,94 +263,26 @@ public class Hawkers_StallInfoFragment extends Fragment {
             });
         }
 
-
-
-        // rating bar
-        stallRatingBar = view.findViewById(R.id.stallRatingBar);
-
-        if (user == null)
-        {
-            stallRatingBar.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            stallRatingBar.setStepSize(1);
-
-            // fetch current number of stars
-            email = user.getEmail();
-
-            getCurrentRating();
-
-            stallRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                @Override
-                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-
-                    float newRating = v;
-
-                    if(v < 1)
-                    {
-                        ratingBar.setRating(1);
-                        newRating = 1;
-                    }
-
-                    // put API here
-                    setRating(Math.round(newRating));
-                    getCurrentRating();
-                }
-            });
-        }
-
     }
 
-
-    public void getLikeOrNotLike(String email,int stallId)
+    public void getMenuItems()
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getFavouriteList/" + email + "/" + stallId;
-//        String url = "http://192.168.1.230:8080/api/getFavouriteList/" + email + "/" + stallId;
-        StringRequest request = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        likeOrNot = Integer.parseInt(response);
+        getMenuItemsURL = "https://gdipsa-ad-springboot.herokuapp.com/api/getMenuItems/" + hs.getId();
 
-                        if (likeOrNot ==0)
-                        {
-                            // do nothing as 0 means not like
-                        }
-                        else
-                        {
-                            fvrtCheck = true;
-                            fvrt_brn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(mContext, "Error Retrieving Ratings", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        MySingleton.getInstance(mContext).addToRequestQueue(request);
-    }
-
-
-
-    public void parseData()
-    {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/listMenuItem/" + hs.getId();
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getMenuItemsURL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         for (int i=0; i < response.length(); i++)
                         {
                             try {
+                                // get JSON object
                                 JSONObject menuItemJSONObj = response.getJSONObject(i);
 
+                                // initialise and instantiate a new empty MenuItem object
                                 MenuItem menuItem = new MenuItem();
 
+                                // set attributes for new MenuItem object from JSON object
                                 menuItem.setId(menuItemJSONObj.getInt("id"));
                                 menuItem.setName(menuItemJSONObj.getString("name"));
                                 menuItem.setDescription(menuItemJSONObj.getString("description"));
@@ -322,7 +290,7 @@ public class Hawkers_StallInfoFragment extends Fragment {
                                 menuItem.setStatus(menuItemJSONObj.getString("status"));
                                 menuItem.setLocalUrl(menuItemJSONObj.getString("localUrl"));
 
-
+                                // add MenuItem to list of menuItems
                                 menuItems.add(menuItem);
 
                                 if(i == (response.length() - 1))
@@ -342,16 +310,46 @@ public class Hawkers_StallInfoFragment extends Fragment {
             }
         });
 
-
         MySingleton.getInstance(mContext).addToRequestQueue(request);
 
     }
 
+    public void getFavouriteStatus(String email, int stallId)
+    {
+        getFavouriteStatusURL = "https://gdipsa-ad-springboot.herokuapp.com/api/getFavouriteStatus/" + email + "/" + stallId;
+
+        StringRequest request = new StringRequest(Request.Method.GET, getFavouriteStatusURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        likeOrNot = Integer.parseInt(response);
+
+                        if (likeOrNot ==0)
+                        {
+                            // do nothing as 0 means not like
+                        }
+                        else
+                        {
+                            favouriteFlag = true;
+                            favourite_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_baseline_favorite_24));
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error Retrieving Favourite Status", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        MySingleton.getInstance(mContext).addToRequestQueue(request);
+    }
+
     public void getCurrentRating()
     {
-        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
+        findRatingURL = "https://gdipsa-ad-springboot.herokuapp.com/api/findRating/" + email + "/" + stallId;
 
-        StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
+        StringRequest request = new StringRequest(Request.Method.GET, findRatingURL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -363,7 +361,7 @@ public class Hawkers_StallInfoFragment extends Fragment {
                             }
                             else
                             {
-                                stallRatingBar.setRating(currentRating);
+                                stall_rb.setRating(currentRating);
                             }
 
                     }
@@ -379,9 +377,9 @@ public class Hawkers_StallInfoFragment extends Fragment {
 
     public void setRating(int newRating)
     {
-        String ratingUrl = "https://gdipsa-ad-springboot.herokuapp.com/api/setRating/" + email + "/" + stallId + "/" + newRating;
+        setRatingURL = "https://gdipsa-ad-springboot.herokuapp.com/api/setRating/" + email + "/" + stallId + "/" + newRating;
 
-        StringRequest request = new StringRequest(Request.Method.GET, ratingUrl,
+        StringRequest request = new StringRequest(Request.Method.GET, setRatingURL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -389,7 +387,7 @@ public class Hawkers_StallInfoFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(mContext, "Error Retrieving Ratings", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Error Setting Ratings", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -400,10 +398,10 @@ public class Hawkers_StallInfoFragment extends Fragment {
 
         ListMenuItemsAdaptor adaptor = new ListMenuItemsAdaptor(mContext, menuItems);
 
-        if(listMenuItems !=null) {
-            listMenuItems.setAdapter(adaptor);
+        if(menuItems_lv !=null) {
+            menuItems_lv.setAdapter(adaptor);
 
-            listMenuItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            menuItems_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     menuItem = menuItems.get(i);

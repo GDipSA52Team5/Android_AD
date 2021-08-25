@@ -57,6 +57,10 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
     // initialise views
     private ListView listHawkerCentres;
     private ProgressBar progressBarHawker;
+    private Button oneKm_btn;
+    private Button threeKm_btn;
+    private Button fiveKm_btn;
+    private Button allStalls_btn;
 
     // initialise variables
     private List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
@@ -89,17 +93,17 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
         listHawkerCentres = view.findViewById(R.id.hawkers_lv);
         progressBarHawker = view.findViewById(R.id.hawkers_pb);
 
-        Button OneKmBtn = view.findViewById(R.id.oneKm_btn);
-        OneKmBtn.setOnClickListener(this);
+        oneKm_btn = view.findViewById(R.id.oneKm_btn);
+        oneKm_btn.setOnClickListener(this);
 
-        Button ThreeKmBtn = view.findViewById(R.id.threeKm_btn);
-        ThreeKmBtn.setOnClickListener(this);
+        threeKm_btn = view.findViewById(R.id.threeKm_btn);
+        threeKm_btn.setOnClickListener(this);
 
-        Button FiveKmBtn = view.findViewById(R.id.fiveKm_btn);
-        FiveKmBtn.setOnClickListener(this);
+        fiveKm_btn = view.findViewById(R.id.fiveKm_btn);
+        fiveKm_btn.setOnClickListener(this);
 
-        Button AllStallsBtn = view.findViewById(R.id.allStalls_btn);
-        AllStallsBtn.setOnClickListener(this);
+        allStalls_btn = view.findViewById(R.id.allStalls_btn);
+        allStalls_btn.setOnClickListener(this);
 
         // Get user's location
         getUserLocation();

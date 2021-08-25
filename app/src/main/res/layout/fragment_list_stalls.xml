@@ -19,7 +19,7 @@
             android:src="@drawable/ic_back"/>
 
         <TextView
-            android:id="@+id/hakwerStalls_txt"
+            android:id="@+id/hawkerStalls_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="There are X Stalls in Y Market."
