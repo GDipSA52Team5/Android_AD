@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".fragments.Hawkers_StallInfoFragment"
     android:orientation="vertical"
-    android:layout_margin="30dp">
+    android:layout_margin="20dp">
 
     <ImageView
         android:id="@+id/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         android:src="@drawable/ic_back"/>
 
     <LinearLayout
