@@ -10,6 +10,7 @@
         android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="@string/listHC"/>
 
     <LinearLayout
@@ -19,46 +20,38 @@
         android:layout_gravity="center_horizontal">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/allStalls_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="2dp"
+            android:text="@string/AllHC" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/oneKm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lessThan1km"
-            />
+            android:layout_margin="2dp"
+            android:text="@string/lessThan1km" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/threeKm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lessThan3km"
-            />
+            android:layout_margin="2dp"
+            android:text="@string/lessThan3km" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fiveKm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/lessThan5km"
-            />
+            android:layout_margin="2dp"
+            android:text="@string/lessThan5km" />
+
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/allStalls_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/AllHC"
-            />
-
-     </LinearLayout>
 
     <ProgressBar
         android:id="@+id/hawkers_pb"
@@ -73,7 +66,5 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
     </ListView>
-
-
 
 </LinearLayout>
