@@ -8,10 +8,6 @@
     tools:context=".fragments.FavouritesFragment"
     android:orientation="vertical">
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
 
     <TextView
         android:id="@+id/favouriteHawker_info"
@@ -20,14 +16,7 @@
         android:gravity="center_horizontal"
         android:padding="20dp"
         android:text="Here are your favourite stalls."
-        app:layout_constraintTop_toTopOf="parent" /><![CDATA[
-
-        android:layout_width="wrap_content"
-        android:layout_height="545dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
-    ]]>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/listFavourites"
