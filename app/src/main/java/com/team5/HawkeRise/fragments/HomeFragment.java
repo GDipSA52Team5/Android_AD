@@ -189,6 +189,7 @@ public class HomeFragment extends Fragment {
 
                                 if(i == (response.length() - 1))
                                 {
+                                    home_pb.setVisibility(View.GONE);
                                     createListStallsView();
                                 }
 
@@ -197,12 +198,16 @@ public class HomeFragment extends Fragment {
                             }
                         }
                     }
-                }, new Response.ErrorListener() {
+
+                }
+                ,
+
+                new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                home_pb.setVisibility(View.GONE);
                 Toast.makeText(mContext, "Error Retrieving Recommended Stalls", Toast.LENGTH_SHORT).show();
             }
-
         });
         request.setRetryPolicy(new DefaultRetryPolicy(
                 10000,
