@@ -19,46 +19,26 @@ import com.team5.HawkeRise.models.MenuItem;
 
 public class Hawkers_MenuFragment extends Fragment {
 
+    // initialise fragment variables
+    private View view;
+
+    // initialise views
+    private TextView menuItemName, hsName, menuItemPrice, menuItemStatus, menuItemDesc;
+    private ImageView menuItemImg, backBtn;
+
+    // initialise variables
     private Integer menuItemId;
     private MenuItem menuItem;
     private HawkerCentre hc;
     private HawkerStall hs;
-    private TextView menuItemName, hsName, menuItemPrice, menuItemStatus, menuItemDesc;
-    private ImageView menuItemImg, backBtn;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
 
     public Hawkers_MenuFragment() {
         // Required empty public constructor
     }
 
-    public static Hawkers_MenuFragment newInstance(String param1, String param2) {
+    public static Hawkers_MenuFragment newInstance() {
         Hawkers_MenuFragment fragment = new Hawkers_MenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu_item, container, false);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -67,6 +47,10 @@ public class Hawkers_MenuFragment extends Fragment {
         super.onStart();
         Bundle bundle = getArguments();
 
+        // instantiate fragment variables
+        view = getView();
+
+        // get bundle arguments from previous fragment
         if (bundle != null) {
             menuItemId = bundle.getInt("menuItemId");
             hc = (HawkerCentre) bundle.getSerializable("centre");
@@ -74,17 +58,7 @@ public class Hawkers_MenuFragment extends Fragment {
             menuItem = (MenuItem) bundle.getSerializable("menuItem");
         }
 
-        View view = getView();
-
-        backBtn = view.findViewById(R.id.backBtn);
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removeFragment();
-            }
-        });
-
+        // instantiate fragment views
         menuItemName = view.findViewById(R.id.menuItemName);
         menuItemName.setText(menuItem.getName());
 
@@ -106,6 +80,26 @@ public class Hawkers_MenuFragment extends Fragment {
 
         menuItemDesc = view.findViewById(R.id.menuItemDesc);
         menuItemDesc.setText(getString(R.string.menuItemDesc, menuItem.getDescription()));
+
+        backBtn = view.findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeFragment();
+            }
+        });
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_menu_item, container, false);
     }
 
     public void removeFragment() {

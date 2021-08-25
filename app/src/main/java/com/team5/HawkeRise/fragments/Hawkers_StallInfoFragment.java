@@ -55,14 +55,9 @@ public class Hawkers_StallInfoFragment extends Fragment {
     private ListView menuItems_lv;
     private ImageView back_btn;
     private RatingBar stall_rb;
-    private Button favourite_btn;
-    private TextView stallName_txt;
-    private TextView hawkerCentreName_txt;
+    private TextView stallName_txt, hawkerCentreName_txt, unitNumber_txt, contactNumber_txt;
     private ImageView stall_img;
-    private TextView unitNumber_txt;
-    private TextView contactNumber_txt;
-    private Button getDirections_btn;
-    private Button reportProblem_btn;
+    private Button getDirections_btn, reportProblem_btn, favourite_btn;
 
     // initialise variables
     private Integer stallId;
@@ -70,14 +65,9 @@ public class Hawkers_StallInfoFragment extends Fragment {
     private HawkerStall hs;
     private MenuItem menuItem;
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
-    private int currentRating;
-    private int likeOrNot;
-    private String email;
+    private int currentRating, likeOrNot;
     private Boolean favouriteFlag = false;
-    private String getMenuItemsURL;
-    private String getFavouriteStatusURL;
-    private String findRatingURL;
-    private String setRatingURL;
+    private String getMenuItemsURL, getFavouriteStatusURL, findRatingURL, setRatingURL, email;
 
     public Hawkers_StallInfoFragment() {
         // Required empty public constructor
@@ -265,6 +255,18 @@ public class Hawkers_StallInfoFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_stall, container, false);
+    }
+
     public void getMenuItems()
     {
         getMenuItemsURL = "https://gdipsa-ad-springboot.herokuapp.com/api/getMenuItems/" + hs.getId();
@@ -434,15 +436,4 @@ public class Hawkers_StallInfoFragment extends Fragment {
         this.getParentFragmentManager().popBackStack();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stall, container, false);
-    }
 }

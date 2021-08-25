@@ -31,7 +31,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Hawkers_HawkerStallsFragment extends Fragment {
 
     // initialise fragment variables
@@ -44,11 +43,10 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
     private TextView hawkerStalls_txt;
 
     // initialise variables
-    private String centreId;
+    private String centreId, findHawkerStallsURL;
     private HawkerCentre hc;
     private HawkerStall hs;
     private List<HawkerStall> hawkerStalls = new ArrayList<HawkerStall>();
-    private String findHawkerStallsURL;
 
     public Hawkers_HawkerStallsFragment() {
         // Required empty public constructor
@@ -88,8 +86,6 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
             String numStallsText = getString(R.string.NumStalls1) + hc.getNumOfStalls() + getString(R.string.NumStalls2) + hc.getName() + getString(R.string.NumStalls3);
             hawkerStalls_txt.setText(numStallsText);
         }
-
-
 
         // Display list of stalls
         findHawkerStalls();

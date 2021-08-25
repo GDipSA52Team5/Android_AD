@@ -57,19 +57,12 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
     // initialise views
     private ListView listHawkerCentres;
     private ProgressBar progressBarHawker;
-    private Button oneKm_btn;
-    private Button threeKm_btn;
-    private Button fiveKm_btn;
-    private Button allStalls_btn;
+    private Button oneKm_btn, threeKm_btn,fiveKm_btn, allStalls_btn;
 
     // initialise variables
     private List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
     private final int PERMISSION_ID = 44;
-    private String lat;
-    private String lon;
-    private String distFrom;
-    private String getAllHawkerCentresURL;
-    private String getHawkerCentresByDistanceURL;
+    private String lat, lon, distFrom, getAllHawkerCentresURL,getHawkerCentresByDistanceURL;
 
     public HawkersFragment() {
         // Required empty public constructor
