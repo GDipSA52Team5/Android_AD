@@ -53,6 +53,15 @@
 
     </LinearLayout>
 
+    <com.google.android.material.slider.Slider
+        android:id="@+id/hawker_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:valueFrom="0.0"
+        android:valueTo="30.0"
+        android:stepSize="1.0"
+        />
+
     <ProgressBar
         android:id="@+id/hawkers_pb"
         style="?android:attr/progressBarStyle"

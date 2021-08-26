@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,6 +36,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.slider.Slider;
 import com.team5.HawkeRise.utilities.ListHawkerCentresAdaptor;
 import com.team5.HawkeRise.R;
 import com.team5.HawkeRise.models.HawkerCentre;
@@ -58,6 +60,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
     private ListView listHawkerCentres;
     private ProgressBar progressBarHawker;
     private Button oneKm_btn, threeKm_btn,fiveKm_btn, allStalls_btn;
+    private Slider hawker_slider;
 
     // initialise variables
     private List<HawkerCentre> hawkerCentres = new ArrayList<HawkerCentre>();
@@ -97,6 +100,29 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
 
         allStalls_btn = view.findViewById(R.id.allStalls_btn);
         allStalls_btn.setOnClickListener(this);
+
+        hawker_slider = view.findViewById(R.id.hawker_slider);
+        hawker_slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                if (lat==null || lon==null)
+                {
+                    Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    // Toast.makeText(mContext, String.valueOf(hawker_slider.getValue()), Toast.LENGTH_SHORT).show();
+                    distFrom = String.valueOf((int) hawker_slider.getValue());
+                    hawker_slider.getValue();
+                    getHawkerCentresByDistance();
+                }
+            }
+        });
 
         // Get user's location
         getUserLocation();
@@ -253,6 +279,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
                                 if(i == (response.length() - 1))
                                 {
                                     createListHawkersView();
+                                    Toast.makeText(mContext, "Hawker Centres Refreshed!", Toast.LENGTH_SHORT).show();
                                 }
 
                             } catch (JSONException e) {
@@ -266,6 +293,10 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(mContext, "Error Retrieving Hawker Centres", Toast.LENGTH_SHORT).show();
             }
         });
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         MySingleton.getInstance(mContext).addToRequestQueue(request);
     }
