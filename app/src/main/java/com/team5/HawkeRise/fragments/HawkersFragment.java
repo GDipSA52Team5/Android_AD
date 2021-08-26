@@ -334,7 +334,9 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()
-                .replace(((ViewGroup) getView().getParent()).getId(), fragment).addToBackStack(null).commit();
+                .add(((ViewGroup) getView().getParent()).getId(), fragment)
+                .addToBackStack(null)
+                .commit();
 
     }
 

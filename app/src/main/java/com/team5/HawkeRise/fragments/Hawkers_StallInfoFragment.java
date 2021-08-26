@@ -425,9 +425,8 @@ public class Hawkers_StallInfoFragment extends Fragment {
         Fragment fragment = new Hawkers_MenuFragment();
         fragment.setArguments(arguments);
 
-        menuItems.removeAll(menuItems);
         this.getParentFragmentManager().beginTransaction()
-                .replace(((ViewGroup) getView().getParent()).getId(), fragment, null)
+                .add(((ViewGroup) getView().getParent()).getId(), fragment, null)
                 .addToBackStack(null)
                 .commit();
 

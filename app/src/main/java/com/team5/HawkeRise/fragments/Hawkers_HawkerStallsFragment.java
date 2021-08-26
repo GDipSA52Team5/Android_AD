@@ -187,16 +187,13 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
         fragment.setArguments(arguments);
 
         this.getParentFragmentManager().beginTransaction()
-                .replace(((ViewGroup) getView().getParent()).getId(), fragment, null)
+                .add(((ViewGroup) getView().getParent()).getId(), fragment, null)
                 .addToBackStack(null)
                 .commit();
     }
 
     public void removeFragment() {
         this.getParentFragmentManager().popBackStack();
-//        this.getParentFragmentManager().beginTransaction()
-//                .remove(this)
-//                .commit();
     }
 
 }
