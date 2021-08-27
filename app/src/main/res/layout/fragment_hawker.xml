@@ -60,7 +60,7 @@
         android:layout_gravity="center_horizontal">
 
     <TextView
-        android:text="0km"
+        android:text="@string/zeroKm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"/>
@@ -75,7 +75,7 @@
         />
 
     <TextView
-        android:text="30km"
+        android:text="@string/thirtyKm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"/>
