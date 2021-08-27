@@ -89,15 +89,6 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
         listHawkerCentres = view.findViewById(R.id.hawkers_lv);
         progressBarHawker = view.findViewById(R.id.hawkers_pb);
 
-        oneKm_btn = view.findViewById(R.id.oneKm_btn);
-        oneKm_btn.setOnClickListener(this);
-
-        threeKm_btn = view.findViewById(R.id.threeKm_btn);
-        threeKm_btn.setOnClickListener(this);
-
-        fiveKm_btn = view.findViewById(R.id.fiveKm_btn);
-        fiveKm_btn.setOnClickListener(this);
-
         allStalls_btn = view.findViewById(R.id.allStalls_btn);
         allStalls_btn.setOnClickListener(this);
 
@@ -154,35 +145,6 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
         {
             getAllHawkerCentres();
         }
-
-        else
-        {
-            if (id == R.id.oneKm_btn)
-            {
-                distFrom = "1";
-            }
-
-            if (id == R.id.threeKm_btn)
-            {
-                distFrom = "3";
-            }
-
-            if (id == R.id.fiveKm_btn)
-            {
-                distFrom = "5";
-            }
-
-            if (lat==null || lon==null)
-            {
-                Toast.makeText(mContext, "Unable to retrieve user location", Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                getHawkerCentresByDistance();
-            }
-        }
-
     }
 
     public void getAllHawkerCentres()
@@ -279,7 +241,7 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
                                 if(i == (response.length() - 1))
                                 {
                                     createListHawkersView();
-                                    Toast.makeText(mContext, "Hawker Centres Refreshed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mContext, "Here are the hawker centres " + distFrom + "km from you", Toast.LENGTH_SHORT).show();
                                 }
 
                             } catch (JSONException e) {

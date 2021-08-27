@@ -3,13 +3,14 @@
 
     <string name="stalls"> stalls</string>
     <string name="FindHCWithin">Find Hawker Centres within: </string>
-    <string name="listHC">List of Hawker Centres: </string>
+    <string name="listHC">Here are all the Hawker Centres in Singapore</string>
     <string name="FindAll">Find All</string>
     <string name="lessThan1km"> &lt;1km </string>
     <string name="lessThan3km"> &lt;3km </string>
     <string name="lessThan5km"> &lt;5km </string>
     <string name="zeroKm">0km</string>
     <string name="thirtyKm">30km</string>
+    <string name="filterByDist">Filter by distance from you:</string>
     <string name="NumStalls1">Here are the&#160;</string>
     <string name="NumStalls2">&#160;stalls in&#160;</string>
     <string name="NumStalls3"> : </string>
