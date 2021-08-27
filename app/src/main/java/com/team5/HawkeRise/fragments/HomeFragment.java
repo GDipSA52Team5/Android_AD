@@ -87,8 +87,8 @@ public class HomeFragment extends Fragment {
         // if guest user, display top stalls
         if (user == null)
         {
+            userEmail = "guestUser";
             home_txt.setText(getString(R.string.welcome_guest));
-            getTopStalls();
         }
         // if logged-in user, display recommended stalls for user
         else
@@ -97,10 +97,9 @@ public class HomeFragment extends Fragment {
             userEmail = user.getEmail();
 
             home_txt.setText("Hello " + userDisplayName + getString(R.string.welcome_user));
-
-            getRecommendedStalls();
         }
 
+        getRecommendedStalls();
     }
 
     public void getTopStalls()
