@@ -165,7 +165,7 @@ public class FavouritesFragment extends Fragment {
 
     public HawkerCentre findBelongCentre(Integer stallId)
     {
-        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/findBelongCentre/" + stallId;
+        String url = "https://gdipsa-ad-springboot.herokuapp.com/api/getHawkerCentreFromHawkerStall/" + stallId;
         HawkerCentre hawkerCentre = new HawkerCentre();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
