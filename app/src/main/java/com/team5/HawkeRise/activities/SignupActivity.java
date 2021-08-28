@@ -132,8 +132,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(name).build();
 
-                            user.updateProfile(profileUpdates);
-
                             userEmail  = user.getEmail();
                             dbSourceHeroku = "https://gdipsa-ad-springboot.herokuapp.com/api/";
 
@@ -153,7 +151,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             mQueue.add(request);
 
                             Toast.makeText(SignupActivity.this, "User has been registered successfully", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+
+                            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                                }
+                            });
 
                         } else {
                             Toast.makeText(SignupActivity.this, "Failed to register! Please Try Again!", Toast.LENGTH_LONG).show();
