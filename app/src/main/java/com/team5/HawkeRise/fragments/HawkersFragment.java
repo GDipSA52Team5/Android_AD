@@ -119,8 +119,10 @@ public class HawkersFragment extends Fragment implements View.OnClickListener {
         getUserLocation();
 
         // Display list of all Hawker Centres
-        getAllHawkerCentres();
-
+        if (hawkerCentres.size() == 0)
+        {
+            getAllHawkerCentres();
+        }
     }
 
     @Override

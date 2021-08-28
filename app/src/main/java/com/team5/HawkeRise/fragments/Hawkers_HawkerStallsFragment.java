@@ -88,7 +88,10 @@ public class Hawkers_HawkerStallsFragment extends Fragment {
         }
 
         // Display list of stalls
-        findHawkerStalls();
+        if (hawkerStalls.size() == 0)
+        {
+            findHawkerStalls();
+        }
 
     }
 
