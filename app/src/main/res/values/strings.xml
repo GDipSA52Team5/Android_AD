@@ -17,7 +17,7 @@
 
     <string name="Search"> Search </string>
 
-    <string name="Unit_Number">Unit Number:&#160;</string>
+    <string name="Unit_Number">Unit Number:&#160;#</string>
     <string name="Contact_Number">Contact Number:&#160;</string>
 
     <string name="menuItemName">Menu Item Name</string>
