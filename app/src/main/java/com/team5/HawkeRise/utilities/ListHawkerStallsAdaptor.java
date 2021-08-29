@@ -46,7 +46,7 @@ public class ListHawkerStallsAdaptor extends ArrayAdapter {
         hawkerStall_name.setText(hawkerStalls.get(pos).getStallName());
 
         TextView hawkerStall_unitNumber = view.findViewById(R.id.hawkerStall_unitNumber);
-        hawkerStall_unitNumber.setText(hawkerStalls.get(pos).getUnitNumber());
+        hawkerStall_unitNumber.setText("#" + hawkerStalls.get(pos).getUnitNumber());
 
         TextView hawkerStall_status = view.findViewById(R.id.hawkerStall_status);
         if(hawkerStalls.get(pos).getStatus().equals("Open"))
